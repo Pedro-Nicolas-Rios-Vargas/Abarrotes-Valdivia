@@ -6,55 +6,74 @@ package src;
  */
 public class Producto {
     
-    private int code;
-    private String nameProduct;
+    private int idprod;
+    private String nombre_Prod;
+    private String um;
+    private int stock;
     private double price;
-    private int cantidad;
-    
-    public Producto(){}
-    
-    public Producto(int code, String nameProduct, double price, int cantidad){
-        this.code = code;
-        this.nameProduct = nameProduct;
+    private int existencia;
+
+    public Producto() {}
+    public Producto(int idprod, String nombre_Prod, double price, int existencia, int stock, String um) {
+        this.idprod = idprod;
+        this.nombre_Prod = nombre_Prod;
+        this.um = um;
+        this.stock = stock;
         this.price = price;
-        this.cantidad = cantidad;
+        this.existencia = existencia;
     }
 
-    public int getCantidad() {
-        return cantidad;
+    public int getIdprod() {
+        return idprod;
     }
 
-    public void setCantidad(int cantidad) {
-        this.cantidad = cantidad;
+    public void setIdprod(int idprod) {
+        this.idprod = idprod;
     }
 
-    @Override
-    public String toString() {
-        return nameProduct + " $" + price;
+    public String getNombre_Prod() {
+        return nombre_Prod;
     }
 
-    public int getCode() {
-        return code;
+    public void setNombre_Prod(String nombre_Prod) {
+        this.nombre_Prod = nombre_Prod;
     }
 
-    public void setCode(int code) {
-        this.code = code;
+    public String getUm() {
+        return um;
     }
 
-    public String getNameProduct() {
-        return nameProduct;
+    public void setUm(String um) {
+        this.um = um;
     }
 
-    public void setNameProduct(String nameProduct) {
-        this.nameProduct = nameProduct;
+    public int getStock() {
+        return stock;
+    }
+
+    public void setStock(int stock) {
+        this.stock = stock;
     }
 
     public double getPrice() {
         return price;
     }
 
+    @Override
+    public String toString() {
+        return nombre_Prod + " $" + price;
+    }
+
     public void setPrice(double price) {
         this.price = price;
     }
-    
+
+    public int getExistencia() {
+        return existencia;
+    }
+
+    public void setExistencia(int existencia) {
+        this.existencia = existencia;
+    }
+
 }
