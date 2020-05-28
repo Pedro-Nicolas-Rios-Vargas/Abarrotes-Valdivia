@@ -15,12 +15,17 @@ public class Main extends javax.swing.JFrame {
     private IngresoDialog ingreso;
     
     public Main() {
-        new IngresoDialog(this, true);
+        ingreso = new IngresoDialog(this, true);
         initComponents();
         //fjqnvu hruehiduvhas me duele el pito
         //pito
         this.setResizable(false);
         this.setSize(1450, 720);
+        cardLayout = (CardLayout)PanelCardLayout.getLayout();
+        PanelCardLayout.add(gestionarAlmacen, "Gestionar Almecen");
+        PanelCardLayout.add(gestionarVentas, "Gestionar Ventas");
+        
+        cardLayout.show(PanelCardLayout, "Gestionar Ventas");
     }
 
     @SuppressWarnings("unchecked")
