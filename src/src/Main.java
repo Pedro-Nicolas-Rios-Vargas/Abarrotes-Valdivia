@@ -21,6 +21,11 @@ public class Main extends javax.swing.JFrame {
         //pito
         this.setResizable(false);
         this.setSize(1450, 720);
+        cardLayout = (CardLayout)PanelCardLayout.getLayout();
+        PanelCardLayout.add(gestionarAlmacen, "Gestionar Almecen");
+        PanelCardLayout.add(gestionarVentas, "Gestionar Ventas");
+        
+        cardLayout.show(PanelCardLayout, "Gestionar Ventas");
     }
 
     @SuppressWarnings("unchecked")
@@ -288,6 +293,7 @@ public class Main extends javax.swing.JFrame {
                String.valueOf(today.getTime().getMinutes()) + ":"
                + String.valueOf(today.getTime().getSeconds());
     }
+
 
     /*--------------------Fin de los metodos----------------------------------*/
     public static void main(String args[]) {
