@@ -220,11 +220,11 @@ public class GestionarVentas extends javax.swing.JPanel {
            for (int i = 0; i < aux.length; i++) {
                aux[i] = modeloTablaAlmacen.getValueAt(tablaAlmacen.getSelectedRow(), i).toString();
            }
-           /* Errores para realizar commit, quitar coment
+           
            Producto producto = new Producto(Integer.parseInt(aux[0]), aux[1], Double.valueOf(aux[2]), Integer.parseInt(aux[3]), Integer.parseInt(aux[4]), aux[5]);
            total += producto.getPrice();
            modeloLista.addElement(producto);
-           */
+           
         } else {
             JOptionPane.showMessageDialog(this, "Favor de seleccionar un producto de la tabla", "Sin seleccion", JOptionPane.INFORMATION_MESSAGE);
         }

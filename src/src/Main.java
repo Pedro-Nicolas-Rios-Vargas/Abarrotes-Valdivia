@@ -15,7 +15,6 @@ public class Main extends javax.swing.JFrame {
     private IngresoDialog ingreso;
     
     public Main() {
-        ingreso = new IngresoDialog(this, true);
         initComponents();
         //fjqnvu hruehiduvhas me duele el pito
         //pito
@@ -26,6 +25,8 @@ public class Main extends javax.swing.JFrame {
         PanelCardLayout.add(gestionarVentas, "Gestionar Ventas");
         
         cardLayout.show(PanelCardLayout, "Gestionar Ventas");
+        ingreso = new IngresoDialog(this, true);
+        ingreso.setVisible(true);
     }
 
     @SuppressWarnings("unchecked")
