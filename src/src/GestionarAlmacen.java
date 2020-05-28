@@ -71,7 +71,6 @@ public class GestionarAlmacen extends javax.swing.JPanel {
         jLabel8 = new javax.swing.JLabel();
 
         setPreferredSize(new java.awt.Dimension(1450, 694));
-        setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         tablaAlmacen.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -86,15 +85,12 @@ public class GestionarAlmacen extends javax.swing.JPanel {
         ));
         jScrollPane1.setViewportView(tablaAlmacen);
 
-        add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 130, 630, 510));
-
         btnAlmacenAgregar.setText("Agregar");
         btnAlmacenAgregar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAlmacenAgregarActionPerformed(evt);
             }
         });
-        add(btnAlmacenAgregar, new org.netbeans.lib.awtextra.AbsoluteConstraints(52, 137, 90, -1));
 
         btnAlmacenEliminar.setText("Eliminar");
         btnAlmacenEliminar.addActionListener(new java.awt.event.ActionListener() {
@@ -102,7 +98,6 @@ public class GestionarAlmacen extends javax.swing.JPanel {
                 btnAlmacenEliminarActionPerformed(evt);
             }
         });
-        add(btnAlmacenEliminar, new org.netbeans.lib.awtextra.AbsoluteConstraints(152, 137, 90, -1));
 
         btnAlmacenModificar.setText("Modificar");
         btnAlmacenModificar.addActionListener(new java.awt.event.ActionListener() {
@@ -110,7 +105,6 @@ public class GestionarAlmacen extends javax.swing.JPanel {
                 btnAlmacenModificarActionPerformed(evt);
             }
         });
-        add(btnAlmacenModificar, new org.netbeans.lib.awtextra.AbsoluteConstraints(52, 187, 90, -1));
 
         btnAlmacenConsultar.setText("Consultar");
         btnAlmacenConsultar.addActionListener(new java.awt.event.ActionListener() {
@@ -118,67 +112,50 @@ public class GestionarAlmacen extends javax.swing.JPanel {
                 btnAlmacenConsultarActionPerformed(evt);
             }
         });
-        add(btnAlmacenConsultar, new org.netbeans.lib.awtextra.AbsoluteConstraints(152, 187, 90, -1));
 
         jLabel5.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
-        jLabel5.setText("GESTIONAR COMPRAS");
-        add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(48, 47, 220, 50));
+        jLabel5.setText("GESTIONAR ALMACEN");
 
         btnRadioCantidad.setText("Cantidad");
-        add(btnRadioCantidad, new org.netbeans.lib.awtextra.AbsoluteConstraints(940, 360, 120, -1));
 
         btnRadioID.setText("ID");
-        add(btnRadioID, new org.netbeans.lib.awtextra.AbsoluteConstraints(940, 240, 70, -1));
 
         btnRadioNombre.setText("Nombre");
-        add(btnRadioNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(940, 280, 110, -1));
 
         btnRadioPrecio.setText("Precio");
-        add(btnRadioPrecio, new org.netbeans.lib.awtextra.AbsoluteConstraints(940, 320, 100, -1));
 
         jLabel7.setText("Filtrar por:");
-        add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(940, 210, 90, -1));
 
         labelAlmacenUM.setText("Unidad de medida");
-        add(labelAlmacenUM, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 400, 110, -1));
 
         labelAlmacenStock.setText("Stock");
-        add(labelAlmacenStock, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 370, 110, -1));
 
         labelAlmacenExistencia.setText("Existencia");
-        add(labelAlmacenExistencia, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 340, 110, -1));
 
         labelAlmacenPrecio.setText("Precio");
-        add(labelAlmacenPrecio, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 310, 110, -1));
 
         labelAlmacenNombre.setText("Nombre");
-        add(labelAlmacenNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 280, 110, -1));
 
         txtExistencia.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 txtExistenciaKeyTyped(evt);
             }
         });
-        add(txtExistencia, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 330, 160, 30));
 
         txtPrecio.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 txtPrecioKeyTyped(evt);
             }
         });
-        add(txtPrecio, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 300, 160, 30));
 
         txtStock.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 txtStockKeyTyped(evt);
             }
         });
-        add(txtStock, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 360, 160, 30));
-        add(txtNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 270, 160, 30));
 
         labelTituloAlmacen.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         labelTituloAlmacen.setText("jLabel8");
-        add(labelTituloAlmacen, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 240, 80, -1));
 
         btnConfirmarAlmacen.setText("Confirmar");
         btnConfirmarAlmacen.addActionListener(new java.awt.event.ActionListener() {
@@ -186,14 +163,141 @@ public class GestionarAlmacen extends javax.swing.JPanel {
                 btnConfirmarAlmacenActionPerformed(evt);
             }
         });
-        add(btnConfirmarAlmacen, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 440, 87, -1));
 
         comboBoxAlmacenUM.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Empaquetado", "Kilogramos" }));
-        add(comboBoxAlmacenUM, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 400, 160, -1));
-        add(txtAlmacenBuscar, new org.netbeans.lib.awtextra.AbsoluteConstraints(1020, 160, 220, 30));
 
         jLabel8.setText("Buscar");
-        add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(950, 170, 70, -1));
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(48, 48, 48)
+                        .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(20, 20, 20)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(32, 32, 32)
+                                .addComponent(btnAlmacenAgregar, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(10, 10, 10)
+                                .addComponent(btnAlmacenEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(32, 32, 32)
+                                .addComponent(btnAlmacenModificar, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(10, 10, 10)
+                                .addComponent(btnAlmacenConsultar, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(80, 80, 80)
+                                .addComponent(labelTituloAlmacen, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(labelAlmacenNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, 0)
+                                .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(labelAlmacenPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, 0)
+                                .addComponent(txtPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(labelAlmacenExistencia, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, 0)
+                                .addComponent(txtExistencia, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(labelAlmacenStock, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, 0)
+                                .addComponent(txtStock, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(labelAlmacenUM, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, 0)
+                                .addComponent(comboBoxAlmacenUM, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(80, 80, 80)
+                                .addComponent(btnConfirmarAlmacen, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(10, 10, 10)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 483, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(10, 10, 10)
+                                .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, 0)
+                                .addComponent(txtAlmacenBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnRadioID, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnRadioNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnRadioPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnRadioCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(149, Short.MAX_VALUE))
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(47, 47, 47)
+                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(33, 33, 33)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(7, 7, 7)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(btnAlmacenAgregar)
+                                    .addComponent(btnAlmacenEliminar))
+                                .addGap(27, 27, 27)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(btnAlmacenModificar)
+                                    .addComponent(btnAlmacenConsultar))
+                                .addGap(30, 30, 30)
+                                .addComponent(labelTituloAlmacen)
+                                .addGap(16, 16, 16)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(10, 10, 10)
+                                        .addComponent(labelAlmacenNombre))
+                                    .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(10, 10, 10)
+                                        .addComponent(labelAlmacenPrecio))
+                                    .addComponent(txtPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(10, 10, 10)
+                                        .addComponent(labelAlmacenExistencia))
+                                    .addComponent(txtExistencia, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(10, 10, 10)
+                                        .addComponent(labelAlmacenStock))
+                                    .addComponent(txtStock, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(10, 10, 10)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(labelAlmacenUM)
+                                    .addComponent(comboBoxAlmacenUM, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(20, 20, 20)
+                                .addComponent(btnConfirmarAlmacen))
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 510, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(64, 64, 64)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(10, 10, 10)
+                                .addComponent(jLabel8))
+                            .addComponent(txtAlmacenBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(20, 20, 20)
+                        .addComponent(jLabel7)
+                        .addGap(16, 16, 16)
+                        .addComponent(btnRadioID)
+                        .addGap(17, 17, 17)
+                        .addComponent(btnRadioNombre)
+                        .addGap(17, 17, 17)
+                        .addComponent(btnRadioPrecio)
+                        .addGap(17, 17, 17)
+                        .addComponent(btnRadioCantidad))))
+        );
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAlmacenAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlmacenAgregarActionPerformed

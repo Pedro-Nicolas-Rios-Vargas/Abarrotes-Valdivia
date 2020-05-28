@@ -10,21 +10,26 @@ public class Main extends javax.swing.JFrame {
     static CardLayout cardLayout;
     static boolean successLogIn = false;
     GestionarAlmacen gestionarAlmacen = new GestionarAlmacen();
+    PanelCompras panelCompras = new PanelCompras();
     GestionarVentas gestionarVentas = new GestionarVentas();
-    
     private IngresoDialog ingreso;
+    private Dimension d;
     
     public Main() {
         initComponents();
         //fjqnvu hruehiduvhas me duele el pito
         //pito
+        d = Toolkit.getDefaultToolkit().getScreenSize();
+        //this.setSize(1450, 720);
+        this.setSize(d);
         this.setResizable(false);
-        this.setSize(1450, 720);
         cardLayout = (CardLayout)PanelCardLayout.getLayout();
         PanelCardLayout.add(gestionarAlmacen, "Gestionar Almecen");
         PanelCardLayout.add(gestionarVentas, "Gestionar Ventas");
-        
+        PanelCardLayout.add(panelCompras, "Gestionar Compras");
+   
         cardLayout.show(PanelCardLayout, "Gestionar Ventas");
+        
         ingreso = new IngresoDialog(this, true);
         ingreso.setVisible(true);
     }
@@ -39,13 +44,8 @@ public class Main extends javax.swing.JFrame {
         btnGesCompras = new javax.swing.JButton();
         btnGesAlmacen = new javax.swing.JButton();
         labelGestionar = new javax.swing.JLabel();
-        btnGesClientes = new javax.swing.JButton();
         btnGesProveedor = new javax.swing.JButton();
         PanelCardLayout = new javax.swing.JPanel();
-        panelCompras = new javax.swing.JPanel();
-        jLabel6 = new javax.swing.JLabel();
-        panelClientes = new javax.swing.JPanel();
-        jLabel4 = new javax.swing.JLabel();
         panelProveedores = new GestionarProveedores();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -84,13 +84,6 @@ public class Main extends javax.swing.JFrame {
         labelGestionar.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         labelGestionar.setText("Gestionar");
 
-        btnGesClientes.setText("Clientes");
-        btnGesClientes.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnGesClientesActionPerformed(evt);
-            }
-        });
-
         btnGesProveedor.setText("Proveedores");
         btnGesProveedor.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -112,7 +105,6 @@ public class Main extends javax.swing.JFrame {
                     .addComponent(btnGesVentas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnGesCompras, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnGesAlmacen, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnGesClientes, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnGesProveedor, javax.swing.GroupLayout.DEFAULT_SIZE, 171, Short.MAX_VALUE))
                 .addGap(0, 0, Short.MAX_VALUE))
         );
@@ -128,55 +120,11 @@ public class Main extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(btnGesAlmacen)
                 .addGap(18, 18, 18)
-                .addComponent(btnGesClientes)
-                .addGap(18, 18, 18)
                 .addComponent(btnGesProveedor)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         PanelCardLayout.setLayout(new java.awt.CardLayout());
-
-        jLabel6.setText("Panel Compras, borrar este label");
-
-        javax.swing.GroupLayout panelComprasLayout = new javax.swing.GroupLayout(panelCompras);
-        panelCompras.setLayout(panelComprasLayout);
-        panelComprasLayout.setHorizontalGroup(
-            panelComprasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelComprasLayout.createSequentialGroup()
-                .addGap(140, 140, 140)
-                .addComponent(jLabel6)
-                .addContainerGap(1122, Short.MAX_VALUE))
-        );
-        panelComprasLayout.setVerticalGroup(
-            panelComprasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelComprasLayout.createSequentialGroup()
-                .addGap(283, 283, 283)
-                .addComponent(jLabel6)
-                .addContainerGap(395, Short.MAX_VALUE))
-        );
-
-        PanelCardLayout.add(panelCompras, "Compras");
-
-        jLabel4.setText("Panel Clientes, borrar este label");
-
-        javax.swing.GroupLayout panelClientesLayout = new javax.swing.GroupLayout(panelClientes);
-        panelClientes.setLayout(panelClientesLayout);
-        panelClientesLayout.setHorizontalGroup(
-            panelClientesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelClientesLayout.createSequentialGroup()
-                .addGap(140, 140, 140)
-                .addComponent(jLabel4)
-                .addContainerGap(1128, Short.MAX_VALUE))
-        );
-        panelClientesLayout.setVerticalGroup(
-            panelClientesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelClientesLayout.createSequentialGroup()
-                .addGap(283, 283, 283)
-                .addComponent(jLabel4)
-                .addContainerGap(395, Short.MAX_VALUE))
-        );
-
-        PanelCardLayout.add(panelClientes, "Clientes");
 
         javax.swing.GroupLayout panelProveedoresLayout = new javax.swing.GroupLayout(panelProveedores);
         panelProveedores.setLayout(panelProveedoresLayout);
@@ -227,17 +175,13 @@ public class Main extends javax.swing.JFrame {
     }//GEN-LAST:event_btnGesVentasActionPerformed
 
     private void btnGesComprasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGesComprasActionPerformed
-        cardLayout.show(PanelCardLayout, "Compras");
+        cardLayout.show(PanelCardLayout, "Gestionar Compras");
     }//GEN-LAST:event_btnGesComprasActionPerformed
 
     private void btnGesAlmacenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGesAlmacenActionPerformed
         cardLayout.show(PanelCardLayout, "Gestionar Almecen");
         gestionarAlmacen.almacenFormaBase();
     }//GEN-LAST:event_btnGesAlmacenActionPerformed
-
-    private void btnGesClientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGesClientesActionPerformed
-        cardLayout.show(PanelCardLayout, "Clientes");
-    }//GEN-LAST:event_btnGesClientesActionPerformed
         
     private void btnGesProveedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGesProveedorActionPerformed
         cardLayout.show(PanelCardLayout, "Proveedores");
@@ -329,17 +273,11 @@ public class Main extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel PanelCardLayout;
     private javax.swing.JButton btnGesAlmacen;
-    private javax.swing.JButton btnGesClientes;
     private javax.swing.JButton btnGesCompras;
     private javax.swing.JButton btnGesProveedor;
     private javax.swing.JButton btnGesVentas;
     private javax.swing.ButtonGroup btnGroupAlmacen;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel labelGestionar;
-    private javax.swing.JPanel panelClientes;
-    private javax.swing.JPanel panelCompras;
     private javax.swing.JPanel panelGestionar;
     private javax.swing.JPanel panelProveedores;
     // End of variables declaration//GEN-END:variables

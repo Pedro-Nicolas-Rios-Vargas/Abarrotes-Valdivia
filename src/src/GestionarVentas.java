@@ -72,15 +72,11 @@ public class GestionarVentas extends javax.swing.JPanel {
         jLabel2 = new javax.swing.JLabel();
         txtCambio = new javax.swing.JTextField();
 
-        setLayout(null);
-
         txtPago.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 txtPagoKeyTyped(evt);
             }
         });
-        add(txtPago);
-        txtPago.setBounds(50, 570, 490, 30);
 
         searchBar.setText("Buscar");
         searchBar.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -88,14 +84,9 @@ public class GestionarVentas extends javax.swing.JPanel {
                 searchBarKeyTyped(evt);
             }
         });
-        add(searchBar);
-        searchBar.setBounds(540, 40, 570, 24);
 
         ListaVenta.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         scrollSeleccionado.setViewportView(ListaVenta);
-
-        add(scrollSeleccionado);
-        scrollSeleccionado.setBounds(0, 0, 540, 520);
 
         btnClean.setText("X");
         btnClean.addActionListener(new java.awt.event.ActionListener() {
@@ -103,8 +94,6 @@ public class GestionarVentas extends javax.swing.JPanel {
                 btnCleanActionPerformed(evt);
             }
         });
-        add(btnClean);
-        btnClean.setBounds(1120, 40, 50, 32);
 
         btnAgregarlist2.setText("Agregar");
         btnAgregarlist2.addActionListener(new java.awt.event.ActionListener() {
@@ -112,8 +101,6 @@ public class GestionarVentas extends javax.swing.JPanel {
                 btnAgregarlist2ActionPerformed(evt);
             }
         });
-        add(btnAgregarlist2);
-        btnAgregarlist2.setBounds(540, 110, 90, 32);
 
         btnQuitar.setText("Quitar");
         btnQuitar.addActionListener(new java.awt.event.ActionListener() {
@@ -121,17 +108,11 @@ public class GestionarVentas extends javax.swing.JPanel {
                 btnQuitarActionPerformed(evt);
             }
         });
-        add(btnQuitar);
-        btnQuitar.setBounds(540, 70, 90, 32);
 
         labelTotal.setText("Total");
-        add(labelTotal);
-        labelTotal.setBounds(0, 550, 28, 16);
 
         txtTotal.setEditable(false);
         txtTotal.setText("$");
-        add(txtTotal);
-        txtTotal.setBounds(50, 540, 490, 30);
 
         btnNewC.setText("Finalizar compra");
         btnNewC.addActionListener(new java.awt.event.ActionListener() {
@@ -139,12 +120,8 @@ public class GestionarVentas extends javax.swing.JPanel {
                 btnNewCActionPerformed(evt);
             }
         });
-        add(btnNewC);
-        btnNewC.setBounds(0, 630, 540, 32);
 
         jLabel1.setText("Pago");
-        add(jLabel1);
-        jLabel1.setBounds(0, 580, 29, 16);
 
         tablaAlmacen.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -156,11 +133,16 @@ public class GestionarVentas extends javax.swing.JPanel {
             new String [] {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
-        ));
-        jScrollPane1.setViewportView(tablaAlmacen);
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
 
-        add(jScrollPane1);
-        jScrollPane1.setBounds(540, 150, 710, 510);
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane1.setViewportView(tablaAlmacen);
 
         ConsCompra.setText("Consultar Ventas");
         ConsCompra.addActionListener(new java.awt.event.ActionListener() {
@@ -168,42 +150,120 @@ public class GestionarVentas extends javax.swing.JPanel {
                 ConsCompraActionPerformed(evt);
             }
         });
-        add(ConsCompra);
-        ConsCompra.setBounds(1030, 90, 140, 32);
 
         jLabel3.setText("Filtrar por:");
-        add(jLabel3);
-        jLabel3.setBounds(640, 70, 80, 16);
 
         jLabel4.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel4.setText("Gestionar Ventas");
-        add(jLabel4);
-        jLabel4.setBounds(780, 0, 200, 40);
 
         btnRadioID.setText("ID");
-        add(btnRadioID);
-        btnRadioID.setBounds(640, 90, 50, 28);
 
         btnRadioNombre.setText("Nombre");
-        add(btnRadioNombre);
-        btnRadioNombre.setBounds(640, 120, 90, 28);
 
         btnRadioPrecio.setText("Precio");
-        add(btnRadioPrecio);
-        btnRadioPrecio.setBounds(730, 90, 80, 28);
 
         btnRadioCantidad.setText("Cantidad");
-        add(btnRadioCantidad);
-        btnRadioCantidad.setBounds(730, 120, 120, 28);
 
         jLabel2.setText("Cambio");
-        add(jLabel2);
-        jLabel2.setBounds(0, 610, 50, 16);
 
         txtCambio.setText("$");
-        add(txtCambio);
-        txtCambio.setBounds(50, 600, 490, 30);
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtCambio))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addGap(26, 26, 26)
+                        .addComponent(txtPago))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(labelTotal)
+                        .addGap(26, 26, 26)
+                        .addComponent(txtTotal))
+                    .addComponent(scrollSeleccionado, javax.swing.GroupLayout.DEFAULT_SIZE, 484, Short.MAX_VALUE)
+                    .addComponent(btnNewC, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(240, 240, 240)
+                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(searchBar, javax.swing.GroupLayout.PREFERRED_SIZE, 570, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(10, 10, 10)
+                        .addComponent(btnClean, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnQuitar, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnAgregarlist2, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(10, 10, 10)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnRadioID, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnRadioNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnRadioPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnRadioCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(180, 180, 180)
+                        .addComponent(ConsCompra, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 630, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(128, Short.MAX_VALUE))
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(scrollSeleccionado, javax.swing.GroupLayout.PREFERRED_SIZE, 520, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(20, 20, 20)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(10, 10, 10)
+                        .addComponent(labelTotal))
+                    .addComponent(txtTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(10, 10, 10)
+                        .addComponent(jLabel1))
+                    .addComponent(txtPago, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(10, 10, 10)
+                        .addComponent(jLabel2))
+                    .addComponent(txtCambio, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(btnNewC))
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(searchBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnClean))
+                .addGap(7, 7, 7)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(btnQuitar)
+                        .addGap(17, 17, 17)
+                        .addComponent(btnAgregarlist2))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel3)
+                        .addGap(6, 6, 6)
+                        .addComponent(btnRadioID)
+                        .addGap(7, 7, 7)
+                        .addComponent(btnRadioNombre))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(20, 20, 20)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(btnRadioPrecio)
+                                .addGap(7, 7, 7)
+                                .addComponent(btnRadioCantidad))
+                            .addComponent(ConsCompra))))
+                .addGap(7, 7, 7)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 510, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
     }// </editor-fold>//GEN-END:initComponents
 
     private void searchBarKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_searchBarKeyTyped
