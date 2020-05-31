@@ -12,6 +12,11 @@ package res;
 public class Persona extends AbarrotesElemento{
     private String nombre;
     
+    public Persona(int id, String nombre){
+        this.id = id;
+        this.nombre = nombre;
+    }
+    
     public void setNombre(String nombre){
         this.nombre = nombre;
     }

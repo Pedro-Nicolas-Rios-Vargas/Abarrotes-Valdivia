@@ -8,6 +8,7 @@ package src;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import res.Producto;
 /**
  *
  * @author vival
@@ -281,8 +282,8 @@ public class GestionarVentas extends javax.swing.JPanel {
                aux[i] = modeloTablaAlmacen.getValueAt(tablaAlmacen.getSelectedRow(), i).toString();
            }
            
-           Producto producto = new Producto(Integer.parseInt(aux[0]), aux[1], Double.valueOf(aux[2]), Integer.parseInt(aux[3]), Integer.parseInt(aux[4]), aux[5]);
-           total += producto.getPrice();
+           Producto producto = new Producto(Integer.parseInt(aux[0]), aux[1], Integer.parseInt(aux[3]), Integer.parseInt(aux[4]), Float.valueOf(aux[2]), aux[5]);
+           total += producto.getPrecio();
            modeloLista.addElement(producto);
            
         } else {
@@ -294,7 +295,7 @@ public class GestionarVentas extends javax.swing.JPanel {
 
     private void btnQuitarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnQuitarActionPerformed
         if(ListaVenta.getSelectedValue() != null && ListaVenta.getSelectedValue() instanceof Producto) {
-            total -= modeloLista.get(ListaVenta.getSelectedIndex()).getPrice();//Estoy tomando el dinero que se va a quitar del total
+            total -= modeloLista.get(ListaVenta.getSelectedIndex()).getPrecio();//Estoy tomando el dinero que se va a quitar del total
             modeloLista.removeElementAt(ListaVenta.getSelectedIndex());
         } else {
             JOptionPane.showMessageDialog(this, "Favor de seleccionar un producto de la lista", "Sin seleccion", JOptionPane.INFORMATION_MESSAGE);

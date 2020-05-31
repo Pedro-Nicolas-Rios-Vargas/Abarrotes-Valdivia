@@ -17,7 +17,7 @@ public class Producto extends AbarrotesElemento{
     private String um;
     
     public Producto(int id, String nombre, int existencia, int stock,
-            int precio, String um){
+            float precio, String um){
         this.id = id;
         this.nombre = nombre;
         this.existencia = existencia;

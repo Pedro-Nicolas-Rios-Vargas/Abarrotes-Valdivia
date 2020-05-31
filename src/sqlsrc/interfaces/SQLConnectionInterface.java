@@ -6,11 +6,12 @@
 package sqlsrc.interfaces;
 
 import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public interface SQLConnectionInterface {
     
-    public void send(String sqlUpdate);
+    public int send(String sqlUpdate) throws SQLException;
     
-    public ResultSet receive(String sqlQuery);
+    public ResultSet receive(String sqlQuery) throws SQLException;
     
 }
