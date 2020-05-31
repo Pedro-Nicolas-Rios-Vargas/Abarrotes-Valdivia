@@ -16,7 +16,7 @@ public class ManejoUIProductos {
         int iDPROD = getLastID() + 1;
         String query = "INSERT INTO Productor VALUES (" + iDPROD + ", '" + nombre_Prod + "', "
                 + existencia + ", " + stock + ", " + precio + ", '" + UM + "')" ;
-        return conDB.send(query);
+        conDB.send(query);
     }
     
     private int getLastID() {
