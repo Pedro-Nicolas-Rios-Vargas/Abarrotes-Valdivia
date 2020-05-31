@@ -20,8 +20,7 @@ public class Main extends javax.swing.JFrame {
         //fjqnvu hruehiduvhas me duele el pito
         //pito
         d = Toolkit.getDefaultToolkit().getScreenSize();
-        //this.setSize(1450, 720);
-        this.setSize(d);
+        this.setBounds(0,0,d.width,d.height);
         this.setResizable(false);
         cardLayout = (CardLayout)PanelCardLayout.getLayout();
         PanelCardLayout.add(gestionarAlmacen, "Gestionar Almecen");

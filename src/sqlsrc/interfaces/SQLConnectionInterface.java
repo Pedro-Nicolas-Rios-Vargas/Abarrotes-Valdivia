@@ -5,15 +5,12 @@
  */
 package sqlsrc.interfaces;
 
-import res.AbarrotesElemento;
-/**
- *
- * @author pnrv2
- */
+import java.sql.ResultSet;
+
 public interface SQLConnectionInterface {
     
-    public void send(AbarrotesElemento abElement);
+    public void send(String sqlUpdate);
     
-    public AbarrotesElemento receive();
+    public ResultSet receive(String sqlQuery);
     
 }

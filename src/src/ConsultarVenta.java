@@ -35,6 +35,7 @@ public class ConsultarVenta extends javax.swing.JFrame {
                 String.valueOf(fechaC.getTime().getMonth()+1) + "/" +
                 String.valueOf(fechaC.getTime().getYear()+1900);
     }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
