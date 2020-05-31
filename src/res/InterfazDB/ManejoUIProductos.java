@@ -12,7 +12,7 @@ public class ManejoUIProductos {
         conDB = new ConnectionDB();
         
     }
-    public int agregar(String nombre_Prod, int existencia, int stock, float precio, String UM) {
+    public void agregar(String nombre_Prod, int existencia, int stock, float precio, String UM) {
         int iDPROD = getLastID() + 1;
         String query = "INSERT INTO Productor VALUES (" + iDPROD + ", '" + nombre_Prod + "', "
                 + existencia + ", " + stock + ", " + precio + ", '" + UM + "')" ;
