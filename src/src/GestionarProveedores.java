@@ -35,6 +35,7 @@ public class GestionarProveedores extends javax.swing.JPanel {
     private void initComponents() {
 
         btnGroup = new javax.swing.ButtonGroup();
+        btnGroupEliminar = new javax.swing.ButtonGroup();
         opcionesPane = new javax.swing.JPanel();
         windowOptions = new javax.swing.JPanel();
         ventanaAgregar = new javax.swing.JPanel();
@@ -65,12 +66,13 @@ public class GestionarProveedores extends javax.swing.JPanel {
         ventanaEliminar = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
         errorLabelEliminar = new javax.swing.JLabel();
-        jLabel9 = new javax.swing.JLabel();
-        tfIDProvEliminar = new javax.swing.JTextField();
-        jLabel10 = new javax.swing.JLabel();
-        tfNombreEliminar = new javax.swing.JTextField();
+        lbEliminar = new javax.swing.JLabel();
+        tfEliminar = new javax.swing.JTextField();
         btnBuscarEliminar = new javax.swing.JButton();
         btnConfirm = new javax.swing.JButton();
+        jLabel9 = new javax.swing.JLabel();
+        rbIDEliminar = new javax.swing.JRadioButton();
+        rbNombreEliminar = new javax.swing.JRadioButton();
         cabeceraOpcionesPane = new javax.swing.JPanel();
         tituloOpcionesLabel = new javax.swing.JLabel();
         botonesPane = new javax.swing.JPanel();
@@ -113,7 +115,7 @@ public class GestionarProveedores extends javax.swing.JPanel {
                 .addContainerGap()
                 .addGroup(ventanaAgregarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(ventanaAgregarLayout.createSequentialGroup()
-                        .addGap(0, 45, Short.MAX_VALUE)
+                        .addGap(0, 55, Short.MAX_VALUE)
                         .addGroup(ventanaAgregarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(errorLabelAgregar)
                             .addGroup(ventanaAgregarLayout.createSequentialGroup()
@@ -122,8 +124,8 @@ public class GestionarProveedores extends javax.swing.JPanel {
                             .addGroup(ventanaAgregarLayout.createSequentialGroup()
                                 .addComponent(jLabel4)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(tfNombreProv, javax.swing.GroupLayout.DEFAULT_SIZE, 203, Short.MAX_VALUE)))
-                        .addGap(0, 26, Short.MAX_VALUE))
+                                .addComponent(tfNombreProv, javax.swing.GroupLayout.DEFAULT_SIZE, 213, Short.MAX_VALUE)))
+                        .addGap(0, 38, Short.MAX_VALUE))
                     .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -304,19 +306,16 @@ public class GestionarProveedores extends javax.swing.JPanel {
                             .addComponent(jLabel7))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(ventanaModificarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(tfNombreProvModificar, javax.swing.GroupLayout.DEFAULT_SIZE, 215, Short.MAX_VALUE)
-                            .addComponent(tfIdProvModificar, javax.swing.GroupLayout.DEFAULT_SIZE, 215, Short.MAX_VALUE)))
+                            .addComponent(tfNombreProvModificar, javax.swing.GroupLayout.DEFAULT_SIZE, 233, Short.MAX_VALUE)
+                            .addComponent(tfIdProvModificar, javax.swing.GroupLayout.DEFAULT_SIZE, 233, Short.MAX_VALUE)))
                     .addGroup(ventanaModificarLayout.createSequentialGroup()
-                        .addGroup(ventanaModificarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(ventanaModificarLayout.createSequentialGroup()
-                                .addGap(47, 47, 47)
-                                .addComponent(btnBuscarModificar)
-                                .addGap(30, 30, 30)
-                                .addComponent(btnModificar))
-                            .addGroup(ventanaModificarLayout.createSequentialGroup()
-                                .addGap(50, 50, 50)
-                                .addComponent(errorLabelModificar)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addGap(47, 47, 47)
+                        .addComponent(btnBuscarModificar)
+                        .addGap(30, 30, 30)
+                        .addComponent(btnModificar))
+                    .addGroup(ventanaModificarLayout.createSequentialGroup()
+                        .addGap(50, 50, 50)
+                        .addComponent(errorLabelModificar)))
                 .addContainerGap())
         );
         ventanaModificarLayout.setVerticalGroup(
@@ -350,20 +349,12 @@ public class GestionarProveedores extends javax.swing.JPanel {
         errorLabelEliminar.setForeground(new java.awt.Color(255, 0, 0));
         errorLabelEliminar.setText("Error Label");
 
-        jLabel9.setText("ID Proveedor:");
+        lbEliminar.setText("ID Proveedor:");
 
-        tfIDProvEliminar.setText("Ingrese el Id del Proveedor");
-        tfIDProvEliminar.addMouseListener(new java.awt.event.MouseAdapter() {
+        tfEliminar.setText("Ingrese el Id del Proveedor");
+        tfEliminar.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tfIDProvEliminarMouseClicked(evt);
-            }
-        });
-
-        jLabel10.setText("Nombre:");
-
-        tfNombreEliminar.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tfNombreEliminarMouseClicked(evt);
+                tfEliminarMouseClicked(evt);
             }
         });
 
@@ -377,6 +368,14 @@ public class GestionarProveedores extends javax.swing.JPanel {
         btnConfirm.setText("Eliminar");
         btnConfirm.setEnabled(false);
 
+        jLabel9.setText("Tipo de Consulta:");
+
+        btnGroupEliminar.add(rbIDEliminar);
+        rbIDEliminar.setText("ID");
+
+        btnGroupEliminar.add(rbNombreEliminar);
+        rbNombreEliminar.setText("Nombre");
+
         javax.swing.GroupLayout ventanaEliminarLayout = new javax.swing.GroupLayout(ventanaEliminar);
         ventanaEliminar.setLayout(ventanaEliminarLayout);
         ventanaEliminarLayout.setHorizontalGroup(
@@ -388,37 +387,41 @@ public class GestionarProveedores extends javax.swing.JPanel {
             .addGroup(ventanaEliminarLayout.createSequentialGroup()
                 .addGap(42, 42, 42)
                 .addGroup(ventanaEliminarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(ventanaEliminarLayout.createSequentialGroup()
+                        .addComponent(rbIDEliminar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(rbNombreEliminar))
+                    .addComponent(jLabel9)
                     .addComponent(errorLabelEliminar)
                     .addGroup(ventanaEliminarLayout.createSequentialGroup()
                         .addGroup(ventanaEliminarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel10)
-                            .addComponent(jLabel9)
+                            .addComponent(lbEliminar)
                             .addComponent(btnBuscarEliminar))
                         .addGap(18, 18, 18)
                         .addGroup(ventanaEliminarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(ventanaEliminarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(tfIDProvEliminar, javax.swing.GroupLayout.DEFAULT_SIZE, 178, Short.MAX_VALUE)
-                                .addComponent(tfNombreEliminar))
+                            .addComponent(tfEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, ventanaEliminarLayout.createSequentialGroup()
                                 .addComponent(btnConfirm)
                                 .addGap(36, 36, 36)))))
-                .addContainerGap(31, Short.MAX_VALUE))
+                .addContainerGap(45, Short.MAX_VALUE))
         );
         ventanaEliminarLayout.setVerticalGroup(
             ventanaEliminarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(ventanaEliminarLayout.createSequentialGroup()
                 .addGap(23, 23, 23)
                 .addComponent(jLabel5)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel9)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(ventanaEliminarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(rbIDEliminar)
+                    .addComponent(rbNombreEliminar))
+                .addGap(10, 10, 10)
                 .addComponent(errorLabelEliminar)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(ventanaEliminarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel9)
-                    .addComponent(tfIDProvEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(ventanaEliminarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel10)
-                    .addComponent(tfNombreEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lbEliminar)
+                    .addComponent(tfEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(ventanaEliminarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnBuscarEliminar)
@@ -602,13 +605,9 @@ public class GestionarProveedores extends javax.swing.JPanel {
         tfNombreProv.setText("");
     }//GEN-LAST:event_tfNombreProvModificarMouseClicked
 
-    private void tfIDProvEliminarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tfIDProvEliminarMouseClicked
-        tfIDProvEliminar.setText("");
-    }//GEN-LAST:event_tfIDProvEliminarMouseClicked
-
-    private void tfNombreEliminarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tfNombreEliminarMouseClicked
-        tfNombreEliminar.setText("");
-    }//GEN-LAST:event_tfNombreEliminarMouseClicked
+    private void tfEliminarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tfEliminarMouseClicked
+        tfEliminar.setText("");
+    }//GEN-LAST:event_tfEliminarMouseClicked
 
     private void btnBuscarEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarEliminarActionPerformed
         //metodos de busqueda en la base de datos
@@ -626,6 +625,7 @@ public class GestionarProveedores extends javax.swing.JPanel {
     private javax.swing.JButton btnConsultarWindow;
     private javax.swing.JButton btnEliminarWindow;
     private javax.swing.ButtonGroup btnGroup;
+    private javax.swing.ButtonGroup btnGroupEliminar;
     private javax.swing.JButton btnModificar;
     private javax.swing.JButton btnModificarWindow;
     private javax.swing.JPanel cabeceraOpcionesPane;
@@ -634,7 +634,6 @@ public class GestionarProveedores extends javax.swing.JPanel {
     private javax.swing.JLabel errorLabelEliminar;
     private javax.swing.JLabel errorLabelModificar;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -647,12 +646,14 @@ public class GestionarProveedores extends javax.swing.JPanel {
     private javax.swing.JRadioButton jrbID;
     private javax.swing.JRadioButton jrbNombre;
     private javax.swing.JRadioButton jrbTodos;
+    private javax.swing.JLabel lbEliminar;
     private javax.swing.JPanel opcionesPane;
+    private javax.swing.JRadioButton rbIDEliminar;
+    private javax.swing.JRadioButton rbNombreEliminar;
     private javax.swing.JTable tablaProveedores;
+    private javax.swing.JTextField tfEliminar;
     private javax.swing.JTextField tfIDProv;
-    private javax.swing.JTextField tfIDProvEliminar;
     private javax.swing.JTextField tfIdProvModificar;
-    private javax.swing.JTextField tfNombreEliminar;
     private javax.swing.JTextField tfNombreProv;
     private javax.swing.JTextField tfNombreProvModificar;
     private javax.swing.JLabel tipoConsultaLabel;
