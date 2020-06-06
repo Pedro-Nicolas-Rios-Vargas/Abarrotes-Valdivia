@@ -5,15 +5,14 @@ import java.sql.DriverManager;
 import java.sql.Statement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
 
 import sqlsrc.interfaces.SQLConnectionInterface;
 
 public class ConnectionDB implements SQLConnectionInterface{
-    private final String URL = "jdbc:sqlserver://LAPTOP-VHMV4UK1:1433;databaseName=Abarrotes";
+    private final String URL = "jdbc:sqlserver://VRVG-ASPIRE:1433;databaseName=Abarrotes";
     private final String USER = "sa";
-    private final String PWD = "12345";
+    private final String PWD = "sa";
     
     private Connection con;
     private Statement statement;
@@ -55,5 +54,5 @@ public class ConnectionDB implements SQLConnectionInterface{
         }
     }
     
-    
+
 }

@@ -37,9 +37,6 @@ public class ListaCola<T> {
     }
     
     public boolean hasNext(){
-        if(raiz == null){
-            return false;
-        }
-        return true;
+        return raiz != null;
     }
 }

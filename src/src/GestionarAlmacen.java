@@ -5,8 +5,12 @@
  */
 package src;
 
+import java.sql.SQLException;
+import lista.ListaCola;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.JOptionPane;
+import res.Producto;
+import res.interfazDB.ManejoUIProductos;
 
 /**
  *
@@ -15,8 +19,8 @@ import javax.swing.JOptionPane;
 public class GestionarAlmacen extends javax.swing.JPanel {
     DefaultTableModel modeloTablaAlmacen;
     static String[] cabeceraTablaAlmacen = {"ID", "Nombre", "Precio", "Existencia", "Stock", "Unidad de Medida"};
-    static String[][] datosTemporalesTablaAlmacen = {{"1","Pepsi", "20", "10", "10", "Empaquetado"}, {"2","Sabritas", "13", "5", "10", "Empaquetado"}};
     static int tablaAlmacenSeleccionModificar;
+    static ManejoUIProductos mUIP = new ManejoUIProductos();
     /**
      * Creates new form GestionarAlmacen
      */
@@ -27,7 +31,7 @@ public class GestionarAlmacen extends javax.swing.JPanel {
         btnGroupAlmacen.add(btnRadioPrecio);
         btnGroupAlmacen.add(btnRadioCantidad);
         
-        modeloTablaAlmacen = new DefaultTableModel(datosTemporalesTablaAlmacen,cabeceraTablaAlmacen);
+        modeloTablaAlmacen = new DefaultTableModel(null,cabeceraTablaAlmacen);
         tablaAlmacen.setModel(modeloTablaAlmacen);
         tablaAlmacen.getTableHeader().setReorderingAllowed(false);
         almacenFormaBase();
@@ -116,13 +120,33 @@ public class GestionarAlmacen extends javax.swing.JPanel {
         jLabel5.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
         jLabel5.setText("GESTIONAR ALMACEN");
 
-        btnRadioCantidad.setText("Cantidad");
+        btnRadioCantidad.setText("Existencia");
+        btnRadioCantidad.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnRadioCantidadMouseClicked(evt);
+            }
+        });
 
         btnRadioID.setText("ID");
+        btnRadioID.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnRadioIDMouseClicked(evt);
+            }
+        });
 
         btnRadioNombre.setText("Nombre");
+        btnRadioNombre.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnRadioNombreMouseClicked(evt);
+            }
+        });
 
         btnRadioPrecio.setText("Precio");
+        btnRadioPrecio.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnRadioPrecioMouseClicked(evt);
+            }
+        });
 
         jLabel7.setText("Filtrar por:");
 
@@ -166,6 +190,12 @@ public class GestionarAlmacen extends javax.swing.JPanel {
 
         comboBoxAlmacenUM.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Empaquetado", "Kilogramos" }));
 
+        txtAlmacenBuscar.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtAlmacenBuscarKeyReleased(evt);
+            }
+        });
+
         jLabel8.setText("Buscar");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -175,15 +205,12 @@ public class GestionarAlmacen extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(48, 48, 48)
-                        .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
                         .addGap(20, 20, 20)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(32, 32, 32)
                                 .addComponent(btnAlmacenAgregar, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(10, 10, 10)
+                                .addGap(18, 18, 18)
                                 .addComponent(btnAlmacenEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(32, 32, 32)
@@ -215,7 +242,7 @@ public class GestionarAlmacen extends javax.swing.JPanel {
                                 .addComponent(comboBoxAlmacenUM, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(80, 80, 80)
-                                .addComponent(btnConfirmarAlmacen, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(btnConfirmarAlmacen)))
                         .addGap(10, 10, 10)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 483, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
@@ -229,8 +256,11 @@ public class GestionarAlmacen extends javax.swing.JPanel {
                             .addComponent(btnRadioID, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(btnRadioNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(btnRadioPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnRadioCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(149, Short.MAX_VALUE))
+                            .addComponent(btnRadioCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(48, 48, 48)
+                        .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(349, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -243,7 +273,7 @@ public class GestionarAlmacen extends javax.swing.JPanel {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(7, 7, 7)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(btnAlmacenAgregar)
                                     .addComponent(btnAlmacenEliminar))
                                 .addGap(27, 27, 27)
@@ -307,8 +337,9 @@ public class GestionarAlmacen extends javax.swing.JPanel {
     }//GEN-LAST:event_btnAlmacenAgregarActionPerformed
 
     private void btnAlmacenEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlmacenEliminarActionPerformed
+        boolean seLogro = false;
         if(tablaAlmacen.getSelectedRow() != -1) {
-            int seleccion;
+            int seleccion, seleccion2;
             String[] aux = new String[modeloTablaAlmacen.getColumnCount()];
             for (int i = 0; i < aux.length; i++) {
                 aux[i] = modeloTablaAlmacen.getValueAt(tablaAlmacen.getSelectedRow(), i).toString();
@@ -316,11 +347,23 @@ public class GestionarAlmacen extends javax.swing.JPanel {
             seleccion = JOptionPane.showConfirmDialog(this, "Seguro que quieres eliminar el siguiente producto? \n " + aux[1]
                 , "Eliminar producto", JOptionPane.WARNING_MESSAGE);
             if (JOptionPane.OK_OPTION == seleccion) {
-                modeloTablaAlmacen.removeRow(tablaAlmacen.getSelectedRow());
+                try {
+                    seLogro = mUIP.eliminar(Integer.parseInt(aux[0]));
+                } catch (SQLException ex) {
+                    JOptionPane.showMessageDialog(this, "ERROR: " + ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
+                }
+                if (!seLogro) {
+                    JOptionPane.showMessageDialog(this, "El producto se a eliminado con exito", "Producto eliminado",
+                        JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(this, "El producto no se a podido eliminado", "Producto no eliminado",
+                        JOptionPane.INFORMATION_MESSAGE);
+                }
             }
         } else {
             JOptionPane.showMessageDialog(this, "Porfavor seleccionar el elemento que se desea elminar de la tabla","No se a seleccionado ningun elemnto", JOptionPane.WARNING_MESSAGE );
         }
+        consultarSQL("", 0);
     }//GEN-LAST:event_btnAlmacenEliminarActionPerformed
 
     private void btnAlmacenModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlmacenModificarActionPerformed
@@ -398,41 +441,31 @@ public class GestionarAlmacen extends javax.swing.JPanel {
     }//GEN-LAST:event_txtStockKeyTyped
 
     private void btnConfirmarAlmacenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmarAlmacenActionPerformed
-        boolean confirmacion1 = true, confirmacion2 = true, confirmacion3 = true;
+        boolean seLogro = true;
         switch (labelTituloAlmacen.getText()) {
             case "Agregar":
             if (comprobarTXTAlmacen()) {
-                if(!(Double.valueOf(txtPrecio.getText()) >= 0 && Double.valueOf(txtPrecio.getText()) <= 9999.99)){
-                    JOptionPane.showMessageDialog(this, "El rango del precio tiene que ser de 0 a 9999.99", "Fuera de Rango", JOptionPane.ERROR_MESSAGE);
-                    confirmacion1 = false;
-                }
-                if (confirmacion1 == true && !(Double.valueOf(txtExistencia.getText()) >= 0 && Double.valueOf(txtExistencia.getText()) <= 99)) {
-                    JOptionPane.showMessageDialog(this, "El rango de la existencia tiene que ser de 0 a 99", "Fuera de Rango", JOptionPane.ERROR_MESSAGE);
-                    confirmacion2 = false;
-                }
-                if (confirmacion1 == true && confirmacion2 == true && !(Double.valueOf(txtStock.getText()) >= 0 && Double.valueOf(txtStock.getText()) <= 99)) {
-                    JOptionPane.showMessageDialog(this, "El rango del stock tiene que ser de 0 a 99", "Fuera de Rango", JOptionPane.ERROR_MESSAGE);
-                    confirmacion3 = false;
-                }
-                if (confirmacion1 == true && confirmacion2 == true && confirmacion3 == true) {
-                    String[] datos = {"3", txtNombre.getText(), txtPrecio.getText(), txtExistencia.getText(), txtStock.getText(), comboBoxAlmacenUM.getSelectedItem().toString()};
-                    modeloTablaAlmacen.addRow(datos);
-                    int seleccion = JOptionPane.showOptionDialog(this, "Productor agregado con extio \n Desea agregar otro producto", "Producto agregador",
+                if (comprobarDominio()) {
+                    try {
+                        mUIP.agregar(txtNombre.getText(), Integer.parseInt(txtExistencia.getText()), Integer.parseInt(txtStock.getText()), Float.valueOf(txtPrecio.getText()), comboBoxAlmacenUM.getSelectedItem().toString());
+                        int seleccion = JOptionPane.showOptionDialog(this, "Productor agregado con extio \n Desea agregar otro producto", "Producto agregador",
                         JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, new Object[]{"Si", "No"}, "Si");
-                    if (seleccion == 1) {
-                        almacenFormaBase();
-                    } else {
-                        txtNombre.setText("");
-                        txtPrecio.setText("");
-                        txtExistencia.setText("");
-                        txtStock.setText("");
+                        if (seleccion == 1) {
+                            almacenFormaBase();
+                        } else {
+                            txtNombre.setText("");
+                            txtPrecio.setText("");
+                            txtExistencia.setText("");
+                            txtStock.setText("");
+                        }
+                    } catch (SQLException ex) {
+                        JOptionPane.showMessageDialog(this, "ERROR: " + ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
                     }
+                    
                 }
             } else {
                 JOptionPane.showMessageDialog(this, "Favor de rellenar todos los campos de texto", "Advertencia", JOptionPane.WARNING_MESSAGE);
             }
-            break;
-            case "Eliminar":
             break;
             case "Modificar":
             if (tablaAlmacenSeleccionModificar == tablaAlmacen.getSelectedRow()) {
@@ -442,19 +475,7 @@ public class GestionarAlmacen extends javax.swing.JPanel {
                     aux[i] = modeloTablaAlmacen.getValueAt(tablaAlmacen.getSelectedRow(), i).toString();
                 }
                 if (comprobarTXTAlmacen()) {
-                    if(!(Double.valueOf(txtPrecio.getText()) >= 0 && Double.valueOf(txtPrecio.getText()) <= 9999.99)){
-                        JOptionPane.showMessageDialog(this, "El rango del precio tiene que ser de 0 a 9999.99", "Fuera de Rango", JOptionPane.ERROR_MESSAGE);
-                        confirmacion1 = false;
-                    }
-                    if (confirmacion1 == true && !(Double.valueOf(txtExistencia.getText()) >= 0 && Double.valueOf(txtExistencia.getText()) <= 99)) {
-                        JOptionPane.showMessageDialog(this, "El rango de la existencia tiene que ser de 0 a 99", "Fuera de Rango", JOptionPane.ERROR_MESSAGE);
-                        confirmacion2 = false;
-                    }
-                    if (confirmacion1 == true && confirmacion2 == true && !(Double.valueOf(txtStock.getText()) >= 0 && Double.valueOf(txtStock.getText()) <= 99)) {
-                        JOptionPane.showMessageDialog(this, "El rango del stock tiene que ser de 0 a 99", "Fuera de Rango", JOptionPane.ERROR_MESSAGE);
-                        confirmacion3 = false;
-                    }
-                    if (confirmacion1 == true && confirmacion2 == true && confirmacion3 == true) {
+                    if (comprobarDominio()) {
                         seleccion = JOptionPane.showConfirmDialog(this, "Se modificaran los siguientes elementos \n"
                             + aux[1] + "--->"
                             + txtNombre.getText() + "\n" + aux[2] + "--->"
@@ -463,21 +484,34 @@ public class GestionarAlmacen extends javax.swing.JPanel {
                             + txtStock.getText() + "\n" + aux[5] + "--->"
                             + comboBoxAlmacenUM.getSelectedItem().toString(), "Modificar producto", JOptionPane.INFORMATION_MESSAGE);
                         if (JOptionPane.OK_OPTION == seleccion) {
-                            modeloTablaAlmacen.setValueAt(aux[0], tablaAlmacenSeleccionModificar, 0);
-                            modeloTablaAlmacen.setValueAt(txtNombre.getText(), tablaAlmacenSeleccionModificar, 1);
-                            modeloTablaAlmacen.setValueAt(txtPrecio.getText(), tablaAlmacenSeleccionModificar, 2);
-                            modeloTablaAlmacen.setValueAt(txtExistencia.getText(), tablaAlmacenSeleccionModificar, 3);
-                            modeloTablaAlmacen.setValueAt(txtStock.getText(), tablaAlmacenSeleccionModificar, 4);
-                            modeloTablaAlmacen.setValueAt(comboBoxAlmacenUM.getSelectedItem().toString(), tablaAlmacenSeleccionModificar, 5);
-                            if(JOptionPane.showOptionDialog(this, "Productor modificado con extio \n Desea modificar otro producto", "Producto Modificado",
-                                JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, new Object[]{"Si", "No"}, "Si") == 1) {
-                            almacenFormaBase();
-                        } else {
-                            txtNombre.setText("");
-                            txtPrecio.setText("");
-                            txtExistencia.setText("");
-                            txtStock.setText("");
-                        }
+                            try {
+                                seLogro = mUIP.modificar(Integer.parseInt(aux[0]), txtNombre.getText(), Integer.parseInt(txtExistencia.getText()),
+                                        Integer.parseInt(txtStock.getText()), Float.valueOf(txtPrecio.getText()), comboBoxAlmacenUM.getSelectedItem().toString());
+                                if (!seLogro) {
+                                    if(JOptionPane.showOptionDialog(this, "Productor modificado con extio \n Desea modificar otro producto", "Producto Modificado",
+                                    JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, new Object[]{"Si", "No"}, "Si") == 1) {
+                                    almacenFormaBase();
+                                    } else {
+                                        txtNombre.setText("");
+                                        txtPrecio.setText("");
+                                        txtExistencia.setText("");
+                                        txtStock.setText("");
+                                    }
+                                } else {
+                                    if(JOptionPane.showOptionDialog(this, "Productor no se a podido modificar \n Desea modificar otro producto", "Producto no modificado",
+                                    JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, new Object[]{"Si", "No"}, "Si") == 1) {
+                                    almacenFormaBase();
+                                    } else {
+                                        txtNombre.setText("");
+                                        txtPrecio.setText("");
+                                        txtExistencia.setText("");
+                                        txtStock.setText("");
+                                    }
+                                } 
+                            } catch (SQLException ex) {
+                                JOptionPane.showMessageDialog(this, "ERROR: " + ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
+                            }
+                        
                     }
                 }
             } else {
@@ -488,12 +522,38 @@ public class GestionarAlmacen extends javax.swing.JPanel {
                 + (tablaAlmacenSeleccionModificar + 1), "Se a seleccionado otro producto", JOptionPane.WARNING_MESSAGE);
         }
         break;
-        case "Consultar":
-        break;
         default:
         break;
         }
     }//GEN-LAST:event_btnConfirmarAlmacenActionPerformed
+
+    private void txtAlmacenBuscarKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtAlmacenBuscarKeyReleased
+        if (btnRadioID.isSelected()) {
+            consultarSQL(txtAlmacenBuscar.getText(), 1);
+        } else if (btnRadioNombre.isSelected()) {
+            consultarSQL(txtAlmacenBuscar.getText(), 2);
+        } else if (btnRadioPrecio.isSelected()) {
+            consultarSQL(txtAlmacenBuscar.getText(), 3);
+        } else if (btnRadioCantidad.isSelected()) {
+            consultarSQL(txtAlmacenBuscar.getText(), 4);
+        }
+    }//GEN-LAST:event_txtAlmacenBuscarKeyReleased
+
+    private void btnRadioIDMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnRadioIDMouseClicked
+        limpiarTxtYTabla();
+    }//GEN-LAST:event_btnRadioIDMouseClicked
+
+    private void btnRadioNombreMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnRadioNombreMouseClicked
+        limpiarTxtYTabla();
+    }//GEN-LAST:event_btnRadioNombreMouseClicked
+
+    private void btnRadioPrecioMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnRadioPrecioMouseClicked
+        limpiarTxtYTabla();
+    }//GEN-LAST:event_btnRadioPrecioMouseClicked
+
+    private void btnRadioCantidadMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnRadioCantidadMouseClicked
+        limpiarTxtYTabla();
+    }//GEN-LAST:event_btnRadioCantidadMouseClicked
 
         /*------------------Metodo para regresar a la fomra base el panel almacen------------------------*/
     public void almacenFormaBase() {
@@ -526,6 +586,8 @@ public class GestionarAlmacen extends javax.swing.JPanel {
         
         btnConfirmarAlmacen.setVisible(false);
         btnConfirmarAlmacen.setEnabled(false);
+        
+        consultarSQL("", 0);
     }
     /*------------------Metodo para poner visible los txt y labels para editar los productos del panel almacen------------------------*/
     public void almacenEditable() {
@@ -550,7 +612,71 @@ public class GestionarAlmacen extends javax.swing.JPanel {
         return !txtStock.getText().equals("")
                 && !txtPrecio.getText().equals("") && !txtExistencia.getText().equals("") && !txtNombre.getText().equals("");
     }
-
+    /**
+     * Metodo para comprobar el dominio de los atributos.
+     * @return Regresa true si el diminio es correto en todos los atributos, false en caso contrario
+     */
+    public boolean comprobarDominio() {
+        boolean confirmacion1 = true, confirmacion2 = true, confirmacion3 = true, confirmacion = true;
+        if(txtNombre.getText().length() > 25) {
+        JOptionPane.showMessageDialog(this, "El nombre del producto " + txtNombre.getText() + " es demasiado largo. \n"
+                + "El tamano maximo es de 25 caracteres", "Nombre demasiado largo", JOptionPane.ERROR_MESSAGE);
+        }
+        if(confirmacion == true && !(Float.valueOf(txtPrecio.getText()) >= 0 && Float.valueOf(txtPrecio.getText()) <= 9999.99)){
+            JOptionPane.showMessageDialog(this, "El rango del precio tiene que ser de 0 a 9999.99", "Fuera de Rango", JOptionPane.ERROR_MESSAGE);
+            confirmacion1 = false;
+        }
+        if (confirmacion1 == true && !(Double.valueOf(txtExistencia.getText()) >= 0 && Double.valueOf(txtExistencia.getText()) <= 99)) {
+            JOptionPane.showMessageDialog(this, "El rango de la existencia tiene que ser de 0 a 99", "Fuera de Rango", JOptionPane.ERROR_MESSAGE);
+            confirmacion2 = false;
+        }
+        if (confirmacion1 == true && confirmacion2 == true && !(Double.valueOf(txtStock.getText()) >= 0 && Double.valueOf(txtStock.getText()) <= 99)) {
+            JOptionPane.showMessageDialog(this, "El rango del stock tiene que ser de 0 a 99", "Fuera de Rango", JOptionPane.ERROR_MESSAGE);
+            confirmacion3 = false;
+        }
+        return confirmacion1 == true && confirmacion2 == true && confirmacion3 == true && confirmacion == true;
+    }
+    /**
+     * Metodo que regresa a la forma base la tabla y limpia el txtBuscar
+     * 
+     */
+    public void limpiarTxtYTabla() {
+        txtAlmacenBuscar.setText("");
+        consultarSQL("", 0);
+    }
+    /**
+     * Hace la consulta dependiendo el filtro que se aplique
+     * @param consulta
+     * @param filtro 
+     */
+    public void consultarSQL(String consulta, int filtro) {
+        ListaCola<Producto> queue = new ListaCola<Producto>();
+        
+        Producto seihin;
+        try {
+            queue = mUIP.consulta(filtro, consulta);
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, "ERROR: " + e.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
+        }
+        vaciarTabla();
+        while (true) {
+            if (!queue.hasNext()) {
+                break;
+            }
+            seihin = queue.pop();
+            String[] datos = {String.valueOf(seihin.getId()), seihin.getNombre(),String.valueOf(seihin.getPrecio()),
+            String.valueOf(seihin.getExistencia()), String.valueOf(seihin.getStock()), seihin.getUM()};
+            modeloTablaAlmacen.addRow(datos);
+        }
+    }
+    /**
+     * Metodo para vaciar la tabla 
+     */
+    public void vaciarTabla() {
+        for (int i = 0; i < modeloTablaAlmacen.getRowCount(); i++) {
+            modeloTablaAlmacen.removeRow(i);
+        }  
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAlmacenAgregar;
     private javax.swing.JButton btnAlmacenConsultar;
