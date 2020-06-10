@@ -31,7 +31,13 @@ public class GestionarAlmacen extends javax.swing.JPanel {
         btnGroupAlmacen.add(btnRadioPrecio);
         btnGroupAlmacen.add(btnRadioCantidad);
         
-        modeloTablaAlmacen = new DefaultTableModel(null,cabeceraTablaAlmacen);
+        modeloTablaAlmacen = new DefaultTableModel(null,cabeceraTablaAlmacen){
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return column == 6;
+            }
+            
+        };
         tablaAlmacen.setModel(modeloTablaAlmacen);
         tablaAlmacen.getTableHeader().setReorderingAllowed(false);
         almacenFormaBase();
@@ -210,7 +216,7 @@ public class GestionarAlmacen extends javax.swing.JPanel {
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(32, 32, 32)
                                 .addComponent(btnAlmacenAgregar, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(btnAlmacenEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(32, 32, 32)
@@ -673,9 +679,9 @@ public class GestionarAlmacen extends javax.swing.JPanel {
      * Metodo para vaciar la tabla 
      */
     public void vaciarTabla() {
-        for (int i = 0; i < modeloTablaAlmacen.getRowCount(); i++) {
+        for (int i =  modeloTablaAlmacen.getRowCount() - 1; i >= 0; i--) {
             modeloTablaAlmacen.removeRow(i);
-        }  
+        }
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAlmacenAgregar;

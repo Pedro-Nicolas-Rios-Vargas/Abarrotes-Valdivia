@@ -25,10 +25,24 @@ public class ConsultarVenta extends javax.swing.JFrame {
         buttonGroup.add(btnRadiototal);
         btnRadioID.setSelected(true);
         total = 100;
-        modeloTablaConsVenta = new DefaultTableModel(null, cabeceraTablaAlmacen);
-        modeloTabla2 = new DefaultTableModel(null, cabecera2);
+        modeloTablaConsVenta = new DefaultTableModel(null, cabeceraTablaAlmacen){
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return column == 4;
+            }
+            
+        };
+        modeloTabla2 = new DefaultTableModel(null, cabecera2){
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return column == 4;
+            }
+            
+        };
         tabla2.setModel(modeloTabla2);
         tablaConsVenta.setModel(modeloTablaConsVenta);
+        tabla2.getTableHeader().setReorderingAllowed(false);
+        tablaConsVenta.getTableHeader().setReorderingAllowed(false);
         mostrarFechasOptions(false);
         consultarSQL("", 0, 0, 0, 0);
     }   
@@ -296,7 +310,7 @@ public class ConsultarVenta extends javax.swing.JFrame {
         if (tablaConsVenta.getSelectedRow() != -1) {
             vaciarTabla2();
             try {
-                queue = mUIV.consultar(0, "");
+                queue = mUIV.consultar(1, (String) modeloTablaConsVenta.getValueAt(tablaConsVenta.getSelectedRow(), 0));
             } catch (SQLException ex) {
                 JOptionPane.showMessageDialog(this, "ERROR: " + ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
             }
@@ -312,13 +326,13 @@ public class ConsultarVenta extends javax.swing.JFrame {
     }//GEN-LAST:event_tablaConsVentaMouseClicked
 
     public void vaciarTabla() {
-        for (int i = 0; i < modeloTablaConsVenta.getRowCount(); i++) {
+        for (int i =  modeloTablaConsVenta.getRowCount() - 1; i >= 0; i--) {
             modeloTablaConsVenta.removeRow(i);
         }
     }
     
     public void vaciarTabla2() {
-        for (int i = 0; i < modeloTabla2.getRowCount(); i++) {
+        for (int i =  modeloTabla2.getRowCount() - 1; i >= 0; i--) {
             modeloTabla2.removeRow(i);
         }
     }

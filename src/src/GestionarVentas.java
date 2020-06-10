@@ -40,11 +40,24 @@ public class GestionarVentas extends javax.swing.JPanel {
         
         btnRadioID.setSelected(true);
         
-        modeloPrueba = new DefaultTableModel(null, pruebaC);
+        modeloPrueba = new DefaultTableModel(null, pruebaC){
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return column == 6;
+            }
+            
+        };
         tablaPito.setModel(modeloPrueba);
-        modeloTablaAlmacen = new DefaultTableModel(null,cabeceraTablaAlmacen);
+        modeloTablaAlmacen = new DefaultTableModel(null,cabeceraTablaAlmacen){
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return column == 2;
+            }
+            
+        };
         tablaAlmacen.setModel(modeloTablaAlmacen);
         tablaAlmacen.getTableHeader().setReorderingAllowed(false);
+        tablaPito.getTableHeader().setReorderingAllowed(false);
         consultarSQL("", 0);
     }
 
@@ -284,7 +297,6 @@ public class GestionarVentas extends javax.swing.JPanel {
             int catidad = ((Integer) modeloPrueba.getValueAt(tablaPito.getSelectedRow(), 1));
             float precioNew = (((Producto) modeloPrueba.getValueAt(tablaPito.getSelectedRow(), 0)).getPrecio());
             float precioVergas = precioNew - ((precioNew)/catidad);
-            System.out.println(precioVergas);
             total -= precioNew/catidad;//Estoy tomando el dinero que se va a quitar del total
             Producto producto = ((Producto) modeloPrueba.getValueAt(tablaPito.getSelectedRow(), 0));
             producto = new Producto(producto.getId(), producto.getNombre(), producto.getExistencia(), producto.getStock(), precioVergas, producto.getUM());
@@ -305,22 +317,26 @@ public class GestionarVentas extends javax.swing.JPanel {
     private void btnNewCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewCActionPerformed
         String pagoEnString = txtPago.getText();
         float pagoEnFloat = Float.valueOf(txtPago.getText());
-        if ((!(pagoEnString.equals(""))) && pagoEnFloat >= 0) {          
-            for (int i = 0; i < modeloPrueba.getRowCount(); i++) {
-                try {
-                    Producto producto = ((Producto) modeloPrueba.getValueAt(i, 0));
-                    int id = producto.getId();
-                    int cantidad = ((Integer) modeloPrueba.getValueAt(i, 1));
-                    float subTotal = (producto.getPrecio() * cantidad);
-                    mUIV.agregar(id, cantidad, subTotal);
-                } catch (SQLException ex) {
-                    JOptionPane.showMessageDialog(this, "ERROR: " + ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
-                }
-            }              
+        int paso = 2;
+        if ((!(pagoEnString.equals(""))) && pagoEnFloat >= 0 && (Double.valueOf(pagoS) - total) >= 0) {
             try {
-                mIUVD.agregar(1, dia(), mes(), year(), total);
+                paso = mIUVD.agregar(1, dia(), mes(), year(), total);
             } catch (SQLException ex) {
-                JOptionPane.showMessageDialog(this, "ERROR: 7 " + ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "ERROR: " + ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
+            }
+            if (paso == 1) {   
+                for (int i = 0; i < modeloPrueba.getRowCount(); i++) {
+                    try {
+                        Producto producto = ((Producto) modeloPrueba.getValueAt(i, 0));
+                        int id = producto.getId();
+                        int cantidad = ((Integer) modeloPrueba.getValueAt(i, 1));
+                        float subTotal = (producto.getPrecio());
+                        mUIV.agregar(id, cantidad, subTotal);
+                    } catch (SQLException ex) {
+                        JOptionPane.showMessageDialog(this, "ERROR: " + ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
+                    }
+                }
+                JOptionPane.showMessageDialog(this, "El cambio es " + txtCambio.getText(), "Venta realizada con exito", JOptionPane.INFORMATION_MESSAGE);
             }
             for (int i = modeloPrueba.getRowCount() - 1; i >= 0; i--) {
                 modeloPrueba.removeRow(i);

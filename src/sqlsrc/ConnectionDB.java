@@ -37,6 +37,7 @@ public class ConnectionDB implements SQLConnectionInterface{
     public int send(String sqlUpdate) throws SQLException{
 
         return statement.executeUpdate(sqlUpdate);
+        
             
     }
 
