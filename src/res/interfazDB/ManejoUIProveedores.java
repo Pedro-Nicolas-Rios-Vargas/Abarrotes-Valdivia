@@ -74,10 +74,9 @@ public class ManejoUIProveedores {
         int id = 0;
         String query = "SELECT TOP 1 IDPROV FROM Proveedores ORDER BY IDPROV DESC";
         rs = conDB.receive(query);
+        if(rs.next())
+            id = rs.getInt(1);
         
-        id = rs.getInt(1);
-        
-        System.out.println(id);
         return id;
         
     }

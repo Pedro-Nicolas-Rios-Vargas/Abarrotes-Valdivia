@@ -9,8 +9,21 @@ package src;
  *
  * @author pnrv2
  */
+import javax.swing.table.TableModel;
+import javax.swing.table.DefaultTableModel;
+
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import res.interfazDB.ManejoUIProveedores;
+import lista.ListaCola;
+import res.Persona;
+
 public class GestionarProveedores extends javax.swing.JPanel {
 
+    private ManejoUIProveedores manager;
+    
     private boolean queryTodos;
     private boolean queryId;
     private boolean queryNom;
@@ -21,6 +34,7 @@ public class GestionarProveedores extends javax.swing.JPanel {
         queryTodos = false;
         queryId = false;
         queryNom = false;
+        manager = new ManejoUIProveedores();
         
         initComponents();
     }
@@ -106,6 +120,11 @@ public class GestionarProveedores extends javax.swing.JPanel {
         errorLabelAgregar.setText("Error Label");
 
         btnAgregar.setText("Agregar");
+        btnAgregar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAgregarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout ventanaAgregarLayout = new javax.swing.GroupLayout(ventanaAgregar);
         ventanaAgregar.setLayout(ventanaAgregarLayout);
@@ -167,6 +186,11 @@ public class GestionarProveedores extends javax.swing.JPanel {
         });
 
         btnBuscar.setText("Buscar");
+        btnBuscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBuscarActionPerformed(evt);
+            }
+        });
 
         btnGroup.add(jrbTodos);
         jrbTodos.setText("Todos");
@@ -289,6 +313,11 @@ public class GestionarProveedores extends javax.swing.JPanel {
 
         btnModificar.setText("Guardar Cambios");
         btnModificar.setEnabled(false);
+        btnModificar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnModificarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout ventanaModificarLayout = new javax.swing.GroupLayout(ventanaModificar);
         ventanaModificar.setLayout(ventanaModificarLayout);
@@ -367,14 +396,29 @@ public class GestionarProveedores extends javax.swing.JPanel {
 
         btnConfirm.setText("Eliminar");
         btnConfirm.setEnabled(false);
+        btnConfirm.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnConfirmActionPerformed(evt);
+            }
+        });
 
         jLabel9.setText("Tipo de Consulta:");
 
         btnGroupEliminar.add(rbIDEliminar);
         rbIDEliminar.setText("ID");
+        rbIDEliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rbIDEliminarActionPerformed(evt);
+            }
+        });
 
         btnGroupEliminar.add(rbNombreEliminar);
         rbNombreEliminar.setText("Nombre");
+        rbNombreEliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rbNombreEliminarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout ventanaEliminarLayout = new javax.swing.GroupLayout(ventanaEliminar);
         ventanaEliminar.setLayout(ventanaEliminarLayout);
@@ -503,10 +547,7 @@ public class GestionarProveedores extends javax.swing.JPanel {
 
         tablaProveedores.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null}
+
             },
             new String [] {
                 "ID", "Nombre"
@@ -598,7 +639,36 @@ public class GestionarProveedores extends javax.swing.JPanel {
     }//GEN-LAST:event_tfIdProvModificarMouseClicked
 
     private void btnBuscarModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarModificarActionPerformed
-        //metodos de busqueda en la base de datos
+        int in = 0;
+        Object obj = null;
+        ListaCola<Persona> cola;
+        Persona proveedor;
+        
+        try{
+            in = Integer.parseInt(tfIdProvModificar.getText());
+            obj = in;
+        }catch(NumberFormatException nfE){
+            System.out.println("ID no valido en modificar");
+        }
+        try{
+            if(obj != null){
+                cola = manager.consulta(obj);
+                
+                if(cola.hasNext()){
+                    proveedor = cola.pop();
+                    tfNombreProvModificar.setText(proveedor.getNombre());
+                }
+                
+                tfIdProvModificar.setEnabled(false);
+                tfNombreProvModificar.setEnabled(true);
+                btnBuscarModificar.setEnabled(false);
+                btnModificar.setEnabled(true);
+                
+            }
+        }catch(SQLException sqlE){
+            System.out.println("Error al realizar la consulta en modificar");
+        }
+        
     }//GEN-LAST:event_btnBuscarModificarActionPerformed
 
     private void tfNombreProvModificarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tfNombreProvModificarMouseClicked
@@ -610,9 +680,173 @@ public class GestionarProveedores extends javax.swing.JPanel {
     }//GEN-LAST:event_tfEliminarMouseClicked
 
     private void btnBuscarEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarEliminarActionPerformed
-        //metodos de busqueda en la base de datos
+        int in;
+        Object obj = null;
+        String nombre = "";
+        boolean res;
+        if(rbIDEliminar.isSelected()){
+            try{
+                in = Integer.parseInt(tfEliminar.getText());
+                obj = in;
+            }catch(NumberFormatException nfE){
+                System.out.println("Valor no numerico");
+            }
+        }else if(rbNombreEliminar.isSelected()){
+            nombre = tfEliminar.getText();
+            if(nombre.length() != 0){
+                obj = nombre;
+            }else{
+                System.out.println("Valor no ingresado");
+            }
+        }
+        
+        if(obj != null){
+            try{
+                res = manager.eliminar(obj);
+                if(!res)
+                    System.out.println("Eliminacion no realizada");
+                else{
+                    btnBuscarEliminar.setEnabled(false);
+                    btnConfirm.setEnabled(true);
+                }
+            }catch(SQLException sqlE){
+                System.out.println("Error en la consulta");
+            }
+        }
     }//GEN-LAST:event_btnBuscarEliminarActionPerformed
 
+    private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
+        try {
+            manager.agregar(tfNombreProv.getText());
+        } catch (SQLException ex) {
+            System.out.println("Error al agregar usuario: " + ex.getMessage());
+            ex.printStackTrace();
+        }
+    }//GEN-LAST:event_btnAgregarActionPerformed
+
+    private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
+        Object obj = null;
+        ListaCola<Persona> cola;
+        if(jrbTodos.isSelected()){
+            obj = '*';
+        }else if(jrbID.isSelected()){
+            int in = 0;
+            try{
+                in = Integer.parseInt(tfIDProv.getText());
+                obj = in;
+            }catch(NumberFormatException nfE){
+                System.out.println("No es un numero entero");
+            }
+        }else if(jrbNombre.isSelected()){
+            String nombre = tfIDProv.getText();
+            if(nombre.length() != 0){
+                obj = nombre;
+            }else{
+                System.out.println("No se ingreso ningun valor valido");
+            }
+        }
+        
+        try{
+            if(obj != null){
+                cola = manager.consulta(obj);
+                llenarTabla(cola);
+            }else{
+                System.out.println("No se ingresaron valores");
+            }
+        }catch(SQLException ex){
+            System.out.println("Error al agregar usuario");
+        }
+    }//GEN-LAST:event_btnBuscarActionPerformed
+
+    private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
+        int id;
+        String nombre = "";
+        boolean res;
+        try{
+            id = Integer.parseInt(tfIdProvModificar.getText());
+            
+            nombre = tfNombreProvModificar.getText();
+            if(nombre.length() != 0){
+                res = manager.modificar(id, nombre);
+                
+                if(!res)
+                    System.out.println("No se pudo consultar la consulta");
+            }
+            
+            tfIdProvModificar.setEnabled(true);
+            tfNombreProvModificar.setEnabled(false);
+            btnBuscarModificar.setEnabled(true);
+            btnModificar.setEnabled(false);
+            
+            tfIdProvModificar.setText("Ingrese el ID del Proveedor");
+            tfNombreProvModificar.setText("Ingrese el nombre del Proveedor");
+            
+        }catch(NumberFormatException nfE){
+            
+        }catch(SQLException sqlE){
+            System.out.println("Error en la consulta de modificacion");
+        }
+        
+    }//GEN-LAST:event_btnModificarActionPerformed
+
+    private void rbIDEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbIDEliminarActionPerformed
+        lbEliminar.setText("ID Proveedor:");
+    }//GEN-LAST:event_rbIDEliminarActionPerformed
+
+    private void rbNombreEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbNombreEliminarActionPerformed
+        lbEliminar.setText("Nombre Proveedor:");
+    }//GEN-LAST:event_rbNombreEliminarActionPerformed
+
+    private void btnConfirmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmActionPerformed
+        int in;
+        Object obj = null;
+        String nombre = "";
+        boolean res;
+        
+        if(rbIDEliminar.isSelected()){
+            try{
+                in = Integer.parseInt(tfEliminar.getText());
+                obj = in;
+            }catch(NumberFormatException nfE){
+                System.out.println("Valor no numerico");
+            }
+        }else if(rbNombreEliminar.isSelected()){
+            nombre = tfEliminar.getText();
+            if(nombre.length() != 0)
+                obj = nombre;
+            else
+                System.out.println("No se ingresaron valores");
+        }
+        
+        if(obj != null){
+            try{
+                res = manager.eliminar(obj);
+                if(!res)
+                    System.out.println("Eliminacion no realizada");
+                else{
+                    btnBuscarEliminar.setEnabled(true);
+                    btnConfirm.setEnabled(false);
+                }
+            }catch(SQLException sqlE){
+                System.out.println("Eliminacion no realizada: " + sqlE.getMessage());
+            }
+        }
+    }//GEN-LAST:event_btnConfirmActionPerformed
+
+    private void llenarTabla(ListaCola<Persona> cola){
+        Persona proveedor;
+        DefaultTableModel modelo = (DefaultTableModel) tablaProveedores.getModel();
+        
+        while(modelo.getRowCount() != 0)
+            modelo.removeRow(0);
+        
+        while(cola.hasNext()){
+            proveedor = cola.pop();
+            
+            modelo.addRow(new Object[]{proveedor.getId(), proveedor.getNombre()});
+        }
+        tablaProveedores.setModel(modelo);
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel botonesPane;
