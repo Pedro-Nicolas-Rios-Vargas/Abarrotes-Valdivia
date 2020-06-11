@@ -15,7 +15,7 @@ import sqlsrc.interfaces.SQLConnectionInterface;
 public class ConnectionDB implements SQLConnectionInterface{
     private final String URL = "jdbc:sqlserver://localhost:1433;databaseName=Abarrotes";
     private final String USER = "sa";
-    private final String PWD = "12345";
+    private final String PWD = "sa";
     
     private Connection con;
     private Statement statement;
