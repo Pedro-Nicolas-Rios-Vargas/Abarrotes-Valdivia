@@ -513,7 +513,7 @@ public class PanelCompras extends javax.swing.JPanel{
         }else{
             if (modeloTablaCompras.getRowCount()==1) {
                 feriaPago=Float.valueOf(txtPago1.getText());             
-                if (feriaPago>totalPagar) {
+                if (feriaPago>=totalPagar) {
                     total=feriaPago-totalPagar;
                     txtCambio1.setText("$ "+total);
                     btnNewCompra.setEnabled(true);
@@ -587,6 +587,7 @@ public class PanelCompras extends javax.swing.JPanel{
             modeloTablaAlmacen.addRow(datos);
             tablaAlmacen.repaint();
             }
+        JOptionPane.showMessageDialog(this,"Su compra fue realiazada con exito","Compra Exitosa",JOptionPane.ERROR_MESSAGE);
     }//GEN-LAST:event_btnNewCompraActionPerformed
 
     private void btnRadioIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRadioIDActionPerformed
