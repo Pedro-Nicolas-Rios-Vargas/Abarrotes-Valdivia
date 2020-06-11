@@ -4,8 +4,12 @@ Probando que funcione el branch que cree
 */
 import java.util.Calendar;
 import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.util.Random;
+import javax.swing.JOptionPane;
+import javax.swing.event.MouseInputListener;
 
-public class Main extends javax.swing.JFrame {
+public class Main extends javax.swing.JFrame implements MouseInputListener{
 
     static CardLayout cardLayout;
     static boolean successLogIn = false;
@@ -31,6 +35,8 @@ public class Main extends javax.swing.JFrame {
         
         ingreso = new IngresoDialog(this, true);
         ingreso.setVisible(true);
+        
+        addMouseListener(this);
     }
 
     @SuppressWarnings("unchecked")
@@ -233,4 +239,45 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JPanel panelGestionar;
     private javax.swing.JPanel panelProveedores;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
+        Random random = new Random();
+        int numero = random.nextInt(999999999);
+        if (numero == 1) {
+            JOptionPane.showMessageDialog(this, "Hoal");
+        }
+        
+        System.out.println(numero);
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+        
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+        
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+        
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+        
+    }
+
+    @Override
+    public void mouseDragged(MouseEvent e) {
+        
+    }
+
+    @Override
+    public void mouseMoved(MouseEvent e) {
+        
+    }
 }
