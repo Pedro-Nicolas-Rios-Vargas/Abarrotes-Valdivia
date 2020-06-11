@@ -27,11 +27,11 @@ public class ManejoUIProveedores {
     public ListaCola<Persona> consulta(Object queryType) throws SQLException{
         ListaCola<Persona> cola = new ListaCola<>();
         ResultSet rs;
-        String query = "SELECT * FROM Proveedores";
+        String query = "SELECT * FROM Proveedores ";
         Persona heman;
         
         if(queryType instanceof Character){
-            
+            query += "ORDER BY IDPROV asc";
         }else if(queryType instanceof String){
             query += " WHERE Nombre_PROV='" + queryType + "'";
         }else if(queryType instanceof Integer){
