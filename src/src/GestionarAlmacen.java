@@ -355,15 +355,20 @@ public class GestionarAlmacen extends javax.swing.JPanel {
             if (JOptionPane.OK_OPTION == seleccion) {
                 try {
                     seLogro = mUIP.eliminar(Integer.parseInt(aux[0]));
+                    if (!seLogro) {
+                        JOptionPane.showMessageDialog(this, "El producto se a eliminado con exito", "Producto eliminado",
+                            JOptionPane.INFORMATION_MESSAGE);
+                    } else {
+                        JOptionPane.showMessageDialog(this, "El producto no se a podido eliminado", "Producto no eliminado",
+                            JOptionPane.INFORMATION_MESSAGE);
+                    }
                 } catch (SQLException ex) {
-                    JOptionPane.showMessageDialog(this, "ERROR: " + ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
-                }
-                if (!seLogro) {
-                    JOptionPane.showMessageDialog(this, "El producto se a eliminado con exito", "Producto eliminado",
-                        JOptionPane.INFORMATION_MESSAGE);
-                } else {
-                    JOptionPane.showMessageDialog(this, "El producto no se a podido eliminado", "Producto no eliminado",
-                        JOptionPane.INFORMATION_MESSAGE);
+                    if (ex.getMessage().equals("The DELETE statement conflicted with the REFERENCE constraint \"FK__Ventas__IDPROD__34C8D9D1\". The conflict occurred in database \"Abarrotes\", table \"dbo.Ventas\", column 'IDPROD'.")) {
+                        JOptionPane.showMessageDialog(this, "No puedes borrar un producto que se a vendido o comprado", "ERROR", JOptionPane.WARNING_MESSAGE);
+                    } else {
+                        JOptionPane.showMessageDialog(this, "ERROR: " + ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
+                    }
+                    
                 }
             }
         } else {
@@ -465,7 +470,12 @@ public class GestionarAlmacen extends javax.swing.JPanel {
                             txtStock.setText("");
                         }
                     } catch (SQLException ex) {
-                        JOptionPane.showMessageDialog(this, "ERROR: " + ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
+                        if (ex.getMessage().contains("Cannot insert duplicate key in object 'dbo.Productos'")) {
+                            JOptionPane.showMessageDialog(this, "No se pueden agregar dos productos con el mismo nombre", "ERROR", JOptionPane.WARNING_MESSAGE);
+                        } else {
+                            JOptionPane.showMessageDialog(this, "ERROR: " + ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
+                        }
+                        
                     }
                     
                 }
