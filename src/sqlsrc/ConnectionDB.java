@@ -14,9 +14,9 @@ import sqlsrc.interfaces.SQLConnectionInterface;
  * de datos incluyendo la entrada y salida de datos.
  */
 public class ConnectionDB implements SQLConnectionInterface{
-    private final String URL = "jdbc:sqlserver://LAPTOP-VHMV4UK1:1433;databaseName=Abarrotes";
+    private final String URL = "jdbc:sqlserver://DONCAMATIC1117:1433;databaseName=Abarrotes_Valdivia";
     private final String USER = "sa";
-    private final String PWD = "12345";
+    private final String PWD = "sa";
     
     private Connection con;
     private Statement statement;

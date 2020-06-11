@@ -5,23 +5,36 @@
  */
 package src;
 
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import lista.ListaCola;
+import res.Detallada;
+import res.interfazDB.ManejoUICompras;
+import res.interfazDB.ManejoUIComprasDetalladas;
 
 /**
  *
  * @author MrLui
  */
 public class FrameComprasConsulta extends javax.swing.JFrame {
-    DefaultTableModel modeloTablaCompras;
-    static String[] cabeceraTablaCompras = {"ID", "Nombre", "Precio", "Cantidad"};
-    static String[][] datosTemporalesTablaCompras = {{"1","Pepsi", "20", "10"}, {"2","Sabritas", "13", "5"}};
+    DefaultTableModel modeloTablaComprasHechas;
+    static String[] cabeceraTablaComprasHechas = {"ID Compra", " ID Proveedor", "Dia", "Mes", "Año","Total"};
     static int tablaComprasSeleccionModificar;
+    ManejoUIComprasDetalladas UICD = new ManejoUIComprasDetalladas();
+    ManejoUICompras UIC = new ManejoUICompras();
+    ListaCola<Detallada> queue = new ListaCola<>();
+    Detallada compras;
     /**
      * Creates new form FrameComprasConsulta
      */
     public FrameComprasConsulta() {
         initComponents();
+        modeloTablaComprasHechas = new DefaultTableModel(null,cabeceraTablaComprasHechas);
+        tablaComprasHechas.setModel(modeloTablaComprasHechas);
+        tablaComprasHechas.getTableHeader().setReorderingAllowed(false);
     }
 
     /**
@@ -34,21 +47,18 @@ public class FrameComprasConsulta extends javax.swing.JFrame {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        tablaCompras = new javax.swing.JTable();
-        btnAlmacenEliminar = new javax.swing.JButton();
-        btnAlmacenModificar = new javax.swing.JButton();
-        labelAlmacenCantidad = new javax.swing.JLabel();
-        labelAlmacenPrecio = new javax.swing.JLabel();
-        labelAlmacenNombre = new javax.swing.JLabel();
-        txtCantidad = new javax.swing.JTextField();
-        txtPrecio = new javax.swing.JTextField();
-        txtNombre = new javax.swing.JTextField();
-        labelTituloCompras = new javax.swing.JLabel();
-        btnConfirmarAlmacen = new javax.swing.JButton();
+        tablaComprasHechas = new javax.swing.JTable();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
 
-        tablaCompras.setModel(new javax.swing.table.DefaultTableModel(
+        setTitle("Consulta de Compras");
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
+        });
+
+        tablaComprasHechas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -59,49 +69,7 @@ public class FrameComprasConsulta extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane1.setViewportView(tablaCompras);
-
-        btnAlmacenEliminar.setText("Eliminar");
-        btnAlmacenEliminar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAlmacenEliminarActionPerformed(evt);
-            }
-        });
-
-        btnAlmacenModificar.setText("Modificar");
-        btnAlmacenModificar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAlmacenModificarActionPerformed(evt);
-            }
-        });
-
-        labelAlmacenCantidad.setText("Cantidad");
-
-        labelAlmacenPrecio.setText("Precio");
-
-        labelAlmacenNombre.setText("Nombre");
-
-        txtCantidad.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                txtCantidadKeyTyped(evt);
-            }
-        });
-
-        txtPrecio.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                txtPrecioKeyTyped(evt);
-            }
-        });
-
-        labelTituloCompras.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        labelTituloCompras.setText("jLabel8");
-
-        btnConfirmarAlmacen.setText("Confirmar");
-        btnConfirmarAlmacen.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnConfirmarAlmacenActionPerformed(evt);
-            }
-        });
+        jScrollPane1.setViewportView(tablaComprasHechas);
 
         jLabel6.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
         jLabel6.setText("Consulta de compras");
@@ -114,226 +82,56 @@ public class FrameComprasConsulta extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(labelAlmacenNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, 0)
-                                .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(labelAlmacenPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, 0)
-                                .addComponent(txtPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(labelAlmacenCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, 0)
-                                .addComponent(txtCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(80, 80, 80)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(labelTituloCompras, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(btnAlmacenModificar, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(btnAlmacenEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(83, 83, 83)
-                        .addComponent(btnConfirmarAlmacen, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(30, 30, 30)
-                        .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap())
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(138, 138, 138))))
+                .addGap(30, 30, 30)
+                .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 209, Short.MAX_VALUE)
+                .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(138, 138, 138))
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jScrollPane1)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(4, 4, 4)
-                .addComponent(btnAlmacenModificar)
-                .addGap(18, 18, 18)
-                .addComponent(btnAlmacenEliminar)
-                .addGap(31, 31, 31)
-                .addComponent(labelTituloCompras)
-                .addGap(16, 16, 16)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(10, 10, 10)
-                        .addComponent(labelAlmacenNombre))
-                    .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addContainerGap()
+                        .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(10, 10, 10)
-                        .addComponent(labelAlmacenPrecio))
-                    .addComponent(txtPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(10, 10, 10)
-                        .addComponent(labelAlmacenCantidad))
-                    .addComponent(txtCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addComponent(btnConfirmarAlmacen)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)))
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 321, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnAlmacenEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlmacenEliminarActionPerformed
-        if(tablaCompras.getSelectedRow() != -1) {
-            int seleccion;
-            String[] aux = new String[modeloTablaCompras.getColumnCount()];
-            for (int i = 0; i < aux.length; i++) {
-                aux[i] = modeloTablaCompras.getValueAt(tablaCompras.getSelectedRow(), i).toString();
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        try{
+            queue = UICD.consulta();
+        }catch(SQLException sqlE){
+            System.out.println(sqlE.getMessage());
+        }
+        
+        while(true){
+            if (!queue.hasNext()) {
+                break;
             }
-            seleccion = JOptionPane.showConfirmDialog(this, "Seguro que quieres eliminar la siguiente Compra? \n " + "Compra de " +aux[1]
-                , "Eliminar compra", JOptionPane.WARNING_MESSAGE);
-            if (JOptionPane.OK_OPTION == seleccion) {
-                modeloTablaCompras.removeRow(tablaCompras.getSelectedRow());
-            }
-        } else {
-            JOptionPane.showMessageDialog(this, "Porfavor seleccionar el elemento que se desea elminar de la tabla","No se a seleccionado ningun elemnto", JOptionPane.WARNING_MESSAGE );
+        compras=queue.pop();
+        String[] datos = {String.valueOf(compras.getId()), String.valueOf(compras.getId2()), String.valueOf(compras.getDia()), String.valueOf(compras.getMes()), String.valueOf(compras.getYear()), String.valueOf(compras.getTotal())};
+        modeloTablaComprasHechas.addRow(datos);
         }
-    }//GEN-LAST:event_btnAlmacenEliminarActionPerformed
-
-    private void btnAlmacenModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlmacenModificarActionPerformed
-        if(tablaCompras.getSelectedRow() != -1) {
-            labelTituloCompras.setText("Modificar");
-            labelTituloCompras.setVisible(true);
-            txtNombre.setVisible(true);
-            txtPrecio.setVisible(true);
-            txtCantidad.setVisible(true);
-            labelAlmacenCantidad.setVisible(true);
-            labelAlmacenNombre.setVisible(true);
-            labelAlmacenPrecio.setVisible(true);
-            btnConfirmarAlmacen.setVisible(true);
-            btnConfirmarAlmacen.setEnabled(true);
-            String[] aux = new String[modeloTablaCompras.getColumnCount()];
-            for (int i = 0; i < aux.length; i++) {
-                aux[i] = modeloTablaCompras.getValueAt(tablaCompras.getSelectedRow(), i).toString();
-            }
-            txtNombre.setText(aux[1]);
-            txtPrecio.setText(aux[2]);
-            txtCantidad.setText(aux[3]);
-            btnConfirmarAlmacen.setVisible(true);
-            btnConfirmarAlmacen.setEnabled(true);
-            tablaComprasSeleccionModificar = tablaCompras.getSelectedRow();
-        } else {
-            JOptionPane.showMessageDialog(this, "Porfavor seleccionar el elemento que se desea modificar de la tabla","No se a seleccionado ningun elemnto", JOptionPane.WARNING_MESSAGE );
-        }
-    }//GEN-LAST:event_btnAlmacenModificarActionPerformed
-
-    private void txtCantidadKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCantidadKeyTyped
-        char c = evt.getKeyChar();
-        if(c >= 48 && c <= 57 || c == 8) {}
-        else {
-            JOptionPane.showMessageDialog(this, "El caracter " + c + " no es valido", "Caracter Invalido", JOptionPane.ERROR_MESSAGE);
-            evt.consume();
-        }
-    }//GEN-LAST:event_txtCantidadKeyTyped
-
-    private void txtPrecioKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPrecioKeyTyped
-        char c = evt.getKeyChar();
-        if(c >= 48 && c <= 57 || c == 8) {}
-        else {
-            evt.consume();
-            JOptionPane.showMessageDialog(this, "El caracter " + c + " no es valido", "Caracter Invalido", JOptionPane.ERROR_MESSAGE);
-        }
-    }//GEN-LAST:event_txtPrecioKeyTyped
-
-    private void btnConfirmarAlmacenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmarAlmacenActionPerformed
-        boolean confirmacion1 = true, confirmacion2 = true, confirmacion3 = true;
-        switch (labelTituloCompras.getText()) {
-            case "Eliminar":
-            break;
-            case "Modificar":
-            if (tablaComprasSeleccionModificar == tablaCompras.getSelectedRow()) {
-                int seleccion;
-                String[] aux = new String[modeloTablaCompras.getColumnCount()];
-                for (int i = 0; i < aux.length; i++) {
-                    aux[i] = modeloTablaCompras.getValueAt(tablaCompras.getSelectedRow(), i).toString();
-                }
-                if (comprobarTXTCompras()) {
-                    if(!(Double.valueOf(txtPrecio.getText()) >= 0 && Double.valueOf(txtPrecio.getText()) <= 9999.99)){
-                        JOptionPane.showMessageDialog(this, "El rango del precio tiene que ser de 0 a 9999.99", "Fuera de Rango", JOptionPane.ERROR_MESSAGE);
-                        confirmacion1 = false;
-                    }
-                    if (confirmacion1 == true && !(Double.valueOf(txtCantidad.getText()) >= 0 && Double.valueOf(txtCantidad.getText()) <= 99)) {
-                        JOptionPane.showMessageDialog(this, "El rango de la existencia tiene que ser de 0 a 99", "Fuera de Rango", JOptionPane.ERROR_MESSAGE);
-                        confirmacion2 = false;
-                    }
-                    if (confirmacion1 == true && confirmacion2 == true && confirmacion3 == true) {
-                        seleccion = JOptionPane.showConfirmDialog(this, "Se modificaran los siguientes elementos \n"
-                            + aux[1] + "--->"
-                            + txtNombre.getText() + "\n" + aux[2] + "--->"
-                            + txtPrecio.getText() + "\n" + aux[3] + "--->"
-                            + txtCantidad.getText() + "\n", "Modificar compra", JOptionPane.INFORMATION_MESSAGE);
-                        if (JOptionPane.OK_OPTION == seleccion) {
-                            modeloTablaCompras.setValueAt(aux[0], tablaComprasSeleccionModificar, 0);
-                            modeloTablaCompras.setValueAt(txtNombre.getText(), tablaComprasSeleccionModificar, 1);
-                            modeloTablaCompras.setValueAt(txtPrecio.getText(), tablaComprasSeleccionModificar, 2);
-                            modeloTablaCompras.setValueAt(txtCantidad.getText(), tablaComprasSeleccionModificar, 3);
-                            JOptionPane.showMessageDialog(this, "La compra fue modificada con exito", "Modificacion exitosa", JOptionPane.INFORMATION_MESSAGE);
-                            txtNombre.setVisible(false);
-                            txtPrecio.setVisible(false);
-                            txtCantidad.setVisible(false);
-                            labelAlmacenCantidad.setVisible(false);
-                            labelAlmacenNombre.setVisible(false);
-                            labelAlmacenPrecio.setVisible(false);
-                            labelTituloCompras.setVisible(false);
-                            btnConfirmarAlmacen.setVisible(false);
-                            txtNombre.setText("");
-                            txtPrecio.setText("");
-                            txtCantidad.setText("");
-                        }
-                    }
-                } else {
-                    JOptionPane.showMessageDialog(this, "Favor de rellenar todos los campos de texto", "Advertencia", JOptionPane.WARNING_MESSAGE);
-                }
-            } else {
-                JOptionPane.showMessageDialog(this, "Favor de seleccionar en la tabla el mismo producto que se encuentra en el renglon "
-                    + (tablaComprasSeleccionModificar + 1), "Se a seleccionado otro producto", JOptionPane.WARNING_MESSAGE);
-            }
-            break;
-            case "Consultar":
-            break;
-            default:
-            break;
-        }
-    }//GEN-LAST:event_btnConfirmarAlmacenActionPerformed
-
-    public boolean comprobarTXTCompras() {
-        return !txtCantidad.getText().equals("")
-                && !txtPrecio.getText().equals("") && !txtNombre.getText().equals("");
-    }
+    }//GEN-LAST:event_formWindowOpened
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnAlmacenEliminar;
-    private javax.swing.JButton btnAlmacenModificar;
-    private javax.swing.JButton btnConfirmarAlmacen;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JLabel labelAlmacenCantidad;
-    private javax.swing.JLabel labelAlmacenNombre;
-    private javax.swing.JLabel labelAlmacenPrecio;
-    private javax.swing.JLabel labelTituloCompras;
-    private javax.swing.JTable tablaCompras;
-    private javax.swing.JTextField txtCantidad;
-    private javax.swing.JTextField txtNombre;
-    private javax.swing.JTextField txtPrecio;
+    private javax.swing.JTable tablaComprasHechas;
     // End of variables declaration//GEN-END:variables
 }
