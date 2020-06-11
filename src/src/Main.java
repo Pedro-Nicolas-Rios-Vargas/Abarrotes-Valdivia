@@ -186,53 +186,6 @@ public class Main extends javax.swing.JFrame {
         cardLayout.show(PanelCardLayout, "Proveedores");
     }//GEN-LAST:event_btnGesProveedorActionPerformed
     /*-----------------------METODOS-----------------------------------------*/
-    /*-----------------Metodos para hacer la fecha del dia de hoy--------------*/
-    public String ventaDelDiaFechaDay(){
-        Calendar today = Calendar.getInstance();
-        //System.out.println("Today is " + today.getTime());
-        
-        switch (today.getTime().getDay()) {
-            case 0:
-                return "Domingo";
-            case 1:
-                return "Lunes";
-            case 2:
-               return "Martes";
-            case 3:
-                return "Miercoles";
-            case 4:
-                return "Jueves";
-            case 5:
-                return "Viernes";
-            case 6:
-                return "Sabado";
-            default:
-                throw new AssertionError();
-        }
-    }
-    
-    public String getDate(){
-        Calendar today = Calendar.getInstance();
-        return String.valueOf(today.getTime().getDate());
-    }
-    
-    public String getMonth(){
-        Calendar today = Calendar.getInstance();
-        return String.valueOf(today.getTime().getMonth()+1);
-    }
-    
-    public String getYear(){
-        Calendar today = Calendar.getInstance();
-        return String.valueOf(today.getTime().getYear()+1900);
-    }
-    
-    public String getTime(){
-        Calendar today = Calendar.getInstance();
-        return String.valueOf(today.getTime().getHours()) + ":" +
-               String.valueOf(today.getTime().getMinutes()) + ":"
-               + String.valueOf(today.getTime().getSeconds());
-    }
-
     public static void terminarPrograma(){
         System.exit(0);
     }

@@ -5,8 +5,7 @@ import java.sql.DriverManager;
 import java.sql.Statement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
 
 import sqlsrc.interfaces.SQLConnectionInterface;
 /**
@@ -14,7 +13,7 @@ import sqlsrc.interfaces.SQLConnectionInterface;
  * de datos incluyendo la entrada y salida de datos.
  */
 public class ConnectionDB implements SQLConnectionInterface{
-    private final String URL = "jdbc:sqlserver://DONCAMATIC1117:1433;databaseName=Abarrotes_Valdivia";
+    private final String URL = "jdbc:sqlserver://localhost:1433;databaseName=Abarrotes_Valdivia";
     private final String USER = "sa";
     private final String PWD = "sa";
     
@@ -61,6 +60,7 @@ public class ConnectionDB implements SQLConnectionInterface{
     public int send(String sqlUpdate) throws SQLException{
         
         return statement.executeUpdate(sqlUpdate);
+        
             
     }
 
@@ -100,5 +100,5 @@ public class ConnectionDB implements SQLConnectionInterface{
         }
     }
     
-    
+
 }

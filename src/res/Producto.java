@@ -24,6 +24,11 @@ public class Producto extends AbarrotesElemento{
         this.precio = precio;
         this.um = um;
     }
+
+    @Override
+    public String toString() {
+        return nombre + " " + " $" + precio + " " + um;
+    }
     
     public void setNombre(String nombre){
         this.nombre = nombre;

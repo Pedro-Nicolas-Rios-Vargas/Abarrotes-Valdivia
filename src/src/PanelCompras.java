@@ -925,6 +925,7 @@ public class PanelCompras extends javax.swing.JPanel{
             btnRadioPrecio.setEnabled(false);
             btnBuscarProd.setVisible(false);
             txtComprasProdBuscar.setVisible(false); 
+            btnRadioTodos.setEnabled(false); 
         }else{
             proveedorRd=true;
             btnAddProdCompra.setEnabled(true);
