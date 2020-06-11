@@ -30,7 +30,7 @@ public class ManejoUIVentas {
                 break;
             case 1:
                 try {
-                    query += " WHERE IDV like '%" + Integer.parseInt(busqueda) + "%'";
+                    query += " WHERE IDV = " + Integer.parseInt(busqueda);
                 } catch (NumberFormatException e) {
                     query += " WHERE IDV= " + 0;
                 } 
