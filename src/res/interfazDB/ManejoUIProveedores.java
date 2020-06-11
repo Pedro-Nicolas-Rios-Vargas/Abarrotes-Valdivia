@@ -7,6 +7,8 @@ import sqlsrc.ConnectionDB;
 
 import res.Persona;
 
+import lista.ListaCola;
+
 public class ManejoUIProveedores {
     private ConnectionDB conDB;
     
@@ -22,18 +24,14 @@ public class ManejoUIProveedores {
         return conDB.send(query);
     }
     
-    /*
-        opcQuery una de las tres opciones de consulta
-            Todos   1
-            ID      2
-            Nombre  3
-    */
-    public Persona[] consulta(Object queryType) throws SQLException{
+    public ListaCola<Persona> consulta(Object queryType) throws SQLException{
+        ListaCola<Persona> cola = new ListaCola<>();
         ResultSet rs;
-        String query = "SELECT * FROM Proveedores";
+        String query = "SELECT * FROM Proveedores ";
+        Persona heman;
         
         if(queryType instanceof Character){
-            
+            query += "ORDER BY IDPROV asc";
         }else if(queryType instanceof String){
             query += " WHERE Nombre_PROV='" + queryType + "'";
         }else if(queryType instanceof Integer){
@@ -42,22 +40,48 @@ public class ManejoUIProveedores {
         rs = conDB.receive(query);
         
         while(rs.next()){
-            
+            heman = new Persona(rs.getInt(1),rs.getString(2));
+            cola.push(heman);
         }
         
-        return null;
+        return cola;
     }
+    
+    public boolean modificar(int id, String nombre) throws SQLException {
+        int res = -1;
+        String update = "UPDATE Proveedores SET Nombre_PROV='" + nombre + "'"
+                + " WHERE IDPROV=" + id;
+        res = conDB.send(update);
+        return res != -1;
+    }
+    
+    public boolean eliminar(Object deleteType) throws SQLException {
+        int res = -1;
+        String delete = "DELETE FROM Proveedores WHERE ";
+        if(deleteType instanceof Integer){
+            delete += "IDPROV=" + deleteType;
+        }else if(deleteType instanceof String){
+            delete += "Nombre_PROV='" + deleteType + "'";
+        }
+        
+        res = conDB.send(delete);
+        return res != -1;
+    }
+    
     
     private int getLastID() throws SQLException{
         ResultSet rs;
         int id = 0;
         String query = "SELECT TOP 1 IDPROV FROM Proveedores ORDER BY IDPROV DESC";
         rs = conDB.receive(query);
+        if(rs.next())
+            id = rs.getInt(1);
         
-        id = rs.getInt(1);
-        
-        System.out.println(id);
         return id;
         
+    }
+    
+    public void closeConnection(){
+        conDB.closeConnection();
     }
 }

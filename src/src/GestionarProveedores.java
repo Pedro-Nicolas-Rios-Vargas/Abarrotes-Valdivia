@@ -9,8 +9,22 @@ package src;
  *
  * @author pnrv2
  */
+import javax.swing.table.TableModel;
+import javax.swing.table.DefaultTableModel;
+
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+
+import res.interfazDB.ManejoUIProveedores;
+import lista.ListaCola;
+import res.Persona;
+
 public class GestionarProveedores extends javax.swing.JPanel {
 
+    private ManejoUIProveedores manager;
+    
     private boolean queryTodos;
     private boolean queryId;
     private boolean queryNom;
@@ -21,6 +35,7 @@ public class GestionarProveedores extends javax.swing.JPanel {
         queryTodos = false;
         queryId = false;
         queryNom = false;
+        manager = new ManejoUIProveedores();
         
         initComponents();
     }
@@ -35,6 +50,7 @@ public class GestionarProveedores extends javax.swing.JPanel {
     private void initComponents() {
 
         btnGroup = new javax.swing.ButtonGroup();
+        btnGroupEliminar = new javax.swing.ButtonGroup();
         opcionesPane = new javax.swing.JPanel();
         windowOptions = new javax.swing.JPanel();
         ventanaAgregar = new javax.swing.JPanel();
@@ -65,12 +81,13 @@ public class GestionarProveedores extends javax.swing.JPanel {
         ventanaEliminar = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
         errorLabelEliminar = new javax.swing.JLabel();
-        jLabel9 = new javax.swing.JLabel();
-        tfIDProvEliminar = new javax.swing.JTextField();
-        jLabel10 = new javax.swing.JLabel();
-        tfNombreEliminar = new javax.swing.JTextField();
+        lbEliminar = new javax.swing.JLabel();
+        tfEliminar = new javax.swing.JTextField();
         btnBuscarEliminar = new javax.swing.JButton();
         btnConfirm = new javax.swing.JButton();
+        jLabel9 = new javax.swing.JLabel();
+        rbIDEliminar = new javax.swing.JRadioButton();
+        rbNombreEliminar = new javax.swing.JRadioButton();
         cabeceraOpcionesPane = new javax.swing.JPanel();
         tituloOpcionesLabel = new javax.swing.JLabel();
         botonesPane = new javax.swing.JPanel();
@@ -101,9 +118,13 @@ public class GestionarProveedores extends javax.swing.JPanel {
         });
 
         errorLabelAgregar.setForeground(new java.awt.Color(255, 0, 0));
-        errorLabelAgregar.setText("Error Label");
 
         btnAgregar.setText("Agregar");
+        btnAgregar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAgregarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout ventanaAgregarLayout = new javax.swing.GroupLayout(ventanaAgregar);
         ventanaAgregar.setLayout(ventanaAgregarLayout);
@@ -113,7 +134,7 @@ public class GestionarProveedores extends javax.swing.JPanel {
                 .addContainerGap()
                 .addGroup(ventanaAgregarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(ventanaAgregarLayout.createSequentialGroup()
-                        .addGap(0, 45, Short.MAX_VALUE)
+                        .addGap(0, 55, Short.MAX_VALUE)
                         .addGroup(ventanaAgregarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(errorLabelAgregar)
                             .addGroup(ventanaAgregarLayout.createSequentialGroup()
@@ -122,8 +143,8 @@ public class GestionarProveedores extends javax.swing.JPanel {
                             .addGroup(ventanaAgregarLayout.createSequentialGroup()
                                 .addComponent(jLabel4)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(tfNombreProv, javax.swing.GroupLayout.DEFAULT_SIZE, 203, Short.MAX_VALUE)))
-                        .addGap(0, 26, Short.MAX_VALUE))
+                                .addComponent(tfNombreProv, javax.swing.GroupLayout.DEFAULT_SIZE, 213, Short.MAX_VALUE)))
+                        .addGap(0, 38, Short.MAX_VALUE))
                     .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -140,7 +161,7 @@ public class GestionarProveedores extends javax.swing.JPanel {
                     .addComponent(tfNombreProv, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(btnAgregar)
-                .addContainerGap(201, Short.MAX_VALUE))
+                .addContainerGap(217, Short.MAX_VALUE))
         );
 
         windowOptions.add(ventanaAgregar, "Agregar");
@@ -152,7 +173,6 @@ public class GestionarProveedores extends javax.swing.JPanel {
         jLabel1.setText("Consultar Proveedor");
 
         errorLabelConsultar.setForeground(new java.awt.Color(255, 0, 0));
-        errorLabelConsultar.setText("Error Label");
 
         tipoConsultaLabel.setText("ID Proveedor:");
 
@@ -165,6 +185,11 @@ public class GestionarProveedores extends javax.swing.JPanel {
         });
 
         btnBuscar.setText("Buscar");
+        btnBuscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBuscarActionPerformed(evt);
+            }
+        });
 
         btnGroup.add(jrbTodos);
         jrbTodos.setText("Todos");
@@ -246,7 +271,7 @@ public class GestionarProveedores extends javax.swing.JPanel {
                     .addComponent(tfIDProv, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(btnBuscar)
-                .addContainerGap(134, Short.MAX_VALUE))
+                .addContainerGap(150, Short.MAX_VALUE))
         );
 
         windowOptions.add(ventanaConsultar, "Consultar");
@@ -257,7 +282,6 @@ public class GestionarProveedores extends javax.swing.JPanel {
         jLabel6.setToolTipText("");
 
         errorLabelModificar.setForeground(new java.awt.Color(255, 0, 0));
-        errorLabelModificar.setText("Error Label");
 
         jLabel2.setText("ID Proveedor:");
 
@@ -287,6 +311,11 @@ public class GestionarProveedores extends javax.swing.JPanel {
 
         btnModificar.setText("Guardar Cambios");
         btnModificar.setEnabled(false);
+        btnModificar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnModificarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout ventanaModificarLayout = new javax.swing.GroupLayout(ventanaModificar);
         ventanaModificar.setLayout(ventanaModificarLayout);
@@ -304,19 +333,16 @@ public class GestionarProveedores extends javax.swing.JPanel {
                             .addComponent(jLabel7))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(ventanaModificarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(tfNombreProvModificar, javax.swing.GroupLayout.DEFAULT_SIZE, 215, Short.MAX_VALUE)
-                            .addComponent(tfIdProvModificar, javax.swing.GroupLayout.DEFAULT_SIZE, 215, Short.MAX_VALUE)))
+                            .addComponent(tfNombreProvModificar, javax.swing.GroupLayout.DEFAULT_SIZE, 233, Short.MAX_VALUE)
+                            .addComponent(tfIdProvModificar, javax.swing.GroupLayout.DEFAULT_SIZE, 233, Short.MAX_VALUE)))
                     .addGroup(ventanaModificarLayout.createSequentialGroup()
-                        .addGroup(ventanaModificarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(ventanaModificarLayout.createSequentialGroup()
-                                .addGap(47, 47, 47)
-                                .addComponent(btnBuscarModificar)
-                                .addGap(30, 30, 30)
-                                .addComponent(btnModificar))
-                            .addGroup(ventanaModificarLayout.createSequentialGroup()
-                                .addGap(50, 50, 50)
-                                .addComponent(errorLabelModificar)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addGap(47, 47, 47)
+                        .addComponent(btnBuscarModificar)
+                        .addGap(30, 30, 30)
+                        .addComponent(btnModificar))
+                    .addGroup(ventanaModificarLayout.createSequentialGroup()
+                        .addGap(50, 50, 50)
+                        .addComponent(errorLabelModificar)))
                 .addContainerGap())
         );
         ventanaModificarLayout.setVerticalGroup(
@@ -338,7 +364,7 @@ public class GestionarProveedores extends javax.swing.JPanel {
                 .addGroup(ventanaModificarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnBuscarModificar)
                     .addComponent(btnModificar))
-                .addContainerGap(150, Short.MAX_VALUE))
+                .addContainerGap(166, Short.MAX_VALUE))
         );
 
         windowOptions.add(ventanaModificar, "Modificar");
@@ -348,22 +374,13 @@ public class GestionarProveedores extends javax.swing.JPanel {
         jLabel5.setText("Eliminar Proveedor");
 
         errorLabelEliminar.setForeground(new java.awt.Color(255, 0, 0));
-        errorLabelEliminar.setText("Error Label");
 
-        jLabel9.setText("ID Proveedor:");
+        lbEliminar.setText("ID Proveedor:");
 
-        tfIDProvEliminar.setText("Ingrese el Id del Proveedor");
-        tfIDProvEliminar.addMouseListener(new java.awt.event.MouseAdapter() {
+        tfEliminar.setText("Ingrese el Id del Proveedor");
+        tfEliminar.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tfIDProvEliminarMouseClicked(evt);
-            }
-        });
-
-        jLabel10.setText("Nombre:");
-
-        tfNombreEliminar.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tfNombreEliminarMouseClicked(evt);
+                tfEliminarMouseClicked(evt);
             }
         });
 
@@ -376,6 +393,29 @@ public class GestionarProveedores extends javax.swing.JPanel {
 
         btnConfirm.setText("Eliminar");
         btnConfirm.setEnabled(false);
+        btnConfirm.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnConfirmActionPerformed(evt);
+            }
+        });
+
+        jLabel9.setText("Tipo de Consulta:");
+
+        btnGroupEliminar.add(rbIDEliminar);
+        rbIDEliminar.setText("ID");
+        rbIDEliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rbIDEliminarActionPerformed(evt);
+            }
+        });
+
+        btnGroupEliminar.add(rbNombreEliminar);
+        rbNombreEliminar.setText("Nombre");
+        rbNombreEliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rbNombreEliminarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout ventanaEliminarLayout = new javax.swing.GroupLayout(ventanaEliminar);
         ventanaEliminar.setLayout(ventanaEliminarLayout);
@@ -388,42 +428,46 @@ public class GestionarProveedores extends javax.swing.JPanel {
             .addGroup(ventanaEliminarLayout.createSequentialGroup()
                 .addGap(42, 42, 42)
                 .addGroup(ventanaEliminarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(ventanaEliminarLayout.createSequentialGroup()
+                        .addComponent(rbIDEliminar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(rbNombreEliminar))
+                    .addComponent(jLabel9)
                     .addComponent(errorLabelEliminar)
                     .addGroup(ventanaEliminarLayout.createSequentialGroup()
                         .addGroup(ventanaEliminarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel10)
-                            .addComponent(jLabel9)
+                            .addComponent(lbEliminar)
                             .addComponent(btnBuscarEliminar))
                         .addGap(18, 18, 18)
                         .addGroup(ventanaEliminarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(ventanaEliminarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(tfIDProvEliminar, javax.swing.GroupLayout.DEFAULT_SIZE, 178, Short.MAX_VALUE)
-                                .addComponent(tfNombreEliminar))
+                            .addComponent(tfEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, ventanaEliminarLayout.createSequentialGroup()
                                 .addComponent(btnConfirm)
                                 .addGap(36, 36, 36)))))
-                .addContainerGap(31, Short.MAX_VALUE))
+                .addContainerGap(45, Short.MAX_VALUE))
         );
         ventanaEliminarLayout.setVerticalGroup(
             ventanaEliminarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(ventanaEliminarLayout.createSequentialGroup()
                 .addGap(23, 23, 23)
                 .addComponent(jLabel5)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel9)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(ventanaEliminarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(rbIDEliminar)
+                    .addComponent(rbNombreEliminar))
+                .addGap(10, 10, 10)
                 .addComponent(errorLabelEliminar)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(ventanaEliminarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel9)
-                    .addComponent(tfIDProvEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(ventanaEliminarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel10)
-                    .addComponent(tfNombreEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lbEliminar)
+                    .addComponent(tfEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(ventanaEliminarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnBuscarEliminar)
                     .addComponent(btnConfirm))
-                .addContainerGap(140, Short.MAX_VALUE))
+                .addContainerGap(156, Short.MAX_VALUE))
         );
 
         windowOptions.add(ventanaEliminar, "Eliminar");
@@ -500,10 +544,7 @@ public class GestionarProveedores extends javax.swing.JPanel {
 
         tablaProveedores.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null}
+
             },
             new String [] {
                 "ID", "Nombre"
@@ -591,29 +632,254 @@ public class GestionarProveedores extends javax.swing.JPanel {
     }//GEN-LAST:event_tfIDProvMouseClicked
 
     private void tfIdProvModificarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tfIdProvModificarMouseClicked
-        tfIdProvModificar.setText("");
+        if(tfIdProvModificar.isEnabled())
+            tfIdProvModificar.setText("");
     }//GEN-LAST:event_tfIdProvModificarMouseClicked
 
     private void btnBuscarModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarModificarActionPerformed
-        //metodos de busqueda en la base de datos
+        int in = 0;
+        Object obj = null;
+        ListaCola<Persona> cola;
+        Persona proveedor;
+        
+        try{
+            in = Integer.parseInt(tfIdProvModificar.getText());
+            obj = in;
+        }catch(NumberFormatException nfE){
+            errorLabelModificar.setText("ID no valido");
+        }
+        try{
+            if(obj != null){
+                cola = manager.consulta(obj);
+                
+                if(cola.hasNext()){
+                    proveedor = cola.pop();
+                    tfNombreProvModificar.setText(proveedor.getNombre());
+                    
+                    if(errorLabelModificar.getText().length() != 0)
+                        errorLabelModificar.setText("");
+                    
+                    tfIdProvModificar.setEnabled(false);
+                    tfNombreProvModificar.setEnabled(true);
+                    btnBuscarModificar.setEnabled(false);
+                    btnModificar.setEnabled(true);
+                }else{
+                    JOptionPane.showMessageDialog(this, "No existe tal producto", "Id inexistente", JOptionPane.WARNING_MESSAGE);
+                }
+                
+                
+                
+            }
+        }catch(SQLException sqlE){
+            JOptionPane.showMessageDialog(this, "Error al realizar busqueda: \n" + sqlE.getMessage(), "Error de Busqueda.", JOptionPane.ERROR_MESSAGE);
+        }
+        
     }//GEN-LAST:event_btnBuscarModificarActionPerformed
 
     private void tfNombreProvModificarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tfNombreProvModificarMouseClicked
         tfNombreProv.setText("");
     }//GEN-LAST:event_tfNombreProvModificarMouseClicked
 
-    private void tfIDProvEliminarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tfIDProvEliminarMouseClicked
-        tfIDProvEliminar.setText("");
-    }//GEN-LAST:event_tfIDProvEliminarMouseClicked
-
-    private void tfNombreEliminarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tfNombreEliminarMouseClicked
-        tfNombreEliminar.setText("");
-    }//GEN-LAST:event_tfNombreEliminarMouseClicked
+    private void tfEliminarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tfEliminarMouseClicked
+        tfEliminar.setText("");
+    }//GEN-LAST:event_tfEliminarMouseClicked
 
     private void btnBuscarEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarEliminarActionPerformed
-        //metodos de busqueda en la base de datos
+        int in;
+        Object obj = null;
+        String nombre = "";
+        ListaCola<Persona> res;
+        if(rbIDEliminar.isSelected()){
+            try{
+                in = Integer.parseInt(tfEliminar.getText());
+                obj = in;
+            }catch(NumberFormatException nfE){
+                errorLabelEliminar.setText("Valor no numerico");
+            }
+        }else if(rbNombreEliminar.isSelected()){
+            nombre = tfEliminar.getText();
+            if(nombre.length() != 0){
+                obj = nombre;
+            }else{
+                errorLabelEliminar.setText("Valor no ingresado");
+            }
+        }
+        
+        if(obj != null){
+            try{
+                res = manager.consulta(obj);
+                if(!res.hasNext())
+                    JOptionPane.showMessageDialog(this, "No existe tal proveedor", "Proveedor no existente.", JOptionPane.WARNING_MESSAGE);
+                else{
+                    if(errorLabelEliminar.getText().length() != 0)
+                        errorLabelEliminar.setText("");
+                    btnBuscarEliminar.setEnabled(false);
+                    btnConfirm.setEnabled(true);
+                }
+            }catch(SQLException sqlE){
+                JOptionPane.showMessageDialog(this, "Error en la eliminacion: \n" + sqlE.getMessage(), "Error eliminacion", JOptionPane.ERROR_MESSAGE);
+            }
+        }
     }//GEN-LAST:event_btnBuscarEliminarActionPerformed
 
+    private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
+        String nombre = tfNombreProv.getText();
+        if(nombre.length() != 0){
+            try {
+                manager.agregar(tfNombreProv.getText());
+                if(errorLabelAgregar.getText().length() != 0)
+                    errorLabelAgregar.setText("");
+                JOptionPane.showMessageDialog(this, "Proveedor Agregado", "Insercion Exitosa", JOptionPane.INFORMATION_MESSAGE);
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(this, "Error al agregar usuario: \n" + ex.getMessage(), "Error con la base de datos.", JOptionPane.ERROR_MESSAGE);
+            }
+        }else{
+            errorLabelAgregar.setText("No se ingreso ningun valor");
+        }
+    }//GEN-LAST:event_btnAgregarActionPerformed
+
+    private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
+        Object obj = null;
+        ListaCola<Persona> cola;
+        if(jrbTodos.isSelected()){
+            obj = '*';
+        }else if(jrbID.isSelected()){
+            int in = 0;
+            try{
+                if(tfIDProv.getText().length() != 0){
+                    in = Integer.parseInt(tfIDProv.getText());
+                    obj = in;
+                }else
+                    errorLabelConsultar.setText("No se ingreso ningun valor");
+            }catch(NumberFormatException nfE){
+                errorLabelConsultar.setText("No es un numero entero");
+            }
+        }else if(jrbNombre.isSelected()){
+            String nombre = tfIDProv.getText();
+            if(nombre.length() != 0){
+                obj = nombre;
+            }else{
+                errorLabelConsultar.setText("No se ingreso ningun valor");
+            }
+        }
+        
+        try{
+            if(obj != null){
+                cola = manager.consulta(obj);
+                if(errorLabelConsultar.getText().length() != 0)
+                    errorLabelConsultar.setText("");
+                if(!cola.hasNext()){
+                    JOptionPane.showMessageDialog(this,"No existen elementos", "Elementos inexistentes", JOptionPane.WARNING_MESSAGE);
+                }
+                llenarTabla(cola);
+                
+            }
+            
+        }catch(SQLException ex){
+            JOptionPane.showMessageDialog(this, "Error al agregar usuario: \n" +ex.getMessage(), "Error al Agregar", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_btnBuscarActionPerformed
+
+    private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
+        int id;
+        String nombre = "";
+        boolean res;
+        try{
+            id = Integer.parseInt(tfIdProvModificar.getText());
+            
+            nombre = tfNombreProvModificar.getText();
+            if(nombre.length() != 0){
+                res = manager.modificar(id, nombre);
+                
+                if(!res)
+                    JOptionPane.showMessageDialog(this, "No se pudo consultar la consulta", "Problema al consultar", JOptionPane.WARNING_MESSAGE);
+                
+                if(errorLabelModificar.getText().length() != 0)
+                    errorLabelModificar.setText("");
+                
+                JOptionPane.showMessageDialog(this, "Modificacion exitosa.", "Modificacion realizada", JOptionPane.INFORMATION_MESSAGE);
+                tfIdProvModificar.setEnabled(true);
+                tfNombreProvModificar.setEnabled(false);
+                btnBuscarModificar.setEnabled(true);
+                btnModificar.setEnabled(false);
+            
+                tfIdProvModificar.setText("Ingrese el ID del Proveedor");
+                tfNombreProvModificar.setText("Ingrese el nombre del Proveedor");
+            }else{
+                errorLabelModificar.setText("No ingreso nuevo nombre.");
+            }
+            
+        }catch(NumberFormatException nfE){
+            
+        }catch(SQLException sqlE){
+            JOptionPane.showMessageDialog(this, "Error en la busqueda: \n" + sqlE.getMessage(), "Error de Busqueda.", JOptionPane.ERROR_MESSAGE);
+        }
+        
+    }//GEN-LAST:event_btnModificarActionPerformed
+
+    private void rbIDEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbIDEliminarActionPerformed
+        lbEliminar.setText("ID Proveedor:");
+    }//GEN-LAST:event_rbIDEliminarActionPerformed
+
+    private void rbNombreEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbNombreEliminarActionPerformed
+        lbEliminar.setText("Nombre Proveedor:");
+    }//GEN-LAST:event_rbNombreEliminarActionPerformed
+
+    private void btnConfirmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmActionPerformed
+        int in;
+        Object obj = null;
+        String nombre = "";
+        boolean res;
+        
+        if(rbIDEliminar.isSelected()){
+            try{
+                if(tfEliminar.getText().length() != 0){
+                    in = Integer.parseInt(tfEliminar.getText());
+                    obj = in;
+                }
+            }catch(NumberFormatException nfE){
+                errorLabelEliminar.setText("Valor no numerico");
+            }
+        }else if(rbNombreEliminar.isSelected()){
+            nombre = tfEliminar.getText();
+            if(nombre.length() != 0)
+                obj = nombre;
+            else
+                errorLabelEliminar.setText("No se ingresaron valores");
+        }
+        
+        if(obj != null){
+            try{
+                res = manager.eliminar(obj);
+                if(!res)
+                    JOptionPane.showMessageDialog(this, "Eliminacion no realizada", "Problema de Eliminacion.", JOptionPane.WARNING_MESSAGE);
+                else{
+                    if(errorLabelEliminar.getText().length() != 0)
+                        errorLabelEliminar.setText("");
+                    
+                    btnBuscarEliminar.setEnabled(true);
+                    btnConfirm.setEnabled(false);
+                }
+            }catch(SQLException sqlE){
+                JOptionPane.showMessageDialog(this, "Eliminacion no realizada: \n" + sqlE.getMessage(), "Error en la Eliminacion.", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }//GEN-LAST:event_btnConfirmActionPerformed
+
+    private void llenarTabla(ListaCola<Persona> cola){
+        Persona proveedor;
+        DefaultTableModel modelo = (DefaultTableModel) tablaProveedores.getModel();
+        
+        while(modelo.getRowCount() != 0)
+            modelo.removeRow(0);
+        
+        while(cola.hasNext()){
+            proveedor = cola.pop();
+            
+            modelo.addRow(new Object[]{proveedor.getId(), proveedor.getNombre()});
+        }
+        tablaProveedores.setModel(modelo);
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel botonesPane;
@@ -626,6 +892,7 @@ public class GestionarProveedores extends javax.swing.JPanel {
     private javax.swing.JButton btnConsultarWindow;
     private javax.swing.JButton btnEliminarWindow;
     private javax.swing.ButtonGroup btnGroup;
+    private javax.swing.ButtonGroup btnGroupEliminar;
     private javax.swing.JButton btnModificar;
     private javax.swing.JButton btnModificarWindow;
     private javax.swing.JPanel cabeceraOpcionesPane;
@@ -634,7 +901,6 @@ public class GestionarProveedores extends javax.swing.JPanel {
     private javax.swing.JLabel errorLabelEliminar;
     private javax.swing.JLabel errorLabelModificar;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -647,12 +913,14 @@ public class GestionarProveedores extends javax.swing.JPanel {
     private javax.swing.JRadioButton jrbID;
     private javax.swing.JRadioButton jrbNombre;
     private javax.swing.JRadioButton jrbTodos;
+    private javax.swing.JLabel lbEliminar;
     private javax.swing.JPanel opcionesPane;
+    private javax.swing.JRadioButton rbIDEliminar;
+    private javax.swing.JRadioButton rbNombreEliminar;
     private javax.swing.JTable tablaProveedores;
+    private javax.swing.JTextField tfEliminar;
     private javax.swing.JTextField tfIDProv;
-    private javax.swing.JTextField tfIDProvEliminar;
     private javax.swing.JTextField tfIdProvModificar;
-    private javax.swing.JTextField tfNombreEliminar;
     private javax.swing.JTextField tfNombreProv;
     private javax.swing.JTextField tfNombreProvModificar;
     private javax.swing.JLabel tipoConsultaLabel;
