@@ -133,19 +133,29 @@ public class ManejoUICompras {
         }
         
         if (idp==0) {
-            query2="select IDPROD from Compras, Compras_Detalladas where compras.IDCOM != Compras_Detalladas.idcom";
+            query2="select IDPROD from Compras, Compras_Detalladas where compras.IDCOM = Compras_Detalladas.idcom";
             rp = conDB.receive(query2);
             while (rp.next()) {
                 idprod = rp.getInt(1);
                 idproductos.add(String.valueOf(idprod));
             }
             String strList = String.join(",", idproductos);
-            query3="select * from productos where idprod not in ("+strList+")";
-            rd = conDB.receive(query3);
-            while(rd.next()){
-                    producto = new Producto(rd.getInt(1), rd.getString(2), rd.getInt(3),
-                            rd.getInt(4), rd.getFloat(5), rd.getString(6));
-                    queue.push(producto);
+            if (idproductos.isEmpty()) {
+                query3="select * from productos";
+                rd = conDB.receive(query3);
+                while(rd.next()){
+                        producto = new Producto(rd.getInt(1), rd.getString(2), rd.getInt(3),
+                                rd.getInt(4), rd.getFloat(5), rd.getString(6));
+                        queue.push(producto);
+                }
+            }else{
+                query3="select * from productos where idprod not in ("+strList+")";
+                rd = conDB.receive(query3);
+                while(rd.next()){
+                        producto = new Producto(rd.getInt(1), rd.getString(2), rd.getInt(3),
+                                rd.getInt(4), rd.getFloat(5), rd.getString(6));
+                        queue.push(producto);
+                }
             }
         }else{
             query3="select IDPROD from Compras, Compras_Detalladas where compras.IDCOM = Compras_Detalladas.idcom and IDPROV = "+idp;
@@ -197,19 +207,29 @@ public class ManejoUICompras {
                 }
 
                 if (idp==0) {
-                    query2="select IDPROD from Compras, Compras_Detalladas where compras.IDCOM != Compras_Detalladas.idcom";
+                    query2="select IDPROD from Compras, Compras_Detalladas where compras.IDCOM = Compras_Detalladas.idcom";
                     rp = conDB.receive(query2);
                     while (rp.next()) {
                         idprod = rp.getInt(1);
                         idproductos.add(String.valueOf(idprod));
                     }
                     String strList = String.join(",", idproductos);
-                    query3="select * from productos where idprod not in ("+strList+")";
-                    rd = conDB.receive(query3);
-                    while(rd.next()){
-                            producto = new Producto(rd.getInt(1), rd.getString(2), rd.getInt(3),
-                                    rd.getInt(4), rd.getFloat(5), rd.getString(6));
-                            queue.push(producto);
+                    if (idproductos.isEmpty()) {
+                        query3="select * from productos";
+                        rd = conDB.receive(query3);
+                        while(rd.next()){
+                                producto = new Producto(rd.getInt(1), rd.getString(2), rd.getInt(3),
+                                        rd.getInt(4), rd.getFloat(5), rd.getString(6));
+                                queue.push(producto);
+                        }
+                    }else{
+                        query3="select * from productos where idprod not in ("+strList+")";
+                        rd = conDB.receive(query3);
+                        while(rd.next()){
+                                producto = new Producto(rd.getInt(1), rd.getString(2), rd.getInt(3),
+                                        rd.getInt(4), rd.getFloat(5), rd.getString(6));
+                                queue.push(producto);
+                        }
                     }
                 }else{
                     query3="select IDPROD from Compras, Compras_Detalladas where compras.IDCOM = Compras_Detalladas.idcom and IDPROV = "+idp;
@@ -245,19 +265,29 @@ public class ManejoUICompras {
                 }
 
                 if (idp==0) {
-                    query2="select IDPROD from Compras, Compras_Detalladas where compras.IDCOM != Compras_Detalladas.idcom";
+                    query2="select IDPROD from Compras, Compras_Detalladas where compras.IDCOM = Compras_Detalladas.idcom";
                     rp = conDB.receive(query2);
                     while (rp.next()) {
                         idprod = rp.getInt(1);
                         idproductos.add(String.valueOf(idprod));
                     }
                     String strList = String.join(",", idproductos);
-                    query3="select * from productos where idprod not in ("+strList+") ORDER BY PRECIO ASC";
-                    rd = conDB.receive(query3);
-                    while(rd.next()){
-                            producto = new Producto(rd.getInt(1), rd.getString(2), rd.getInt(3),
-                                    rd.getInt(4), rd.getFloat(5), rd.getString(6));
-                            queue.push(producto);
+                    if (idproductos.isEmpty()) {
+                        query3="select * from productos";
+                        rd = conDB.receive(query3);
+                        while(rd.next()){
+                                producto = new Producto(rd.getInt(1), rd.getString(2), rd.getInt(3),
+                                        rd.getInt(4), rd.getFloat(5), rd.getString(6));
+                                queue.push(producto);
+                        }
+                    }else{
+                        query3="select * from productos where idprod not in ("+strList+")";
+                        rd = conDB.receive(query3);
+                        while(rd.next()){
+                                producto = new Producto(rd.getInt(1), rd.getString(2), rd.getInt(3),
+                                        rd.getInt(4), rd.getFloat(5), rd.getString(6));
+                                queue.push(producto);
+                        }
                     }
                 }else{
                     query3="select IDPROD from Compras, Compras_Detalladas where compras.IDCOM = Compras_Detalladas.idcom and IDPROV = "+idp;
@@ -293,19 +323,29 @@ public class ManejoUICompras {
                 }
 
                 if (idp==0) {
-                    query2="select IDPROD from Compras, Compras_Detalladas where compras.IDCOM != Compras_Detalladas.idcom";
+                    query2="select IDPROD from Compras, Compras_Detalladas where compras.IDCOM = Compras_Detalladas.idcom";
                     rp = conDB.receive(query2);
                     while (rp.next()) {
                         idprod = rp.getInt(1);
                         idproductos.add(String.valueOf(idprod));
                     }
                     String strList = String.join(",", idproductos);
-                    query3="select * from productos where idprod not in ("+strList+") ORDER BY EXISTENCIA ASC";
-                    rd = conDB.receive(query3);
-                    while(rd.next()){
-                            producto = new Producto(rd.getInt(1), rd.getString(2), rd.getInt(3),
-                                    rd.getInt(4), rd.getFloat(5), rd.getString(6));
-                            queue.push(producto);
+                    if (idproductos.isEmpty()) {
+                        query3="select * from productos";
+                        rd = conDB.receive(query3);
+                        while(rd.next()){
+                                producto = new Producto(rd.getInt(1), rd.getString(2), rd.getInt(3),
+                                        rd.getInt(4), rd.getFloat(5), rd.getString(6));
+                                queue.push(producto);
+                        }
+                    }else{
+                        query3="select * from productos where idprod not in ("+strList+")";
+                        rd = conDB.receive(query3);
+                        while(rd.next()){
+                                producto = new Producto(rd.getInt(1), rd.getString(2), rd.getInt(3),
+                                        rd.getInt(4), rd.getFloat(5), rd.getString(6));
+                                queue.push(producto);
+                        }
                     }
                 }else{
                     query3="select IDPROD from Compras, Compras_Detalladas where compras.IDCOM = Compras_Detalladas.idcom and IDPROV = "+idp;
@@ -360,20 +400,30 @@ public class ManejoUICompras {
         }
 
         if (idp==0) {
-                    query2="select IDPROD from Compras, Compras_Detalladas where compras.IDCOM != Compras_Detalladas.idcom";
-                    rp = conDB.receive(query2);
-                    while (rp.next()) {
-                        idprod = rp.getInt(1);
-                        idproductos.add(String.valueOf(idprod));
-                    }
-                    String strList = String.join(",", idproductos);
-                    query3="select * from productos where idprod not in ("+strList+")";
-                    rd = conDB.receive(query3);
-                    while(rd.next()){
-                            producto = new Producto(rd.getInt(1), rd.getString(2), rd.getInt(3),
-                                    rd.getInt(4), rd.getFloat(5), rd.getString(6));
-                            queue.push(producto);
-                    }
+            query2="select IDPROD from Compras, Compras_Detalladas where compras.IDCOM = Compras_Detalladas.idcom";
+            rp = conDB.receive(query2);
+            while (rp.next()) {
+                idprod = rp.getInt(1);
+                idproductos.add(String.valueOf(idprod));
+            }
+            String strList = String.join(",", idproductos);
+            if (idproductos.isEmpty()) {
+                query3="select * from productos";
+                rd = conDB.receive(query3);
+                while(rd.next()){
+                        producto = new Producto(rd.getInt(1), rd.getString(2), rd.getInt(3),
+                                rd.getInt(4), rd.getFloat(5), rd.getString(6));
+                        queue.push(producto);
+                }
+            }else{
+                query3="select * from productos where idprod not in ("+strList+")";
+                rd = conDB.receive(query3);
+                while(rd.next()){
+                        producto = new Producto(rd.getInt(1), rd.getString(2), rd.getInt(3),
+                                rd.getInt(4), rd.getFloat(5), rd.getString(6));
+                        queue.push(producto);
+                }
+            }
         }else{
             query3="select IDPROD from Compras, Compras_Detalladas where compras.IDCOM = Compras_Detalladas.idcom and IDPROV = "+idp;
             rn = conDB.receive(query3);
@@ -420,7 +470,7 @@ public class ManejoUICompras {
         ResultSet rp, rd;
         String query2="";
         String query3="";
-        query2="select IDPROD from Compras, Compras_Detalladas where compras.IDCOM != Compras_Detalladas.idcom";
+        query2="select IDPROD from Compras, Compras_Detalladas where compras.IDCOM = Compras_Detalladas.idcom";
         int idprod;
         Producto producto;
         rp = conDB.receive(query2);
