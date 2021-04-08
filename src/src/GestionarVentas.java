@@ -320,7 +320,7 @@ public class GestionarVentas extends javax.swing.JPanel {
         int paso = 2;
         if ((!(pagoEnString.equals(""))) && pagoEnFloat >= 0 && (Double.valueOf(pagoS) - total) >= 0) {
             try {
-                paso = mIUVD.agregar(1, dia(), mes(), year(), total);
+                paso = mIUVD.agregar(1, total);
             } catch (SQLException ex) {
                 JOptionPane.showMessageDialog(this, "ERROR: " + ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
             }
@@ -332,6 +332,8 @@ public class GestionarVentas extends javax.swing.JPanel {
                         int cantidad = ((Integer) modeloPrueba.getValueAt(i, 1));
                         float subTotal = (producto.getPrecio());
                         mUIV.agregar(id, cantidad, subTotal);
+                        //Aqui mismo puedo agregar la actualizacion de la cantidad que el producto tendra despues de que se vendio
+                        mUIP.acutalizarExistencia(id, producto.getExistencia() - cantidad); //Pero claro, no se que tan facil sea esto ya que no lo puedo probar porque tengo error en otras clases que no son las mias xd
                     } catch (SQLException ex) {
                         JOptionPane.showMessageDialog(this, "ERROR: " + ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
                     }

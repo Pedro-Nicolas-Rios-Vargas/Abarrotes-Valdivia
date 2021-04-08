@@ -22,56 +22,72 @@ public class ManejoUIVentasDetalladas {
         conDB = new ConnectionDB();
         
     }
-    
-    public int agregar(int idC, int dia, int mes, int year, float total) throws SQLException {
+    /**
+     * Metodo para agregar una ventada detallada
+     * @param idC ID del cliente
+     * @param total Total de la venta
+     * @return Regresa un nuemero entero que no recuerdo que es lo que hace xd
+     * @throws SQLException 
+     */
+    public int agregar(int idC, float total) throws SQLException {
         int idv = getLastID() + 1;
-        String query = "INSERT INTO Ventas_Detalladas VALUES (" + idv + ", " + idC + ", " +
-                dia + ", " + mes + ", " + year + ", " + total + ")";
+        String query = "execute insert_VD " + idv + ", " + idC + ", " + ", " + 
+                total;
         return conDB.send(query);
     }
-    
+    /**
+     * Metodo para consultar las ventas detalladas con filtros
+     * @param filtro filtro 1 = filtrar por ID de la venta <br> 2 = filtrar por fecha de venta <br> 3 = filtrar por ID del cliente 4 = filtrar por total de la venta. Cualquier otro numero busca sin ningun filtro
+     * @param busqueda
+     * @param dia
+     * @param mes
+     * @param year
+     * @return Cola en la que contiene los datos de la busqueda 
+     * @throws SQLException 
+     */
     public ListaCola<Detallada> consultar(int filtro, String busqueda, int dia, int mes, int year) throws SQLException {
         ListaCola<Detallada> queue = new ListaCola<>();
         ResultSet rs;
-        String query = "SELECT * FROM Ventas_Detalladas";
+        String query = "execute selectVDs";
         Detallada accion;
         switch (filtro) {
             case 0:
                 break;
             case 1:
                 try {
-                    query += " WHERE IDV like '%" + Integer.parseInt(busqueda) + "%'";
+                    query = "execute selectVD " + Integer.parseInt(busqueda);
                 } catch (NumberFormatException e) {
-                    query += " WHERE IDV= " + 0;
+                    query = "execute selectVD " + 0;
                 } 
                 break;
             case 2:
                 try {
-                    query += " WHERE diaV = " + dia + " and mesV = " + mes + "yearV = " + year;
+                    query = "execute selectVD_Fecha '" + year + "-" + mes + "-" + dia + "'"; 
                 } catch (NumberFormatException e) {
-                    query += " WHERE yearV =" + 0;
+                    query = "execute selectVD_Fecha '1-1-1'";
                 } 
                 break;
             case 3:
                 try {
-                    query += " WHERE IDCLIEN = " + Integer.parseInt(busqueda);
+                    query = "EXECUTE selectVD_IDCLIEN " + Integer.parseInt(busqueda);
                 } catch (NumberFormatException e) {
-                    query += " WHERE IDCLIEN =" + 0;
+                    query = "EXECUTE selectVD_IDCLIEN " + 0;
                 } 
                 break;
             case 4:
                 try {
-                    query += " WHERE TotalV like '%" + Float.valueOf(busqueda) + "%'";
+                    query = "EXECUTE selectVD_TotalVenta " + Float.valueOf(busqueda);
                 } catch (NumberFormatException e) {
-                    query += " WHERE TotalV=" + 0;
+                    query = " EXECUTE selectVD_TotalVenta " + -1;
                 }
                 break;
             default:
+                query = "execute selectVDs";
                 break;
         }
         rs = conDB.receive(query);
         
-        while (rs.next()) {
+        while (rs.next()) { //Estoy 100000 % seguro que esta madre hay que cambiarla porque yo no esta la fecha separada por dia mes y year, ya que solo es una variable date
             accion = new Detallada(rs.getInt(1), rs.getInt(2), rs.getInt(3),
                     rs.getInt(4),rs.getInt(5), rs.getFloat(6));
             queue.push(accion);
@@ -79,6 +95,11 @@ public class ManejoUIVentasDetalladas {
         return queue;
     }
     
+    /**
+     * Metodo para regresar el ID del ultimo Venta_Detallada que tiene la tabla de Ventas_Detalladas
+     * @return El ID de la ultima venta_Detallada en la tabla Ventas_Detalladas
+     * @throws SQLException 
+     */
     private int getLastID() throws SQLException {
         ResultSet rs;
         int id = 0;

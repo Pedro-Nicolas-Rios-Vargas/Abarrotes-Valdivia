@@ -62,7 +62,7 @@ PRIMARY KEY(idCom, idProd)
 create procedure addCliente @idcliente int, @nombreCliente varchar(43), @saldoCliente int 
 as 
 insert into Clientes values(@idCliente, @nombreCliente, @saldoCliente)
-execute addCliente 1, 'Jose', 1
+execute addCliente 1, 'Jose', 0
 --Procedures Clientes update
 create procedure updateCliente @idcliente int, @nombreCliente varchar(43), @saldoCliente int 
 as 
@@ -85,7 +85,7 @@ delete from Clientes where idClien = @idcliente
 create procedure addProduct @idproducto int, @nombreproducto varchar(25), @preSio decimal(5,2), @stocks int, @existencias int, @ums varchar(30)
 as
 insert into Productos values (@idproducto, @nombreproducto, @preSio, @stocks, @existencias, @ums )
-execute addProduct 1, 'coca', 12.2, 1, 1, 'lit'
+execute addProduct 3, 'Coca', 12.2, 1, 1, 'lit' -- Esto para que sirve?
 --Procedures Productos select ind
 create procedure selectProduc @idproduc int
 as
@@ -96,17 +96,38 @@ create procedure selectProducs
 as
 select * from Productos 
 
+--Procedures Products Where Nombre_Prod
+create procedure selectProductNombre @Nombre_Prod varchar(25)
+as
+select * from Productos where nombre_Prod like '%' + @Nombre_Prod + '%'
+--Procedures Products Where Precio
+create procedure selectProductPrecio @Precio decimal(5,2)
+as
+select * from Productos where precio = @Precio
+--Procedures Products Where Existencia
+create procedure selectProductExistencia @Existencia int
+as
+select * from Productos where existencia = @Existencia
+
+execute selectProductExistencia -1
 --Procedures Productos update
 create procedure updateProduct @idproducto int, @nombreproducto varchar(25), @preSio decimal(5,2), @stocks int, @existencias int, @ums varchar(30)
 as
 update Productos set nombre_Prod = @nombreproducto,precio = @preSio ,stock = @stocks,existencia = @existencias , UM= @ums where idProd = @idproducto
 
+execute updateProduct 3, 'Pito', 66.66, 23, 23, 'Droga'
 --Procedures Productos delete
 create procedure deleteProduct @idproducto int
 as
 delete from Productos where idProd = @idproducto
 
+execute deleteProduct 3
+--Procedure GetLastID from Product
+create procedure getLastIDProduct
+as
+select top 1 IDPROD from Productos order by idProd desc
 
+execute getLastIDProduct
 ---------------------------------------------------------------PROVEEDORES
 --Procedures Proveedores insert
 create procedure insertProv @id int, @nom varchar(20), @tel int
@@ -134,15 +155,42 @@ delete from Proveedores where idProv = @id
 create procedure insert_VD @id int, @idc int, @total decimal(6,2)
 as
 insert into Ventas_Detalladas values (@id , @idc , @total, GETDATE() )
+execute insert_VD 5, 1, 6.66
+
+insert into Clientes values 
 
 --Procedures Ventas_Detalladas select ind
 create procedure selectVD @id int
 as
 select * from Ventas_Detalladas where idV = @id
+
+execute selectVD 2
 --Procedures Ventas_Detalladas select gen
 create procedure selectVDs 
 as
 select * from Ventas_Detalladas 
+
+execute selectVDs
+--Procedures Ventas_Detalladas Select Fecha
+create procedure selectVD_Fecha @fecha date
+as
+select * from Ventas_Detalladas where fecha = @fecha
+
+execute selectVD_Fecha '2021-04-08'
+--Procedures Ventas_Detalladas Select_IDCLIEN
+create PROCEDURE selectVD_IDCLIEN @IDCLIEN INT
+AS
+select * FROM Ventas_Detalladas WHERE idClien = @IDCLIEN
+
+EXECUTE selectVD_IDCLIEN 1
+
+--PROCEDURES Ventas_Detalladas select TotalVenta
+create PROCEDURE selectVD_TotalVenta @TotalV decimal(6,2)
+AS
+SELECT * FROM Ventas_Detalladas where totalV = @TotalV
+
+EXECUTE selectVD_TotalVenta 666.66
+
 --Procedures Ventas_Detalladas delete gen
 create procedure deleteVD @id int
 as
@@ -174,6 +222,30 @@ update Ventas set idProd = @product,Cantidad = @cant, SubtotalV = @sub where idV
 create procedure deleteVenta @id int
 as
 delete from Ventas where idV = @id
+
+--Procedures Productos select ind
+create procedure selectProduc @idproduc int
+as
+select * from Productos where idProd = @idproduc
+
+--Procedures Productos select gen 
+create procedure selectProducs
+as
+select * from Productos 
+
+--Procedures Products Where Nombre_Prod
+create procedure selectProductNombre @Nombre_Prod varchar(25)
+as
+select * from Productos where nombre_Prod like '%' + @Nombre_Prod + '%'
+--Procedures Products Where Precio
+create procedure selectProductPrecio @Precio decimal(5,2)
+as
+select * from Productos where precio = @Precio
+--Procedures Products Where Existencia
+create procedure selectProductExistencia @Existencia int
+as
+select * from Productos where existencia = @Existencia
+
 
 ---------------------------------------------------------------COMPRAS_DETALLADAS
 --Procedures COMPRAS_DETALLADAS insert
