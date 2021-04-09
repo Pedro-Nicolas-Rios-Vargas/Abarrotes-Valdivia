@@ -5,7 +5,7 @@ import java.sql.SQLException;
 
 import sqlsrc.ConnectionDB;
 
-import res.Persona;
+import res.Proveedor;
 
 import lista.ListaCola;
 
@@ -16,41 +16,42 @@ public class ManejoUIProveedores {
         conDB = new ConnectionDB();
     }
     
-    public int agregar(String nombre) throws SQLException{
+    public int agregar(String nombre, int telefono) throws SQLException{
         int id = getLastID()+1;
         
-        String query = "INSERT INTO Proveedores VALUES (" + id + ", '" + nombre + "')";
+        String query = String.format("execute insertProv %d, '%s', %d", id, nombre, (telefono != 0) ? telefono : null);
         
         return conDB.send(query);
     }
     
-    public ListaCola<Persona> consulta(Object queryType) throws SQLException{
-        ListaCola<Persona> cola = new ListaCola<>();
+    public ListaCola<Proveedor> consulta(int queryType, Object queryData) throws SQLException{
+        ListaCola<Proveedor> cola = new ListaCola<>();
         ResultSet rs;
         String query = "SELECT * FROM Proveedores ";
-        Persona heman;
+        Proveedor heman;
         
-        if(queryType instanceof Character){
+        if(queryType == 1){
             query += "ORDER BY IDPROV asc";
-        }else if(queryType instanceof String){
-            query += " WHERE Nombre_PROV='" + queryType + "'";
-        }else if(queryType instanceof Integer){
-            query += " WHERE IDPROV=" + queryType;
+        }else if(queryType == 2){
+            query += " WHERE Nombre_PROV='" + queryData + "'";
+        }else if(queryType == 3){
+            query += " WHERE IDPROV=" + queryData;
+        }else if(queryType == 4) {
+            query += " WHERE TELEFONO_PRO=" + queryData;
         }
         rs = conDB.receive(query);
         
         while(rs.next()){
-            heman = new Persona(rs.getInt(1),rs.getString(2));
+            heman = new Proveedor(rs.getInt(1),rs.getString(2), rs.getString(3));
             cola.push(heman);
         }
         
         return cola;
     }
     
-    public boolean modificar(int id, String nombre) throws SQLException {
+    public boolean modificar(int id, String nombre, int telefono) throws SQLException {
         int res = -1;
-        String update = "UPDATE Proveedores SET Nombre_PROV='" + nombre + "'"
-                + " WHERE IDPROV=" + id;
+        String update = String.format("execute updateProv %d, '%s', %d", id, nombre, telefono);
         res = conDB.send(update);
         return res != -1;
     }

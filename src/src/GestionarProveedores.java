@@ -1,34 +1,22 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package src;
 
 /**
  *
  * @author pnrv2
  */
-import javax.swing.table.TableModel;
 import javax.swing.table.DefaultTableModel;
 
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 import res.interfazDB.ManejoUIProveedores;
 import lista.ListaCola;
-import res.Persona;
+import res.Proveedor;
 
 public class GestionarProveedores extends javax.swing.JPanel {
 
     private ManejoUIProveedores manager;
-    private Persona provElim;
-    private boolean agregarSelected;
-    private boolean consultarSelected;
-    private boolean modificarSelected;
-    private boolean eliminarSelected;
+    private Proveedor provElim;
     /**
      * Creates new form GestionarProveedores
      */
@@ -37,15 +25,9 @@ public class GestionarProveedores extends javax.swing.JPanel {
         provElim = null;
         initComponents();
         
-        agregarSelected = true;
-        consultarSelected = false;
-        modificarSelected = false;
-        eliminarSelected = false;
-        
         try{
-            ListaCola<Persona> cola = manager.consulta("*".charAt(0));
-            if(cola.hasNext())
-                llenarTabla(cola);
+            ListaCola<Proveedor> cola = manager.consulta(1, null);
+            llenarTabla(cola);
         }catch(SQLException sqlE){}
     }
 
@@ -68,6 +50,8 @@ public class GestionarProveedores extends javax.swing.JPanel {
         tfNombreProv = new javax.swing.JTextField();
         errorLabelAgregar = new javax.swing.JLabel();
         btnAgregar = new javax.swing.JButton();
+        jLabel10 = new javax.swing.JLabel();
+        tfTelProv = new javax.swing.JTextField();
         ventanaConsultar = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         errorLabelConsultar = new javax.swing.JLabel();
@@ -78,6 +62,7 @@ public class GestionarProveedores extends javax.swing.JPanel {
         jrbID = new javax.swing.JRadioButton();
         jrbNombre = new javax.swing.JRadioButton();
         jLabel8 = new javax.swing.JLabel();
+        jrbTel = new javax.swing.JRadioButton();
         ventanaModificar = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
         errorLabelModificar = new javax.swing.JLabel();
@@ -87,6 +72,8 @@ public class GestionarProveedores extends javax.swing.JPanel {
         jLabel7 = new javax.swing.JLabel();
         tfNombreProvModificar = new javax.swing.JTextField();
         btnModificar = new javax.swing.JButton();
+        jLabel11 = new javax.swing.JLabel();
+        tfTelProvModificar = new javax.swing.JTextField();
         ventanaEliminar = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
         errorLabelEliminar = new javax.swing.JLabel();
@@ -117,9 +104,9 @@ public class GestionarProveedores extends javax.swing.JPanel {
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel3.setText("Agregar Proveedor");
 
-        jLabel4.setText("Nombre:");
+        jLabel4.setText("Nombre: *");
 
-        tfNombreProv.setText("Ingrese Nombre del Proveedor");
+        tfNombreProv.setText("Ingrese el Nombre del Proveedor");
         tfNombreProv.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tfNombreProvMouseClicked(evt);
@@ -135,6 +122,15 @@ public class GestionarProveedores extends javax.swing.JPanel {
             }
         });
 
+        jLabel10.setText("Telefono:");
+
+        tfTelProv.setText("Ingrese el Telefono del Proveedor");
+        tfTelProv.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tfTelProvMouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout ventanaAgregarLayout = new javax.swing.GroupLayout(ventanaAgregar);
         ventanaAgregar.setLayout(ventanaAgregarLayout);
         ventanaAgregarLayout.setHorizontalGroup(
@@ -143,19 +139,26 @@ public class GestionarProveedores extends javax.swing.JPanel {
                 .addContainerGap()
                 .addGroup(ventanaAgregarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(ventanaAgregarLayout.createSequentialGroup()
-                        .addGap(0, 55, Short.MAX_VALUE)
+                        .addGap(55, 55, 55)
                         .addGroup(ventanaAgregarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(errorLabelAgregar)
-                            .addGroup(ventanaAgregarLayout.createSequentialGroup()
-                                .addGap(73, 73, 73)
-                                .addComponent(btnAgregar))
                             .addGroup(ventanaAgregarLayout.createSequentialGroup()
                                 .addComponent(jLabel4)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(tfNombreProv, javax.swing.GroupLayout.DEFAULT_SIZE, 213, Short.MAX_VALUE)))
-                        .addGap(0, 38, Short.MAX_VALUE))
+                                .addComponent(tfNombreProv, javax.swing.GroupLayout.DEFAULT_SIZE, 216, Short.MAX_VALUE))
+                            .addGroup(ventanaAgregarLayout.createSequentialGroup()
+                                .addComponent(errorLabelAgregar)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addGroup(ventanaAgregarLayout.createSequentialGroup()
+                                .addComponent(jLabel10)
+                                .addGap(17, 17, 17)
+                                .addComponent(tfTelProv)))
+                        .addGap(38, 38, 38))
                     .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, ventanaAgregarLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnAgregar)
+                .addGap(149, 149, 149))
         );
         ventanaAgregarLayout.setVerticalGroup(
             ventanaAgregarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -169,8 +172,12 @@ public class GestionarProveedores extends javax.swing.JPanel {
                     .addComponent(jLabel4)
                     .addComponent(tfNombreProv, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
+                .addGroup(ventanaAgregarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel10)
+                    .addComponent(tfTelProv, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
                 .addComponent(btnAgregar)
-                .addContainerGap(217, Short.MAX_VALUE))
+                .addContainerGap(175, Short.MAX_VALUE))
         );
 
         windowOptions.add(ventanaAgregar, "Agregar");
@@ -227,6 +234,14 @@ public class GestionarProveedores extends javax.swing.JPanel {
 
         jLabel8.setText("Tipo de Consulta:");
 
+        btnGroup.add(jrbTel);
+        jrbTel.setText("Telefono");
+        jrbTel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jrbTelActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout ventanaConsultarLayout = new javax.swing.GroupLayout(ventanaConsultar);
         ventanaConsultar.setLayout(ventanaConsultarLayout);
         ventanaConsultarLayout.setHorizontalGroup(
@@ -235,7 +250,7 @@ public class GestionarProveedores extends javax.swing.JPanel {
                 .addGroup(ventanaConsultarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(ventanaConsultarLayout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 379, Short.MAX_VALUE))
                     .addGroup(ventanaConsultarLayout.createSequentialGroup()
                         .addGap(20, 20, 20)
                         .addGroup(ventanaConsultarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -253,12 +268,14 @@ public class GestionarProveedores extends javax.swing.JPanel {
                         .addGap(32, 32, 32)))
                 .addContainerGap())
             .addGroup(ventanaConsultarLayout.createSequentialGroup()
-                .addGap(62, 62, 62)
+                .addGap(37, 37, 37)
                 .addComponent(jrbTodos)
                 .addGap(18, 18, 18)
                 .addComponent(jrbID)
                 .addGap(18, 18, 18)
                 .addComponent(jrbNombre)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jrbTel)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         ventanaConsultarLayout.setVerticalGroup(
@@ -272,7 +289,8 @@ public class GestionarProveedores extends javax.swing.JPanel {
                 .addGroup(ventanaConsultarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jrbTodos)
                     .addComponent(jrbID)
-                    .addComponent(jrbNombre))
+                    .addComponent(jrbNombre)
+                    .addComponent(jrbTel))
                 .addGap(18, 18, 18)
                 .addComponent(errorLabelConsultar)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -283,6 +301,8 @@ public class GestionarProveedores extends javax.swing.JPanel {
                 .addComponent(btnBuscar)
                 .addContainerGap(150, Short.MAX_VALUE))
         );
+
+        jrbTel.getAccessibleContext().setAccessibleDescription("");
 
         windowOptions.add(ventanaConsultar, "Consultar");
 
@@ -327,6 +347,16 @@ public class GestionarProveedores extends javax.swing.JPanel {
             }
         });
 
+        jLabel11.setText("Tel. Proveedor:");
+
+        tfTelProvModificar.setText("Ingrese el Telefono del Proveedor");
+        tfTelProvModificar.setEnabled(false);
+        tfTelProvModificar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tfTelProvModificarMouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout ventanaModificarLayout = new javax.swing.GroupLayout(ventanaModificar);
         ventanaModificar.setLayout(ventanaModificarLayout);
         ventanaModificarLayout.setHorizontalGroup(
@@ -337,23 +367,27 @@ public class GestionarProveedores extends javax.swing.JPanel {
                         .addContainerGap()
                         .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(ventanaModificarLayout.createSequentialGroup()
+                        .addGap(50, 50, 50)
+                        .addComponent(errorLabelModificar)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(ventanaModificarLayout.createSequentialGroup()
                         .addGap(16, 16, 16)
                         .addGroup(ventanaModificarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jLabel2)
-                            .addComponent(jLabel7))
+                            .addComponent(jLabel7)
+                            .addComponent(jLabel11))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(ventanaModificarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(tfNombreProvModificar, javax.swing.GroupLayout.DEFAULT_SIZE, 233, Short.MAX_VALUE)
-                            .addComponent(tfIdProvModificar, javax.swing.GroupLayout.DEFAULT_SIZE, 233, Short.MAX_VALUE)))
-                    .addGroup(ventanaModificarLayout.createSequentialGroup()
-                        .addGap(47, 47, 47)
-                        .addComponent(btnBuscarModificar)
-                        .addGap(30, 30, 30)
-                        .addComponent(btnModificar))
-                    .addGroup(ventanaModificarLayout.createSequentialGroup()
-                        .addGap(50, 50, 50)
-                        .addComponent(errorLabelModificar)))
+                            .addComponent(tfTelProvModificar)
+                            .addComponent(tfNombreProvModificar, javax.swing.GroupLayout.DEFAULT_SIZE, 244, Short.MAX_VALUE)
+                            .addComponent(tfIdProvModificar, javax.swing.GroupLayout.DEFAULT_SIZE, 244, Short.MAX_VALUE))))
                 .addContainerGap())
+            .addGroup(ventanaModificarLayout.createSequentialGroup()
+                .addGap(78, 78, 78)
+                .addComponent(btnBuscarModificar)
+                .addGap(30, 30, 30)
+                .addComponent(btnModificar)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         ventanaModificarLayout.setVerticalGroup(
             ventanaModificarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -372,9 +406,13 @@ public class GestionarProveedores extends javax.swing.JPanel {
                     .addComponent(tfNombreProvModificar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(ventanaModificarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel11)
+                    .addComponent(tfTelProvModificar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(31, 31, 31)
+                .addGroup(ventanaModificarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnBuscarModificar)
                     .addComponent(btnModificar))
-                .addContainerGap(166, Short.MAX_VALUE))
+                .addContainerGap(111, Short.MAX_VALUE))
         );
 
         windowOptions.add(ventanaModificar, "Modificar");
@@ -455,7 +493,7 @@ public class GestionarProveedores extends javax.swing.JPanel {
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, ventanaEliminarLayout.createSequentialGroup()
                                 .addComponent(btnConfirm)
                                 .addGap(36, 36, 36)))))
-                .addContainerGap(45, Short.MAX_VALUE))
+                .addContainerGap(56, Short.MAX_VALUE))
         );
         ventanaEliminarLayout.setVerticalGroup(
             ventanaEliminarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -558,11 +596,11 @@ public class GestionarProveedores extends javax.swing.JPanel {
 
             },
             new String [] {
-                "ID", "Nombre"
+                "ID", "Nombre", "Telefono"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false
+                false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -593,146 +631,59 @@ public class GestionarProveedores extends javax.swing.JPanel {
 
     private void btnAgregarWindowActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarWindowActionPerformed
         java.awt.CardLayout card = (java.awt.CardLayout)windowOptions.getLayout();
+        tfNombreProv.setText("Ingrese el nombre del Proveedor");
+        tfTelProv.setText("Ingrese el telefono del Proveedor");
+        errorLabelAgregar.setText("");
+
         card.show(windowOptions, "Agregar");
-        
-        if(consultarSelected){
-            errorLabelConsultar.setText("");
-            
-            tipoConsultaLabel.setText("ID Proveedor:");
-            jrbTodos.setSelected(true);
-            tfIDProv.setText("Ingrese el ID del Proveedor");
-            tfIDProv.setEnabled(false);
-            
-            consultarSelected = false;
-        }else if(modificarSelected){
-            errorLabelModificar.setText("");
-            
-            tfIdProvModificar.setText("Ingrese el ID del Proveedor");
-            tfIdProvModificar.setEnabled(true);
-            tfNombreProvModificar.setText("Ingrese el nombre del Proveedor");
-            tfNombreProvModificar.setEnabled(false);
-            
-            btnBuscarModificar.setEnabled(true);
-            btnModificar.setEnabled(false);
-            
-            modificarSelected = false;
-        }else if(eliminarSelected){
-            errorLabelEliminar.setText("");
-            
-            lbEliminar.setText("ID Proveedor:");
-            tfEliminar.setText("Ingrese el Id del Proveedor");
-            rbIDEliminar.setSelected(true);
-            
-            btnBuscarEliminar.setEnabled(true);
-            btnConfirm.setEnabled(false);
-            
-            eliminarSelected = false;
-        }
-        
-        agregarSelected = true;
+
     }//GEN-LAST:event_btnAgregarWindowActionPerformed
 
     private void btnConsultarWindowActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarWindowActionPerformed
         java.awt.CardLayout card = (java.awt.CardLayout)windowOptions.getLayout();
+        errorLabelConsultar.setText("");
+
+        tipoConsultaLabel.setText("ID Proveedor:");
+        jrbTodos.setSelected(true);
+        tfIDProv.setText("Ingrese el ID del Proveedor");
+        tfIDProv.setEnabled(false);
+
         card.show(windowOptions, "Consultar");
-        
-        if(agregarSelected){
-            errorLabelAgregar.setText("");
-            
-            tfNombreProv.setText("Ingrese el nombre del Proveedor");
-            
-            agregarSelected = false;
-        }else if(modificarSelected){
-            errorLabelModificar.setText("");
-            
-            tfIdProvModificar.setText("Ingrese el ID del Proveedor");
-            tfIdProvModificar.setEnabled(true);
-            tfNombreProvModificar.setText("Ingrese el nombre del Proveedor");
-            tfNombreProvModificar.setEnabled(false);
-            
-            btnBuscarModificar.setEnabled(true);
-            btnModificar.setEnabled(false);
-            
-            modificarSelected = false;
-        }else if(eliminarSelected){
-            errorLabelEliminar.setText("");
-            
-            lbEliminar.setText("ID Proveedor:");
-            tfEliminar.setText("Ingrese el Id del Proveedor");
-            rbIDEliminar.setSelected(true);
-            
-            btnBuscarEliminar.setEnabled(true);
-            btnConfirm.setEnabled(false);
-            
-            eliminarSelected = false;
-        }
-        
-        consultarSelected = true;
+
     }//GEN-LAST:event_btnConsultarWindowActionPerformed
 
     private void btnModificarWindowActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarWindowActionPerformed
         java.awt.CardLayout card = (java.awt.CardLayout)windowOptions.getLayout();
+
+        errorLabelModificar.setText("");
+
+        tfIdProvModificar.setText("Ingrese el ID del Proveedor");
+        tfIdProvModificar.setEnabled(true);
+        tfNombreProvModificar.setText("Ingrese el nombre del Proveedor");
+        tfNombreProvModificar.setEnabled(false);
+        tfTelProvModificar.setText("Ingrese el Telefono del Proveedor");
+        tfTelProvModificar.setEnabled(false);
+
+        btnBuscarModificar.setEnabled(true);
+        btnModificar.setEnabled(false);
+
         card.show(windowOptions, "Modificar");
-        
-        if(agregarSelected){
-            errorLabelAgregar.setText("");
-            tfNombreProv.setText("Ingrese el nombre del Proveedor");
-            
-            agregarSelected = false;
-        }else if(consultarSelected){
-            errorLabelConsultar.setText("");
-            tipoConsultaLabel.setText("ID Proveedor:");
-            jrbTodos.setSelected(true);
-            tfIDProv.setText("Ingrese el ID del Proveedor");
-            tfIDProv.setEnabled(false);
-            
-            consultarSelected = false;
-        }else if(eliminarSelected){
-            errorLabelEliminar.setText("");
-            lbEliminar.setText("ID Proveedor:");
-            tfEliminar.setText("Ingrese el Id del Proveedor");
-            rbIDEliminar.setSelected(true);
-            
-            btnBuscarEliminar.setEnabled(true);
-            btnConfirm.setEnabled(false);
-            
-            eliminarSelected = false;
-        }
-        
-        modificarSelected = true;
+
     }//GEN-LAST:event_btnModificarWindowActionPerformed
 
     private void btnEliminarWindowActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarWindowActionPerformed
         java.awt.CardLayout card = (java.awt.CardLayout)windowOptions.getLayout();
+
+        errorLabelEliminar.setText("");
+        lbEliminar.setText("ID Proveedor:");
+        tfEliminar.setText("Ingrese el Id del Proveedor");
+        rbIDEliminar.setSelected(true);
+
+        btnBuscarEliminar.setEnabled(true);
+        btnConfirm.setEnabled(false);
+
         card.show(windowOptions, "Eliminar");
-        
-        if(agregarSelected){
-            errorLabelAgregar.setText("");
-            tfNombreProv.setText("Ingrese el nombre del Proveedor");
-            
-            agregarSelected = false;
-        }else if(consultarSelected){
-            errorLabelConsultar.setText("");
-            tipoConsultaLabel.setText("ID Proveedor:");
-            jrbTodos.setSelected(true);
-            tfIDProv.setText("Ingrese el ID del Proveedor");
-            tfIDProv.setEnabled(false);
-            
-            consultarSelected = false;
-        }else if(modificarSelected){
-            errorLabelModificar.setText("");
-            tfIdProvModificar.setText("Ingrese el ID del Proveedor");
-            tfIdProvModificar.setEnabled(true);
-            tfNombreProvModificar.setText("Ingrese el nombre del Proveedor");
-            tfNombreProvModificar.setEnabled(false);
-            
-            btnBuscarModificar.setEnabled(true);
-            btnModificar.setEnabled(false);
-            
-            modificarSelected = false;
-        }
-        
-        eliminarSelected = true;
+
     }//GEN-LAST:event_btnEliminarWindowActionPerformed
 
     private void tfNombreProvMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tfNombreProvMouseClicked
@@ -769,8 +720,8 @@ public class GestionarProveedores extends javax.swing.JPanel {
     private void btnBuscarModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarModificarActionPerformed
         int in = 0;
         Object obj = null;
-        ListaCola<Persona> cola;
-        Persona proveedor;
+        ListaCola<Proveedor> cola;
+        Proveedor proveedor;
         
         try{
             in = Integer.parseInt(tfIdProvModificar.getText());
@@ -780,21 +731,23 @@ public class GestionarProveedores extends javax.swing.JPanel {
         }
         try{
             if(obj != null){
-                cola = manager.consulta(obj);
+                cola = manager.consulta(3, obj);
                 
                 if(cola.hasNext()){
                     proveedor = cola.pop();
                     tfNombreProvModificar.setText(proveedor.getNombre());
+                    tfTelProvModificar.setText(proveedor.getTelefono());
                     
                     if(errorLabelModificar.getText().length() != 0)
                         errorLabelModificar.setText("");
                     
                     tfIdProvModificar.setEnabled(false);
                     tfNombreProvModificar.setEnabled(true);
+                    tfTelProvModificar.setEnabled(true);
                     btnBuscarModificar.setEnabled(false);
                     btnModificar.setEnabled(true);
                 }else{
-                    JOptionPane.showMessageDialog(this, "No existe tal producto", "Id inexistente", JOptionPane.WARNING_MESSAGE);
+                    JOptionPane.showMessageDialog(this, "No existe tal proveedor", "Id inexistente", JOptionPane.WARNING_MESSAGE);
                 }
                 
                 
@@ -817,11 +770,12 @@ public class GestionarProveedores extends javax.swing.JPanel {
     }//GEN-LAST:event_tfEliminarMouseClicked
 
     private void btnBuscarEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarEliminarActionPerformed
-        int in;
+        int selectedOpc = 0;
         Object obj = null;
-        String nombre = "";
-        ListaCola<Persona> res;
+        ListaCola<Proveedor> res;
         if(rbIDEliminar.isSelected()){
+            int in;
+            selectedOpc = 3;
             try{
                 in = Integer.parseInt(tfEliminar.getText());
                 obj = in;
@@ -829,6 +783,8 @@ public class GestionarProveedores extends javax.swing.JPanel {
                 errorLabelEliminar.setText("Valor no numerico");
             }
         }else if(rbNombreEliminar.isSelected()){
+            String nombre = "";
+            selectedOpc = 2;
             nombre = tfEliminar.getText();
             if(nombre.length() != 0){
                 obj = nombre;
@@ -839,7 +795,7 @@ public class GestionarProveedores extends javax.swing.JPanel {
         
         if(obj != null){
             try{
-                res = manager.consulta(obj);
+                res = manager.consulta(selectedOpc, obj);
                 if(!res.hasNext())
                     JOptionPane.showMessageDialog(this, "No existe tal proveedor", "Proveedor no existente.", JOptionPane.WARNING_MESSAGE);
                 else{
@@ -860,9 +816,17 @@ public class GestionarProveedores extends javax.swing.JPanel {
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
         String nombre = tfNombreProv.getText();
+        String sTelefono = tfTelProv.getText();
+        int telefono = 0;
         if(nombre.length() != 0){
             try {
-                manager.agregar(tfNombreProv.getText());
+                telefono = (sTelefono.length() != 0) ? Integer.parseInt(sTelefono) : 0;
+            } catch(NumberFormatException nfE) {
+                errorLabelAgregar.setText("Telefono no valido");
+                return;
+            }
+            try {
+                manager.agregar(nombre, telefono);
                 if(errorLabelAgregar.getText().length() != 0)
                     errorLabelAgregar.setText("");
                 JOptionPane.showMessageDialog(this, "Proveedor Agregado", "Insercion Exitosa", JOptionPane.INFORMATION_MESSAGE);
@@ -871,7 +835,7 @@ public class GestionarProveedores extends javax.swing.JPanel {
             }
             
             try{
-                ListaCola<Persona> cola = manager.consulta("*".charAt(0));
+                ListaCola<Proveedor> cola = manager.consulta(1, null);
                 if(cola.hasNext())
                     llenarTabla(cola);
             }catch(SQLException sqlE){}
@@ -882,11 +846,13 @@ public class GestionarProveedores extends javax.swing.JPanel {
     }//GEN-LAST:event_btnAgregarActionPerformed
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
+        int selectedOpc = 0;
         Object obj = null;
-        ListaCola<Persona> cola;
+        ListaCola<Proveedor> cola;
         if(jrbTodos.isSelected()){
-            obj = '*';
+            selectedOpc = 1;
         }else if(jrbID.isSelected()){
+            selectedOpc = 3;
             int in = 0;
             try{
                 if(tfIDProv.getText().length() != 0){
@@ -898,6 +864,7 @@ public class GestionarProveedores extends javax.swing.JPanel {
                 errorLabelConsultar.setText("No es un numero entero");
             }
         }else if(jrbNombre.isSelected()){
+            selectedOpc = 2;
             String nombre = tfIDProv.getText();
             if(nombre.length() != 0 && !nombre.equals("Ingrese el nombre del Proveedor")){
                 
@@ -906,15 +873,27 @@ public class GestionarProveedores extends javax.swing.JPanel {
             }else{
                 errorLabelConsultar.setText("No se ingreso ningun valor");
             }
+        } else if (jrbTel.isSelected()) {
+            selectedOpc = 4;
+            int tel = 0;
+            try {
+                if(tfIDProv.getText().length() != 0) {
+                    tel = Integer.parseInt(tfIDProv.getText());
+                    obj = tel;
+                }
+            } catch(NumberFormatException nfE) {
+                errorLabelConsultar.setText("El telefono no es un numero valido");
+            }
         }
         
         try{
-            if(obj != null){
-                cola = manager.consulta(obj);
+            if((obj == null && selectedOpc == 1) || (obj != null && selectedOpc != 1)){
+                cola = manager.consulta(selectedOpc, obj);
                 if(errorLabelConsultar.getText().length() != 0)
                     errorLabelConsultar.setText("");
                 if(!cola.hasNext()){
                     JOptionPane.showMessageDialog(this,"No existen elementos", "Elementos inexistentes", JOptionPane.WARNING_MESSAGE);
+                    llenarTabla(cola);
                 }else{
                     llenarTabla(cola);
                     if(jrbID.isSelected())
@@ -930,18 +909,27 @@ public class GestionarProveedores extends javax.swing.JPanel {
     }//GEN-LAST:event_btnBuscarActionPerformed
 
     private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
-        int id;
-        String nombre = "";
+        int id, telefono = 0;
+        String nombre = "",sTelefono = "";
         boolean res;
         try{
             id = Integer.parseInt(tfIdProvModificar.getText());
             
             nombre = tfNombreProvModificar.getText();
+            sTelefono = tfTelProvModificar.getText();
             if(nombre.length() != 0){
-                res = manager.modificar(id, nombre);
+                try {
+                    telefono = Integer.parseInt(sTelefono);
+                } catch(NumberFormatException nfE) {
+                    errorLabelModificar.setText("Telefono no valido");
+                    return;
+                }
+                
+                res = manager.modificar(id, nombre, telefono);
+                
                 
                 if(!res)
-                    JOptionPane.showMessageDialog(this, "No se pudo consultar la consulta", "Problema al consultar", JOptionPane.WARNING_MESSAGE);
+                    JOptionPane.showMessageDialog(this, "No se pudo realizar la consulta", "Problema al consultar", JOptionPane.WARNING_MESSAGE);
                 
                 if(errorLabelModificar.getText().length() != 0)
                     errorLabelModificar.setText("");
@@ -949,17 +937,19 @@ public class GestionarProveedores extends javax.swing.JPanel {
                 JOptionPane.showMessageDialog(this, "Modificacion exitosa.", "Modificacion realizada", JOptionPane.INFORMATION_MESSAGE);
                 tfIdProvModificar.setEnabled(true);
                 tfNombreProvModificar.setEnabled(false);
+                tfTelProvModificar.setEnabled(false);
                 btnBuscarModificar.setEnabled(true);
                 btnModificar.setEnabled(false);
             
                 tfIdProvModificar.setText("Ingrese el ID del Proveedor");
                 tfNombreProvModificar.setText("Ingrese el nombre del Proveedor");
+                tfTelProvModificar.setText("Ingrese el telefono del Proveedor");
             }else{
                 errorLabelModificar.setText("No ingreso nuevo nombre.");
             }
             
         }catch(NumberFormatException nfE){
-            
+            errorLabelModificar.setText("ID no valido");
         }catch(SQLException sqlE){
             JOptionPane.showMessageDialog(this, "Error en la busqueda: \n" + sqlE.getMessage(), "Error de Busqueda.", JOptionPane.ERROR_MESSAGE);
         }
@@ -989,7 +979,6 @@ public class GestionarProveedores extends javax.swing.JPanel {
     private void btnConfirmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmActionPerformed
         int in;
         Object obj = null;
-        String nombre = "";
         boolean res;
         
         if(rbIDEliminar.isSelected()){
@@ -1002,7 +991,7 @@ public class GestionarProveedores extends javax.swing.JPanel {
                 errorLabelEliminar.setText("Valor no numerico");
             }
         }else if(rbNombreEliminar.isSelected()){
-            nombre = tfEliminar.getText();
+            String nombre = tfEliminar.getText();
             if(nombre.length() != 0)
                 obj = nombre;
             else
@@ -1011,7 +1000,7 @@ public class GestionarProveedores extends javax.swing.JPanel {
         
         if(obj != null){
             try{
-                in = JOptionPane.showConfirmDialog(this, "Desea eliminar al Proveedor cuyos datos son:\n Nombre: " + provElim.getNombre() + "\nID: " + provElim.getId(), "Confirmacion", JOptionPane.YES_NO_OPTION);
+                in = JOptionPane.showConfirmDialog(this, "Desea eliminar al Proveedor cuyos datos son:\nNombre: " + provElim.getNombre() + "\nID: " + provElim.getId(), "Confirmacion", JOptionPane.YES_NO_OPTION);
                 if(in == JOptionPane.YES_OPTION){
                     res = manager.eliminar(obj);
                     if(!res)
@@ -1019,7 +1008,8 @@ public class GestionarProveedores extends javax.swing.JPanel {
                     else{
                         if(errorLabelEliminar.getText().length() != 0)
                             errorLabelEliminar.setText("");
-                    
+
+                        tfEliminar.setEnabled(true);
                         btnBuscarEliminar.setEnabled(true);
                         btnConfirm.setEnabled(false);
                     }
@@ -1035,16 +1025,31 @@ public class GestionarProveedores extends javax.swing.JPanel {
             }
             
             try{
-                ListaCola<Persona> cola = manager.consulta("*".charAt(0));
-                if(cola.hasNext())
-                    llenarTabla(cola);
+                ListaCola<Proveedor> cola = manager.consulta(1, null);
+                llenarTabla(cola);
             }catch(SQLException sqlE){}
             
         }
     }//GEN-LAST:event_btnConfirmActionPerformed
 
-    private void llenarTabla(ListaCola<Persona> cola){
-        Persona proveedor;
+    private void tfTelProvMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tfTelProvMouseClicked
+        if(tfTelProv.isEnabled())
+            tfTelProv.setText("");
+    }//GEN-LAST:event_tfTelProvMouseClicked
+
+    private void jrbTelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jrbTelActionPerformed
+        tfIDProv.setEnabled(true);
+        tipoConsultaLabel.setText("Tel. Proveedor:");
+        tfIDProv.setText("Ingrese el Telefono del Proveedor");
+    }//GEN-LAST:event_jrbTelActionPerformed
+
+    private void tfTelProvModificarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tfTelProvModificarMouseClicked
+        if(tfTelProvModificar.isEnabled())
+            tfTelProvModificar.setText("");
+    }//GEN-LAST:event_tfTelProvModificarMouseClicked
+    
+    private void llenarTabla(ListaCola<Proveedor> cola){
+        Proveedor proveedor;
         DefaultTableModel modelo = (DefaultTableModel) tablaProveedores.getModel();
         
         while(modelo.getRowCount() != 0)
@@ -1053,7 +1058,7 @@ public class GestionarProveedores extends javax.swing.JPanel {
         while(cola.hasNext()){
             proveedor = cola.pop();
             
-            modelo.addRow(new Object[]{proveedor.getId(), proveedor.getNombre()});
+            modelo.addRow(new Object[]{proveedor.getId(), proveedor.getNombre(), proveedor.getTelefono()});
         }
         tablaProveedores.setModel(modelo);
     }
@@ -1078,6 +1083,8 @@ public class GestionarProveedores extends javax.swing.JPanel {
     private javax.swing.JLabel errorLabelEliminar;
     private javax.swing.JLabel errorLabelModificar;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -1089,6 +1096,7 @@ public class GestionarProveedores extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JRadioButton jrbID;
     private javax.swing.JRadioButton jrbNombre;
+    private javax.swing.JRadioButton jrbTel;
     private javax.swing.JRadioButton jrbTodos;
     private javax.swing.JLabel lbEliminar;
     private javax.swing.JPanel opcionesPane;
@@ -1100,6 +1108,8 @@ public class GestionarProveedores extends javax.swing.JPanel {
     private javax.swing.JTextField tfIdProvModificar;
     private javax.swing.JTextField tfNombreProv;
     private javax.swing.JTextField tfNombreProvModificar;
+    private javax.swing.JTextField tfTelProv;
+    private javax.swing.JTextField tfTelProvModificar;
     private javax.swing.JLabel tipoConsultaLabel;
     private javax.swing.JLabel tituloOpcionesLabel;
     private javax.swing.JLabel tituloPrincipalLabel;
