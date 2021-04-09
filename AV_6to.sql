@@ -1,6 +1,6 @@
 
-CREATE DATABASE Abarrotes_ValdiviaNEW
-use Abarrotes_ValdiviaNEW
+CREATE DATABASE Abarrotes_Valdivia
+use Abarrotes_Valdivia
 
 CREATE TABLE Clientes (
 idClien int PRIMARY KEY CHECK(idClien>=1),
