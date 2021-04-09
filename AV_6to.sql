@@ -1,6 +1,6 @@
 
-CREATE DATABASE Abarrotes_Valdivia
-use Abarrotes_Valdivia
+CREATE DATABASE Abarrotes_ValdiviaNEW
+use Abarrotes_ValdiviaNEW
 
 CREATE TABLE Clientes (
 idClien int PRIMARY KEY CHECK(idClien>=1),
@@ -17,9 +17,9 @@ telefono_pro int
 CREATE TABLE Productos(
 idProd int PRIMARY KEY CHECK(idProd>=1),
 nombre_Prod varchar(25) NOT NULL,
-precio decimal(5,2) NOT NULL CHECK(precio>0.0),
-stock int NOT NULL CHECK(stock>=0 AND stock<=99),
 existencia int NOT NULL CHECK(existencia>=0 AND existencia<=99),
+stock int NOT NULL CHECK(stock>=0 AND stock<=99),
+precio decimal(5,2) NOT NULL CHECK(precio>0.0),
 UM varchar(30) NOT NULL
 )
 
@@ -48,6 +48,7 @@ fechaC date,
 totalC decimal(6,2) NOT NULL,
 FOREIGN KEY(idProv) REFERENCES Proveedores(idProv)
 )
+
 CREATE TABLE Compras(
 idCom int CHECK(idCom>=1),
 idProd int NOT NULL CHECK(idProd>=1),
@@ -355,3 +356,89 @@ update Compras set idProd = @product,Cantidad = @cant, SubtotalC = @sub where id
 create procedure deleteCompras @id int
 as
 delete from Compras where idCom = @id
+-----------------------------------------------------------------PROCEDIMIENTOS-GRENAS-COMPRAS
+---------------------------ORDENAR PRODUCTOS-PARA-TABLA-------------------------------------------------
+create procedure OrdID
+as
+select * from Productos ORDER BY IDPROD ASC
+
+create procedure OrdIDEx
+as
+select * from Productos where IDPROD = 0
+
+create procedure OrdNom @nombre varchar(50)
+as
+select * from Productos WHERE Nombre_Prod like '%'+@nombre+'%'
+
+create procedure OrdPrecio
+as
+select * from Productos ORDER BY PRECIO ASC
+
+create procedure OrdPrecioEx
+as
+select * from Productos WHERE Precio = 0
+
+create procedure OrdExistencia
+as
+select * from Productos ORDER BY EXISTENCIA ASC
+
+create procedure OrdExistenciaEx
+as
+select * from Productos WHERE Existencia = 0
+--------------------FIN--------------------------------------------------------------------
+
+---LLENAR-JCB-CON-PROVEEDORES----------------------------------
+create procedure consultaProv
+as
+SELECT * FROM Proveedores ORDER BY IDPROV ASC
+------------------FIN------------------------------------------
+
+-----------------ID-COMPRAS-UI-------------------------
+create procedure getLastIDCs
+as
+SELECT TOP 1 IDCOM FROM Compras_Detalladas ORDER BY IDCOM DESC
+------------------------FIN------------------------------------
+
+---------------ORDENAR-PRODUCTOS-PARA-TABLA-CON-PROVEEDORES------------------------------
+create procedure PROVidNomb @nombre varchar(50)
+as
+select IDPROV from Proveedores where Nombre_PROV like @nombre
+
+create procedure PROVidCsProv @idprov int
+as
+select idprov from Compras_Detalladas where IDPROV = @idprov
+
+create procedure PRODidCDs
+as
+select IDPROD from Compras, Compras_Detalladas where compras.IDCOM = Compras_Detalladas.idcom
+
+create procedure PRODidCDsProv @idprov int
+as
+select IDPROD from Compras, Compras_Detalladas where compras.IDCOM = Compras_Detalladas.idcom and IDPROV = @idprov
+
+execute PRODidCDsProv 1
+-----------------------------FIN---------------------------------------------------------
+
+---------------ORDENAR-PRODUCTOS-PARA-TABLA-CON-PROVEEDORES-Y-RADIO-BUTTON-----------------------------
+
+-----------------------------------FIN-------------------------------------------------------
+
+----------------COMPRAS_MISCELANEO------------------------------------
+
+create procedure CDprovID @nombre varchar(50)
+as
+SELECT IDPROV FROM Proveedores WHERE Nombre_PROV LIKE @nombre 
+
+create procedure UpdateEx @existencia int, @idp int
+as
+update Productos set Existencia = @existencia where IDPROD = @idp
+
+create procedure ExistenciaConsul @idp int
+as
+SELECT Existencia FROM Productos WHERE IDPROD = @idp
+-------------------------FIN-----------------------------------------------------
+
+select * from Productos
+drop table Productos
+
+insert into Compras values (1,1,9,108.00)

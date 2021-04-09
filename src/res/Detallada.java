@@ -5,7 +5,9 @@
  */
 package res;
 
-import java.sql.Date;
+
+import java.util.Date;
+
 
 /**
  *
@@ -16,7 +18,7 @@ public class Detallada extends AbarrotesElemento{
     private Date fecha;
     private float total;
     
-    public Detallada(int id, int id2, float total, Date fecha){
+    public Detallada(int id, int id2, Date fecha, float total){
         this.id = id;
         this.id2 = id2;
         this.fecha = fecha;
