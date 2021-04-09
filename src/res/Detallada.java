@@ -5,23 +5,21 @@
  */
 package res;
 
+import java.sql.Date;
+
 /**
  *
  * @author pnrv2
  */
 public class Detallada extends AbarrotesElemento{
     private int id2;
-    private int dia;
-    private int mes;
-    private int year;
+    private Date fecha;
     private float total;
     
-    public Detallada(int id, int id2, int dia, int mes, int year, float total){
+    public Detallada(int id, int id2, float total, Date fecha){
         this.id = id;
         this.id2 = id2;
-        this.dia = dia;
-        this.mes = mes;
-        this.year = year;
+        this.fecha = fecha;
         this.total = total;
     }
     
@@ -31,26 +29,13 @@ public class Detallada extends AbarrotesElemento{
     public int getId2(){
         return id2;
     }
-    
-    public void setDia(int dia){
-        this.dia = dia;
+
+    public Date getFecha() {
+        return fecha;
     }
-    public int getDia(){
-        return dia;
-    }
-    
-    public void setMes(int mes){
-        this.mes = mes;
-    }
-    public int getMes(){
-        return mes;
-    }
-    
-    public void setYear(int year){
-        this.year = year;
-    }
-    public int getYear(){
-        return year;
+
+    public void setFecha(Date fecha) {
+        this.fecha = fecha;
     }
     
     public void setTotal(float total){
