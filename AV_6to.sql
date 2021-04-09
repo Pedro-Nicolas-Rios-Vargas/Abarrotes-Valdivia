@@ -217,3 +217,82 @@ update Compras set idProd = @product,Cantidad = @cant, SubtotalC = @sub where id
 create procedure deleteCompras @id int
 as
 delete from Compras where idCom = @id
+-----------------------------------------------------------------PROCEDIMIENTOS-GRENAS-COMPRAS
+---------------------------ORDENAR PRODUCTOS-PARA-TABLA-------------------------------------------------
+create procedure OrdID
+as
+select * from Productos ORDER BY IDPROD ASC
+
+create procedure OrdIDEx
+as
+select * from Productos where IDPROD = 0
+
+create procedure OrdNom @nombre varchar(50)
+as
+select * from Productos WHERE Nombre_Prod like '%'+@nombre+'%'
+
+create procedure OrdPrecio
+as
+select * from Productos ORDER BY PRECIO ASC
+
+create procedure OrdPrecioEx
+as
+select * from Productos WHERE Precio = 0
+
+create procedure OrdExistencia
+as
+select * from Productos ORDER BY EXISTENCIA ASC
+
+create procedure OrdExistenciaEx
+as
+select * from Productos WHERE Existencia = 0
+--------------------FIN--------------------------------------------------------------------
+
+---LLENAR-JCB-CON-PROVEEDORES----------------------------------
+create procedure consultaProv
+as
+SELECT * FROM Proveedores ORDER BY IDPROV ASC
+------------------FIN------------------------------------------
+
+-----------------ID-COMPRAS-UI-------------------------
+create procedure getLastIDCs
+as
+SELECT TOP 1 IDCOM FROM Compras_Detalladas ORDER BY IDCOM DESC
+------------------------FIN------------------------------------
+
+---------------ORDENAR-PRODUCTOS-PARA-TABLA-CON-PROVEEDORES------------------------------
+create procedure PROVidNomb @nombre varchar(50)
+as
+select IDPROV from Proveedores where Nombre_PROV like @nombre
+
+create procedure PRODidCsProv @idprov int
+as
+select idprov from Compras_Detalladas where IDPROV = @idprov
+
+create procedure PRODidCDs
+as
+select IDPROD from Compras, Compras_Detalladas where compras.IDCOM = Compras_Detalladas.idcom
+
+create procedure PRODidCsProv @idprov int
+as
+select IDPROD from Compras, Compras_Detalladas where compras.IDCOM = Compras_Detalladas.idcom and IDPROV = @idprov
+-----------------------------FIN---------------------------------------------------------
+
+---------------ORDENAR-PRODUCTOS-PARA-TABLA-CON-PROVEEDORES-Y-RADIO-BUTTON-----------------------------
+
+-----------------------------------FIN-------------------------------------------------------
+
+----------------COMPRAS_MISCELANEO------------------------------------
+
+create procedure CDprovID @nombre varchar(50)
+as
+SELECT IDPROV FROM Proveedores WHERE Nombre_PROV LIKE @nombre 
+
+create procedure UpdateEx @existencia int, @idp int
+as
+update Productos set Existencia = @existencia where IDPROD = @idp
+
+create procedure ExistenciaConsul @idp int
+as
+SELECT Existencia FROM Productos WHERE IDPROD = @idp
+-------------------------FIN-----------------------------------------------------

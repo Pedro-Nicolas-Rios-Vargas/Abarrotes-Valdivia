@@ -17,6 +17,7 @@ import res.Persona;
 import res.Producto;
 import res.interfazDB.ManejoUICompras;
 import res.interfazDB.ManejoUIComprasDetalladas;
+import res.interfazDB.ManejoUIProductos;
 
 /**
  *
@@ -30,6 +31,7 @@ public class PanelCompras extends javax.swing.JPanel{
     public int buscarPor=1;
     ManejoUICompras UIC = new ManejoUICompras();
     ManejoUIComprasDetalladas UICD = new ManejoUIComprasDetalladas();
+    ManejoUIProductos UIP = new ManejoUIProductos();
     ListaCola<Producto> queue = new ListaCola<>();
     ListaCola<Persona> queueProv = new ListaCola<>();
     Producto producto;
@@ -535,12 +537,9 @@ public class PanelCompras extends javax.swing.JPanel{
 
     private void btnNewCompraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewCompraActionPerformed
         String provCombo=jcbProveedores.getSelectedItem().toString();
-        int idP = 0, id = 0, cantidad = 0;
-        float totalC =0, subTotal = 0;
-        String query="";
-        if (true) {
-            
-        }
+        int idP = 0, id = 0, cantidad = 0, Nexistencia = 0, existenciaA = 0, stock = 0;
+        float totalC =0, subTotal = 0, precio = 0;
+        String query="", nombre="", UM="";
         totalC=Float.valueOf(txtTotal1.getText());
         try {
             idP = UICD.conProvID(jcbProveedores.getSelectedItem().toString());
@@ -554,10 +553,18 @@ public class PanelCompras extends javax.swing.JPanel{
         }
         for (int i = 0; i < modeloTablaCompras.getRowCount(); i++) {
             id = Integer.parseInt((String) modeloTablaCompras.getValueAt(i, 0));
+            nombre = (String) modeloTablaCompras.getValueAt(i, 1);
+            try {
+                existenciaA = UIC.ExistenciaConsul(id);
+            } catch (SQLException ex) {
+                Logger.getLogger(PanelCompras.class.getName()).log(Level.SEVERE, null, ex);
+            }
             cantidad = Integer.parseInt((String) modeloTablaCompras.getValueAt(i, 3));
+            Nexistencia = cantidad + existenciaA;
             subTotal = (Float.valueOf(String.valueOf(modeloTablaCompras.getValueAt(i, 2))));
             try {
                 UIC.agregar(id, cantidad, subTotal);
+                UIC.UpdateProdEx(id, Nexistencia);
             } catch (SQLException ex) {
                 Logger.getLogger(PanelCompras.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -571,6 +578,7 @@ public class PanelCompras extends javax.swing.JPanel{
         btnTotal.setEnabled(false);
         txtPago1.setEnabled(false); 
         jcbProveedores.setEnabled(true); 
+        
         try {
                 queue = UIC.consultaPorProv(provCombo);
             } catch (SQLException ex) {

@@ -29,7 +29,8 @@ public class ManejoUIComprasDetalladas {
     public int conProvID(String nombre) throws SQLException{
         int idP = 0;
         ResultSet rs;
-        String query = "SELECT IDPROV FROM Proveedores WHERE Nombre_PROV LIKE (" + "'" + nombre + "'" + ")";
+        String busquedaAux = "'"+nombre+"'";
+        String query = " execute CDprovID "+busquedaAux;
         rs = conDB.receive(query);
         while(rs.next()){
             idP = rs.getInt(1);
@@ -39,15 +40,15 @@ public class ManejoUIComprasDetalladas {
     
     public int agregar(int idP, int dia, int mes, int year, float total) throws SQLException {
         int idc = getLastID() + 1;
-        String query = "INSERT INTO Compras_Detalladas VALUES (" + idc + ", " + idP + ", " +
-                dia + ", " + mes + ", " + year + ", " + total + ")";
+        String query = "execute addCompraD " + idc + ", " + idP + ", " +
+                dia + ", " + mes + ", " + year + ", " + total;
         return conDB.send(query);
     }
     
     private int getLastID() throws SQLException {
         ResultSet rs;
         int id = 0;
-        String query = "SELECT TOP 1 IDCOM FROM Compras_Detalladas ORDER BY IDCOM DESC";
+        String query = "execute getLastIDCDs";
         rs = conDB.receive(query);
         while (rs.next()) {
             id = rs.getInt(1);
@@ -57,7 +58,7 @@ public class ManejoUIComprasDetalladas {
     
     public ListaCola<Detallada> consulta() throws SQLException{
         ResultSet rs;
-        String query="SELECT * FROM COMPRAS_DETALLADAS";
+        String query="execute selectCDs";
         rs = conDB.receive(query);
         while(rs.next()){
             compras = new Detallada(rs.getInt(1), rs.getInt(2), rs.getInt(3),
@@ -67,8 +68,4 @@ public class ManejoUIComprasDetalladas {
         return queue;
     }
     
-    public void eliminar(int idc) throws SQLException{
-        String query="DELETE FROM COMPRAS_DETALLADAS WHERE IDCOM = "+idc;
-        conDB.send(query);
-    }
 }

@@ -29,35 +29,36 @@ public class ManejoUICompras {
     public ListaCola<Producto> consulta(int filtro, String busqueda) throws SQLException{
         ListaCola<Producto> queue = new ListaCola<>();
         ResultSet rs;
-        String query="SELECT * FROM Productos";
+        String query="";
         Producto producto;
 
         switch (filtro) {
             case 1:
-                    //HOAL
+                    query = "execute selectProducs";
                 break;
             case 2:
                 try {
-                    query += " ORDER BY IDPROD ASC";
+                    query = "execute OrdID";
                 } catch (NumberFormatException e) {
-                    query += " WHERE IDPROD=" + 0;
+                    query = "execute OrdIDEx";
                 }   
                 break;
             case 3:
-                query += " WHERE Nombre_Prod like '%" + busqueda + "%'";
+                String busquedaAux = "'"+busqueda+"'";
+                query = "execute OrdNomb "+busquedaAux;
                 break;
             case 4:
                 try {
-                    query += " ORDER BY PRECIO ASC";
+                    query = "execute OrdPrecio";
                 } catch (NumberFormatException e) {
-                    query += " WHERE Precio=" + 0;
+                    query = "execute OrdPrecioEx";
                 }
                 break;
             case 5:
                 try {
-                    query += " ORDER BY EXISTENCIA ASC";
+                    query = "execute OrdExistencia";
                 } catch (NumberFormatException e) {
-                   query += " WHERE Existencia=" + 0;
+                   query = "execute OrdExistencia";
                 }
                 break;
             default:
@@ -76,7 +77,7 @@ public class ManejoUICompras {
     public ListaCola<Persona> consultaProv() throws SQLException{
         ListaCola<Persona> queue = new ListaCola<>();
         ResultSet rs;
-        String query="SELECT * FROM Proveedores ORDER BY IDPROV ASC";
+        String query="execute consultaProv";
         Persona proveedor;
      
         rs = conDB.receive(query);
@@ -90,15 +91,15 @@ public class ManejoUICompras {
     
     public int agregar(int idprod, int cantidad, float subtotalV) throws SQLException {
         int idc = getLastID();
-        String query = "INSERT INTO Compras VALUES (" + idc + ", " + idprod + ", " +
-                cantidad + ", " + subtotalV + ")";
+        String query = "execute addCompras " + idc + ", " + idprod + ", " +
+                cantidad + ", " + subtotalV;
         return conDB.send(query);
     }
     
     private int getLastID() throws SQLException {
         ResultSet rs;
         int id = 0;
-        String query = "SELECT TOP 1 IDCOM FROM Compras_Detalladas ORDER BY IDCOM DESC";
+        String query = "execute getLastIDCs";
         rs = conDB.receive(query);
         while (rs.next()) {
             id = rs.getInt(1);
@@ -110,7 +111,8 @@ public class ManejoUICompras {
         ListaCola<Producto> queue = new ListaCola<>();
         Set<String> idproductos = new LinkedHashSet<>();
         ResultSet rs, rn, rp, rf, rt, rd;
-        String query="select IDPROV from Proveedores where Nombre_PROV like ("+"'"+busqueda+"'"+")";
+        String busquedaAux = "'"+busqueda+"'";
+        String query="execute PROVidNomb "+busquedaAux;
         String query1="";
         String query2="";
         String query3="";
@@ -124,7 +126,7 @@ public class ManejoUICompras {
             idp = rs.getInt(1);
         }
         
-        query1="select idprov from Compras_Detalladas where IDPROV = "+idp;
+        query1="execute PROVidCDs "+idp;
         rt = conDB.receive(query1);
         if (rt.next()) {
             //HOAL
@@ -133,7 +135,7 @@ public class ManejoUICompras {
         }
         
         if (idp==0) {
-            query2="select IDPROD from Compras, Compras_Detalladas where compras.IDCOM = Compras_Detalladas.idcom";
+            query2="execute PRODidCDs";
             rp = conDB.receive(query2);
             while (rp.next()) {
                 idprod = rp.getInt(1);
@@ -141,7 +143,7 @@ public class ManejoUICompras {
             }
             String strList = String.join(",", idproductos);
             if (idproductos.isEmpty()) {
-                query3="select * from productos";
+                query3="execute selectProducs";
                 rd = conDB.receive(query3);
                 while(rd.next()){
                         producto = new Producto(rd.getInt(1), rd.getString(2), rd.getInt(3),
@@ -158,7 +160,7 @@ public class ManejoUICompras {
                 }
             }
         }else{
-            query3="select IDPROD from Compras, Compras_Detalladas where compras.IDCOM = Compras_Detalladas.idcom and IDPROV = "+idp;
+            query3="execute PRODidCsProv "+idp;
             rn = conDB.receive(query3);
             while(rn.next()){
                 idprod = rn.getInt(1);
@@ -182,7 +184,8 @@ public class ManejoUICompras {
         ListaCola<Producto> queue = new ListaCola<>();
         Set<String> idproductos = new LinkedHashSet<>();
         ResultSet rs, rn, rp, rf, rt, rd;
-        String query="select IDPROV from Proveedores where Nombre_PROV like ("+"'"+busqueda+"'"+")";
+        String busquedaAux = "'"+busqueda+"'";
+        String query="execute PROVidNomb "+busquedaAux;
         String query1="";
         String query2="";
         String query3="";
@@ -198,7 +201,7 @@ public class ManejoUICompras {
                     idp = rs.getInt(1);
                 }
 
-                query1="select idprov from Compras_Detalladas where IDPROV = "+idp;
+                query1="execute PROVidCDs "+idp;
                 rt = conDB.receive(query1);
                 if (rt.next()) {
                     //HOAL
@@ -207,7 +210,7 @@ public class ManejoUICompras {
                 }
 
                 if (idp==0) {
-                    query2="select IDPROD from Compras, Compras_Detalladas where compras.IDCOM = Compras_Detalladas.idcom";
+                    query2="execute PRODidCDs";
                     rp = conDB.receive(query2);
                     while (rp.next()) {
                         idprod = rp.getInt(1);
@@ -215,7 +218,7 @@ public class ManejoUICompras {
                     }
                     String strList = String.join(",", idproductos);
                     if (idproductos.isEmpty()) {
-                        query3="select * from productos";
+                        query3="execute selectProducs";
                         rd = conDB.receive(query3);
                         while(rd.next()){
                                 producto = new Producto(rd.getInt(1), rd.getString(2), rd.getInt(3),
@@ -232,7 +235,7 @@ public class ManejoUICompras {
                         }
                     }
                 }else{
-                    query3="select IDPROD from Compras, Compras_Detalladas where compras.IDCOM = Compras_Detalladas.idcom and IDPROV = "+idp;
+                    query3="execute PRODidCsProv "+idp;
                     rn = conDB.receive(query3);
                     while(rn.next()){
                         idprod = rn.getInt(1);
@@ -256,7 +259,7 @@ public class ManejoUICompras {
                     idp = rs.getInt(1);
                 }
 
-                query1="select idprov from Compras_Detalladas where IDPROV = "+idp;
+                query1="execute PRODidCsProv "+idp;
                 rt = conDB.receive(query1);
                 if (rt.next()) {
                     //HOAL
@@ -265,7 +268,7 @@ public class ManejoUICompras {
                 }
 
                 if (idp==0) {
-                    query2="select IDPROD from Compras, Compras_Detalladas where compras.IDCOM = Compras_Detalladas.idcom";
+                    query2="execute PRODidCDs";
                     rp = conDB.receive(query2);
                     while (rp.next()) {
                         idprod = rp.getInt(1);
@@ -273,7 +276,7 @@ public class ManejoUICompras {
                     }
                     String strList = String.join(",", idproductos);
                     if (idproductos.isEmpty()) {
-                        query3="select * from productos";
+                        query3="execute selectProducs";
                         rd = conDB.receive(query3);
                         while(rd.next()){
                                 producto = new Producto(rd.getInt(1), rd.getString(2), rd.getInt(3),
@@ -290,7 +293,7 @@ public class ManejoUICompras {
                         }
                     }
                 }else{
-                    query3="select IDPROD from Compras, Compras_Detalladas where compras.IDCOM = Compras_Detalladas.idcom and IDPROV = "+idp;
+                    query3="execute PRODidCsProv "+idp;
                     rn = conDB.receive(query3);
                     while(rn.next()){
                         idprod = rn.getInt(1);
@@ -314,7 +317,7 @@ public class ManejoUICompras {
                     idp = rs.getInt(1);
                 }
 
-                query1="select idprov from Compras_Detalladas where IDPROV = "+idp;
+                query1="execute PRODidCsProv "+idp;
                 rt = conDB.receive(query1);
                 if (rt.next()) {
                     //HOAL
@@ -323,7 +326,7 @@ public class ManejoUICompras {
                 }
 
                 if (idp==0) {
-                    query2="select IDPROD from Compras, Compras_Detalladas where compras.IDCOM = Compras_Detalladas.idcom";
+                    query2="execute PRODidCDs";
                     rp = conDB.receive(query2);
                     while (rp.next()) {
                         idprod = rp.getInt(1);
@@ -331,7 +334,7 @@ public class ManejoUICompras {
                     }
                     String strList = String.join(",", idproductos);
                     if (idproductos.isEmpty()) {
-                        query3="select * from productos";
+                        query3="execute selectProducs";
                         rd = conDB.receive(query3);
                         while(rd.next()){
                                 producto = new Producto(rd.getInt(1), rd.getString(2), rd.getInt(3),
@@ -348,7 +351,7 @@ public class ManejoUICompras {
                         }
                     }
                 }else{
-                    query3="select IDPROD from Compras, Compras_Detalladas where compras.IDCOM = Compras_Detalladas.idcom and IDPROV = "+idp;
+                    query3="execute PRODidCsProv "+idp;
                     rn = conDB.receive(query3);
                     while(rn.next()){
                         idprod = rn.getInt(1);
@@ -377,7 +380,8 @@ public class ManejoUICompras {
         ListaCola<Producto> queue = new ListaCola<>();
         Set<String> idproductos = new LinkedHashSet<>();
         ResultSet rs, rn, rp, rf, rt, rd;
-        String query="select IDPROV from Proveedores where Nombre_PROV like ("+"'"+busqueda+"'"+")";
+        String busquedaAux = "'"+busqueda+"'";
+        String query="execute PROVidNomb "+busquedaAux;
         String query1="";
         String query2="";
         String query3="";
@@ -391,7 +395,7 @@ public class ManejoUICompras {
             idp = rs.getInt(1);
         }
 
-        query1="select idprov from Compras_Detalladas where IDPROV = "+idp;
+        query1="execute PRODidCsProv "+idp;
         rt = conDB.receive(query1);
         if (rt.next()) {
             //HOAL
@@ -400,7 +404,7 @@ public class ManejoUICompras {
         }
 
         if (idp==0) {
-            query2="select IDPROD from Compras, Compras_Detalladas where compras.IDCOM = Compras_Detalladas.idcom";
+            query2="execute PRODidCDs";
             rp = conDB.receive(query2);
             while (rp.next()) {
                 idprod = rp.getInt(1);
@@ -408,7 +412,7 @@ public class ManejoUICompras {
             }
             String strList = String.join(",", idproductos);
             if (idproductos.isEmpty()) {
-                query3="select * from productos";
+                query3="execute selectProducs";
                 rd = conDB.receive(query3);
                 while(rd.next()){
                         producto = new Producto(rd.getInt(1), rd.getString(2), rd.getInt(3),
@@ -425,7 +429,7 @@ public class ManejoUICompras {
                 }
             }
         }else{
-            query3="select IDPROD from Compras, Compras_Detalladas where compras.IDCOM = Compras_Detalladas.idcom and IDPROV = "+idp;
+            query3="execute PRODidCsProv "+idp;
             rn = conDB.receive(query3);
             while(rn.next()){
                 idprod = rn.getInt(1);
@@ -445,17 +449,13 @@ public class ManejoUICompras {
         return queue;
     }
     
-    public void eliminar(int idc) throws SQLException{
-        String query="DELETE FROM COMPRAS WHERE IDCOM = "+idc;
-        conDB.send(query);
-    }
     
     public ListaCola<Persona> getLastProvID() throws SQLException {
         Persona proveedor;
         ListaCola<Persona> queue = new ListaCola<>();
         ResultSet rs;
         int id = 0;
-        String query = "SELECT TOP 1 IDPROV, NOMBRE_PROV FROM Proveedores ORDER BY IDPROV DESC";
+        String query = "execute getLastProvID";
         rs = conDB.receive(query);
         while (rs.next()) {
             proveedor = new Persona(rs.getInt(1), rs.getString(2));
@@ -470,7 +470,7 @@ public class ManejoUICompras {
         ResultSet rp, rd;
         String query2="";
         String query3="";
-        query2="select IDPROD from Compras, Compras_Detalladas where compras.IDCOM = Compras_Detalladas.idcom";
+        query2="execute PRODidCDs";
         int idprod;
         Producto producto;
         rp = conDB.receive(query2);
@@ -488,6 +488,24 @@ public class ManejoUICompras {
         }
         return queue;
     }
+    
+    public int ExistenciaConsul(int idProd)throws SQLException{
+        ResultSet rs;
+        String query = "execute ExistenciaConsul "+idProd;
+        int existencia = 0;
+        rs = conDB.receive(query);
+            
+        while (rs.next()) {
+            existencia = rs.getInt(1); 
+        }
+        return existencia;
+    }
+    
+    public void UpdateProdEx(int idProd, int Nexistencia)throws SQLException{
+        String query = "execute UpdateEx "+Nexistencia+","+idProd;
+        conDB.send(query);
+    }
+    
     
     public void closeConnection(){
         conDB.closeConnection();
