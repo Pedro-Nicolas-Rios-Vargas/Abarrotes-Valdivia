@@ -919,7 +919,7 @@ public class GestionarProveedores extends javax.swing.JPanel {
             sTelefono = tfTelProvModificar.getText();
             if(nombre.length() != 0){
                 try {
-                    telefono = Integer.parseInt(sTelefono);
+                    telefono = (sTelefono.length() != 0) ? Integer.parseInt(sTelefono) : 0;
                 } catch(NumberFormatException nfE) {
                     errorLabelModificar.setText("Telefono no valido");
                     return;
@@ -953,6 +953,11 @@ public class GestionarProveedores extends javax.swing.JPanel {
         }catch(SQLException sqlE){
             JOptionPane.showMessageDialog(this, "Error en la busqueda: \n" + sqlE.getMessage(), "Error de Busqueda.", JOptionPane.ERROR_MESSAGE);
         }
+
+        try{
+            ListaCola<Proveedor> cola = manager.consulta(1, null);
+            llenarTabla(cola);
+        }catch(SQLException sqlE){}
         
     }//GEN-LAST:event_btnModificarActionPerformed
 
