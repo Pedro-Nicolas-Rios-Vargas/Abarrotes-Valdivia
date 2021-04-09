@@ -87,9 +87,9 @@ public class ManejoUIVentasDetalladas {
         }
         rs = conDB.receive(query);
         
-        while (rs.next()) { //Estoy 100000 % seguro que esta madre hay que cambiarla porque yo no esta la fecha separada por dia mes y year, ya que solo es una variable date
-            accion = new Detallada(rs.getInt(1), rs.getInt(2), rs.getInt(3),
-                    rs.getInt(4),rs.getInt(5), rs.getFloat(6));
+        while (rs.next()) {
+            accion = new Detallada(rs.getInt(1), rs.getInt(2), rs.getFloat(3),
+                    rs.getDate(4));
             queue.push(accion);
         }
         return queue;

@@ -115,7 +115,12 @@ create procedure updateProduct @idproducto int, @nombreproducto varchar(25), @pr
 as
 update Productos set nombre_Prod = @nombreproducto,precio = @preSio ,stock = @stocks,existencia = @existencias , UM= @ums where idProd = @idproducto
 
-execute updateProduct 3, 'Pito', 66.66, 23, 23, 'Droga'
+--PROCEDURE productos updateProductoExistencia
+CREATE PROCEDURE updateProductExistencia @idprod int, @existencia INT
+AS
+UPDATE Productos set existencia = @existencia where idProd = @idprod
+
+EXECUTE updateProductExistencia 1, 9
 --Procedures Productos delete
 create procedure deleteProduct @idproducto int
 as
@@ -176,7 +181,7 @@ create procedure selectVD_Fecha @fecha date
 as
 select * from Ventas_Detalladas where fecha = @fecha
 
-execute selectVD_Fecha '2021-04-08'
+execute selectVD_Fecha '1-1-1'
 --Procedures Ventas_Detalladas Select_IDCLIEN
 create PROCEDURE selectVD_IDCLIEN @IDCLIEN INT
 AS
@@ -205,15 +210,41 @@ update Ventas_Detalladas set  idClien = @idc , totalV = @total where idV = @id
 create procedure addVenta @id int, @product int , @cant int, @sub decimal(6,2)
 as
 insert into Ventas values (@id, @product, @cant, @sub)
-execute addVenta 1,1,2,123.2
+execute addVenta 1,2,2,123.2
 --Procedures Ventas select ind
 create procedure selectVenta @id int
 as
 select * from Ventas where idV = @id
+
+EXECUTE selectVenta 2
 --Procedures Ventas select gen
 create procedure selectVentas
 as
 select * from Ventas 
+
+EXECUTE selectVentas
+
+--Procedures Ventas select Producto
+create procedure selectVenta_Producto @id int
+as
+select * from Ventas where idProd = @id
+
+EXECUTE selectVenta_Producto 2
+
+--Procedures Ventas select Cantidad
+create procedure selectVenta_Cantidad @cantidad int
+as
+select * from Ventas where Cantidad = @cantidad
+
+EXECUTE selectVenta_Cantidad 1
+
+--Procedures Ventas select SubtotalV
+create procedure selectVenta_SubtotalV @subtotalv decimal(6,2)
+as
+select * from Ventas where SubtotalV = @subtotalv
+
+EXECUTE selectVenta_SubtotalV -1
+
 --Procedures Ventas update
 create procedure updateVenta @id int, @product int , @cant int, @sub decimal(6,2)
 as

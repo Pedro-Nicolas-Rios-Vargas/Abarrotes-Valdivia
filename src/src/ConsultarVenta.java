@@ -371,7 +371,8 @@ public class ConsultarVenta extends javax.swing.JFrame {
                 break;
             }
             esta = queue.pop();
-            String diaCompuesto = String.valueOf(esta.getDia()) + "/" + String.valueOf(esta.getMes()) + "/"  + String.valueOf(esta.getYear());
+            String diaCompuesto = String.valueOf(esta.getFecha());
+            //String diaCompuesto = String.valueOf(esta.getDia()) + "/" + String.valueOf(esta.getMes()) + "/"  + String.valueOf(esta.getYear());
             String[] datos = {String.valueOf(esta.getId()), String.valueOf(esta.getId2()), diaCompuesto, String.valueOf(esta.getTotal())};
             modeloTablaConsVenta.addRow(datos);
         }
