@@ -108,26 +108,61 @@ delete from Productos where idProd = @idproducto
 
 
 ---------------------------------------------------------------PROVEEDORES
+--++++++++++++++++++ AGREGAR ++++++++++++++++++
+
 --Procedures Proveedores insert
 create procedure insertProv @id int, @nom varchar(20), @tel int
 as
 insert into Proveedores values( @id, @nom , @tel )
---Procedures Proveedores select ind
-create procedure selectProv @id int
+
+--++++++++++++++++++ CONSULTAR ++++++++++++++++++
+
+--Procedure Proveedores select by Id
+create procedure selectProvById @id int
 as
 select * from Proveedores where idProv = @id
---Procedures Proveedores select gen
+
+--Procedure Proveedores select by Name
+CREATE PROCEDURE selectProvByName @name varchar(20)
+AS
+SELECT * FROM Proveedores WHERE nombre_Prov = @name
+
+--Procedure Proveedores select by Tel
+CREATE PROCEDURE selectProvByTel @tel int
+AS
+SELECT * FROM Proveedores WHERE telefono_pro = @tel
+
+--Procedures Proveedores select All
 create procedure selectProvs 
 as
 select * from Proveedores 
+
+--Procedure Proveedores select TOP 1
+CREATE PROCEDURE selectProvTOP
+AS
+SELECT TOP 1 idProv FROM Proveedores ORDER BY idProv DESC
+
+
+--++++++++++++++++++ UPDATE ++++++++++++++++++
+
 --Procedures Proveedores update
 create procedure updateProv @id int, @nom varchar(20), @tel int
 as
 update Proveedores set  nombre_Prov = @nom ,telefono_pro = @tel where idProv = @id 
---Procedures Proveedores delete
-create procedure deleteProv @id int
+
+
+--++++++++++++++++++ DELETE ++++++++++++++++++
+
+--Procedures Proveedores delete by ID
+create procedure deleteProvById @id int
 as
 delete from Proveedores where idProv = @id
+
+--Procedure Delete Proveedor by Nombre
+CREATE PROCEDURE deleteProvByName @name varchar(20) 
+AS
+DELETE FROM Proveedores WHERE nombre_Prov = @name
+
 
 ---------------------------------------------------------------VENTAS_DETALLADAS
 --Procedures Ventas_Detalladas insert

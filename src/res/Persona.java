@@ -26,6 +26,6 @@ public class Persona extends AbarrotesElemento{
     }
     
     public String toString(){
-        return "ID: " + id + "\n Nombre: " + nombre;
+        return "ID: " + id + "\nNombre: " + nombre;
     }
 }

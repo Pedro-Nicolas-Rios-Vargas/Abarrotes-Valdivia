@@ -5,7 +5,8 @@
  */
 package src;
 
-import com.sun.glass.events.KeyEvent;
+import java.awt.event.KeyEvent;
+//import com.sun.glass.events.KeyEvent;
 import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.logging.Level;
@@ -498,7 +499,7 @@ public class PanelCompras extends javax.swing.JPanel{
             labelWarning1.setVisible(true);
             evt.consume();
         }else{
-            if((Character.isDigit(nume)) || (nume==KeyEvent.VK_BACKSPACE)){
+            if((Character.isDigit(nume)) || (nume==KeyEvent.VK_BACK_SPACE)){
                 labelWarning1.setVisible(false);  
             }
         }
