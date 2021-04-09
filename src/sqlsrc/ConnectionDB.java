@@ -13,7 +13,7 @@ import sqlsrc.interfaces.SQLConnectionInterface;
  * de datos incluyendo la entrada y salida de datos.
  */
 public class ConnectionDB implements SQLConnectionInterface{
-    private final String URL = "jdbc:sqlserver://localhost:1433;databaseName=Abarrotes_ValdiviaOLD";
+    private final String URL = "jdbc:sqlserver://localhost:1433;databaseName=Abarrotes_ValdiviaNEW";
     private final String USER = "sa";
     private final String PWD = "sa";
     

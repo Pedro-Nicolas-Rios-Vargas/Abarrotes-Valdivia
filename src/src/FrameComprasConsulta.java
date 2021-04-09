@@ -21,7 +21,7 @@ import res.interfazDB.ManejoUIComprasDetalladas;
  */
 public class FrameComprasConsulta extends javax.swing.JFrame {
     DefaultTableModel modeloTablaComprasHechas;
-    static String[] cabeceraTablaComprasHechas = {"ID Compra", " ID Proveedor", "Dia", "Mes", "Año","Total"};
+    static String[] cabeceraTablaComprasHechas = {"ID Compra", " ID Proveedor", "Fecha","Total"};
     static int tablaComprasSeleccionModificar;
     ManejoUIComprasDetalladas UICD = new ManejoUIComprasDetalladas();
     ManejoUICompras UIC = new ManejoUICompras();
@@ -122,7 +122,7 @@ public class FrameComprasConsulta extends javax.swing.JFrame {
                 break;
             }
         compras=queue.pop();
-        String[] datos = {String.valueOf(compras.getId()), String.valueOf(compras.getId2()), String.valueOf(compras.getDia()), String.valueOf(compras.getMes()), String.valueOf(compras.getYear()), String.valueOf(compras.getTotal())};
+        String[] datos = {String.valueOf(compras.getId()), String.valueOf(compras.getId2()), String.valueOf(compras.getFecha()), String.valueOf(compras.getTotal())};
         modeloTablaComprasHechas.addRow(datos);
         }
     }//GEN-LAST:event_formWindowOpened

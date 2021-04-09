@@ -45,7 +45,7 @@ public class ManejoUICompras {
                 break;
             case 3:
                 String busquedaAux = "'"+busqueda+"'";
-                query = "execute OrdNomb "+busquedaAux;
+                query = "execute OrdNom "+busquedaAux;
                 break;
             case 4:
                 try {
@@ -126,7 +126,7 @@ public class ManejoUICompras {
             idp = rs.getInt(1);
         }
         
-        query1="execute PROVidCDs "+idp;
+        query1="execute PROVidCsProv "+idp;
         rt = conDB.receive(query1);
         if (rt.next()) {
             //HOAL
@@ -160,7 +160,7 @@ public class ManejoUICompras {
                 }
             }
         }else{
-            query3="execute PRODidCsProv "+idp;
+            query3="execute PRODidCDsProv "+idp;
             rn = conDB.receive(query3);
             while(rn.next()){
                 idprod = rn.getInt(1);
@@ -201,7 +201,7 @@ public class ManejoUICompras {
                     idp = rs.getInt(1);
                 }
 
-                query1="execute PROVidCDs "+idp;
+                query1="execute PROVidCsProv "+idp;
                 rt = conDB.receive(query1);
                 if (rt.next()) {
                     //HOAL
@@ -235,7 +235,7 @@ public class ManejoUICompras {
                         }
                     }
                 }else{
-                    query3="execute PRODidCsProv "+idp;
+                    query3="execute PRODidCDsProv "+idp;
                     rn = conDB.receive(query3);
                     while(rn.next()){
                         idprod = rn.getInt(1);
@@ -259,7 +259,7 @@ public class ManejoUICompras {
                     idp = rs.getInt(1);
                 }
 
-                query1="execute PRODidCsProv "+idp;
+                query1="execute PROVidCsProv "+idp;
                 rt = conDB.receive(query1);
                 if (rt.next()) {
                     //HOAL
@@ -293,7 +293,7 @@ public class ManejoUICompras {
                         }
                     }
                 }else{
-                    query3="execute PRODidCsProv "+idp;
+                    query3="execute PRODidCDsProv "+idp;
                     rn = conDB.receive(query3);
                     while(rn.next()){
                         idprod = rn.getInt(1);
@@ -317,7 +317,7 @@ public class ManejoUICompras {
                     idp = rs.getInt(1);
                 }
 
-                query1="execute PRODidCsProv "+idp;
+                query1="execute PROVidCsProv "+idp;
                 rt = conDB.receive(query1);
                 if (rt.next()) {
                     //HOAL
@@ -351,7 +351,7 @@ public class ManejoUICompras {
                         }
                     }
                 }else{
-                    query3="execute PRODidCsProv "+idp;
+                    query3="execute PRODidCDsProv "+idp;
                     rn = conDB.receive(query3);
                     while(rn.next()){
                         idprod = rn.getInt(1);
@@ -395,7 +395,7 @@ public class ManejoUICompras {
             idp = rs.getInt(1);
         }
 
-        query1="execute PRODidCsProv "+idp;
+        query1="execute PROVidCsProv "+idp;
         rt = conDB.receive(query1);
         if (rt.next()) {
             //HOAL
@@ -429,7 +429,7 @@ public class ManejoUICompras {
                 }
             }
         }else{
-            query3="execute PRODidCsProv "+idp;
+            query3="execute PRODidCDsProv "+idp;
             rn = conDB.receive(query3);
             while(rn.next()){
                 idprod = rn.getInt(1);

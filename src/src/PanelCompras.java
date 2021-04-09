@@ -547,7 +547,7 @@ public class PanelCompras extends javax.swing.JPanel{
             Logger.getLogger(PanelCompras.class.getName()).log(Level.SEVERE, null, ex);
         }
         try {
-            UICD.agregar(idP, dia(), mes(), year(), totalC);         
+            UICD.agregar(idP, totalC);         
         } catch (SQLException ex) {
             //HOALXD
         }

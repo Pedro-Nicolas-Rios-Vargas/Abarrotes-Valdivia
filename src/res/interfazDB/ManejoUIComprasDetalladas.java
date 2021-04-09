@@ -38,17 +38,16 @@ public class ManejoUIComprasDetalladas {
         return idP;
     }
     
-    public int agregar(int idP, int dia, int mes, int year, float total) throws SQLException {
+    public int agregar(int idP, float total) throws SQLException {
         int idc = getLastID() + 1;
-        String query = "execute addCompraD " + idc + ", " + idP + ", " +
-                dia + ", " + mes + ", " + year + ", " + total;
+        String query = "execute insert_CD " + idc + ", " + idP + ", " + total;
         return conDB.send(query);
     }
     
     private int getLastID() throws SQLException {
         ResultSet rs;
         int id = 0;
-        String query = "execute getLastIDCDs";
+        String query = "execute getLastIDCs";
         rs = conDB.receive(query);
         while (rs.next()) {
             id = rs.getInt(1);
@@ -61,8 +60,7 @@ public class ManejoUIComprasDetalladas {
         String query="execute selectCDs";
         rs = conDB.receive(query);
         while(rs.next()){
-            compras = new Detallada(rs.getInt(1), rs.getInt(2), rs.getInt(3),
-                    rs.getInt(4),rs.getInt(5), rs.getFloat(6));
+            compras = new Detallada(rs.getInt(1), rs.getInt(2), rs.getDate(3), rs.getFloat(4));
             queue.push(compras);
         }
         return queue;

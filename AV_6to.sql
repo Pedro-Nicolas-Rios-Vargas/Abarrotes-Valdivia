@@ -1,6 +1,6 @@
 
-CREATE DATABASE Abarrotes_Valdivia
-use Abarrotes_Valdivia
+CREATE DATABASE Abarrotes_ValdiviaNEW
+use Abarrotes_ValdiviaNEW
 
 CREATE TABLE Clientes (
 idClien int PRIMARY KEY CHECK(idClien>=1),
@@ -17,9 +17,9 @@ telefono_pro int
 CREATE TABLE Productos(
 idProd int PRIMARY KEY CHECK(idProd>=1),
 nombre_Prod varchar(25) NOT NULL,
-precio decimal(5,2) NOT NULL CHECK(precio>0.0),
-stock int NOT NULL CHECK(stock>=0 AND stock<=99),
 existencia int NOT NULL CHECK(existencia>=0 AND existencia<=99),
+stock int NOT NULL CHECK(stock>=0 AND stock<=99),
+precio decimal(5,2) NOT NULL CHECK(precio>0.0),
 UM varchar(30) NOT NULL
 )
 
@@ -48,6 +48,7 @@ fechaC date,
 totalC decimal(6,2) NOT NULL,
 FOREIGN KEY(idProv) REFERENCES Proveedores(idProv)
 )
+
 CREATE TABLE Compras(
 idCom int CHECK(idCom>=1),
 idProd int NOT NULL CHECK(idProd>=1),
@@ -265,7 +266,7 @@ create procedure PROVidNomb @nombre varchar(50)
 as
 select IDPROV from Proveedores where Nombre_PROV like @nombre
 
-create procedure PRODidCsProv @idprov int
+create procedure PROVidCsProv @idprov int
 as
 select idprov from Compras_Detalladas where IDPROV = @idprov
 
@@ -273,9 +274,11 @@ create procedure PRODidCDs
 as
 select IDPROD from Compras, Compras_Detalladas where compras.IDCOM = Compras_Detalladas.idcom
 
-create procedure PRODidCsProv @idprov int
+create procedure PRODidCDsProv @idprov int
 as
 select IDPROD from Compras, Compras_Detalladas where compras.IDCOM = Compras_Detalladas.idcom and IDPROV = @idprov
+
+execute PRODidCDsProv 1
 -----------------------------FIN---------------------------------------------------------
 
 ---------------ORDENAR-PRODUCTOS-PARA-TABLA-CON-PROVEEDORES-Y-RADIO-BUTTON-----------------------------
@@ -296,3 +299,8 @@ create procedure ExistenciaConsul @idp int
 as
 SELECT Existencia FROM Productos WHERE IDPROD = @idp
 -------------------------FIN-----------------------------------------------------
+
+select * from Productos
+drop table Productos
+
+insert into Compras values (1,1,9,108.00)
