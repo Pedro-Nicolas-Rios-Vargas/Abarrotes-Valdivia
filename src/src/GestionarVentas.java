@@ -8,8 +8,11 @@ package src;
 import java.math.RoundingMode;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumnModel;
 import lista.ListaCola;
 import res.Producto;
 import res.interfazDB.ManejoUIProductos;
@@ -59,6 +62,18 @@ public class GestionarVentas extends javax.swing.JPanel {
         tablaAlmacen.setModel(modeloTablaAlmacen);
         tablaAlmacen.getTableHeader().setReorderingAllowed(false);
         tablaPito.getTableHeader().setReorderingAllowed(false);
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+        tablaAlmacen.setDefaultRenderer(Object.class, centerRenderer);
+        tablaAlmacen.getTableHeader().setReorderingAllowed(false);
+        tablaAlmacen.getTableHeader().setDefaultRenderer(centerRenderer);
+        TableColumnModel columnModel = tablaAlmacen.getColumnModel();
+        columnModel.getColumn(0).setPreferredWidth(5);
+        columnModel.getColumn(1).setPreferredWidth(130);
+        columnModel.getColumn(2).setPreferredWidth(20);
+        columnModel.getColumn(3).setPreferredWidth(35);
+        columnModel.getColumn(4).setPreferredWidth(10);
+        columnModel.getColumn(5).setPreferredWidth(80);
         consultarSQL("", 0);
     }
 

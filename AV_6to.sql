@@ -217,7 +217,7 @@ create procedure selectVD_Fecha @fecha date
 as
 select * from Ventas_Detalladas where fecha = @fecha
 
-execute selectVD_Fecha '1-1-1'
+execute selectVD_Fecha '2021-4-8'
 --Procedures Ventas_Detalladas Select_IDCLIEN
 create PROCEDURE selectVD_IDCLIEN @IDCLIEN INT
 AS
@@ -304,6 +304,8 @@ select * from Productos
 create procedure selectProductNombre @Nombre_Prod varchar(25)
 as
 select * from Productos where nombre_Prod like '%' + @Nombre_Prod + '%'
+
+execute selectProductNombre 'coc'
 --Procedures Products Where Precio
 create procedure selectProductPrecio @Precio decimal(5,2)
 as

@@ -27,7 +27,7 @@ public class ManejoUIProductos {
     public int agregar(String nombre_Prod, int existencia, int stock, float precio, String UM) throws SQLException{
         int iDPROD = getLastID() + 1;
         String query = "execute addProduct " + iDPROD + ", '" + nombre_Prod + "', "
-                + existencia + ", " + stock + ", " + precio + ", '" + UM + "'" ;
+                + precio + ", " + stock + ", " + existencia + ", '" + UM + "'" ;
         return conDB.send(query);
     }
     /**
@@ -51,7 +51,7 @@ public class ManejoUIProductos {
                 }   
                 break;
             case 2:
-                query = "execute selectProductNombre '%'" + busqueda + "'%'";
+                query = "execute selectProductNombre '" + busqueda + "'";
                 break;
             case 3:
                 try {
@@ -62,9 +62,9 @@ public class ManejoUIProductos {
                 break;
             case 4:
                 try {
-                    query = "execute selectProductExistencia" + Integer.parseInt(busqueda);
+                    query = "execute selectProductExistencia " + Integer.parseInt(busqueda);
                 } catch (NumberFormatException e) {
-                    query = "execute selectProductExistencia" + -1;
+                    query = "execute selectProductExistencia " + -1;
                 }
                 break;
             default:

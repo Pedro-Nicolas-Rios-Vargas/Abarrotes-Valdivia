@@ -6,9 +6,12 @@
 package src;
 
 import java.sql.SQLException;
+import javax.swing.JLabel;
 import lista.ListaCola;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.TableColumnModel;
 import res.Producto;
 import res.interfazDB.ManejoUIProductos;
 
@@ -39,7 +42,20 @@ public class GestionarAlmacen extends javax.swing.JPanel {
             
         };
         tablaAlmacen.setModel(modeloTablaAlmacen);
+        
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+        tablaAlmacen.setDefaultRenderer(Object.class, centerRenderer);
         tablaAlmacen.getTableHeader().setReorderingAllowed(false);
+        tablaAlmacen.getTableHeader().setDefaultRenderer(centerRenderer);
+        TableColumnModel columnModel = tablaAlmacen.getColumnModel();
+        columnModel.getColumn(0).setPreferredWidth(10);
+        columnModel.getColumn(1).setPreferredWidth(130);
+        columnModel.getColumn(2).setPreferredWidth(20);
+        columnModel.getColumn(3).setPreferredWidth(35);
+        columnModel.getColumn(4).setPreferredWidth(10);
+        columnModel.getColumn(5).setPreferredWidth(80);
+        
         almacenFormaBase();
     }
 
@@ -345,7 +361,7 @@ public class GestionarAlmacen extends javax.swing.JPanel {
     private void btnAlmacenEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlmacenEliminarActionPerformed
         boolean seLogro = false;
         if(tablaAlmacen.getSelectedRow() != -1) {
-            int seleccion, seleccion2;
+            int seleccion;
             String[] aux = new String[modeloTablaAlmacen.getColumnCount()];
             for (int i = 0; i < aux.length; i++) {
                 aux[i] = modeloTablaAlmacen.getValueAt(tablaAlmacen.getSelectedRow(), i).toString();
@@ -363,7 +379,7 @@ public class GestionarAlmacen extends javax.swing.JPanel {
                             JOptionPane.INFORMATION_MESSAGE);
                     }
                 } catch (SQLException ex) {
-                    if (ex.getMessage().equals("The DELETE statement conflicted with the REFERENCE constraint \"FK__Ventas__IDPROD__34C8D9D1\". The conflict occurred in database \"Abarrotes\", table \"dbo.Ventas\", column 'IDPROD'.")) {
+                    if (ex.getMessage().contains("The DELETE statement conflicted with the REFERENCE constraint")) {
                         JOptionPane.showMessageDialog(this, "No puedes borrar un producto que se a vendido o comprado", "ERROR", JOptionPane.WARNING_MESSAGE);
                     } else {
                         JOptionPane.showMessageDialog(this, "ERROR: " + ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
@@ -464,10 +480,7 @@ public class GestionarAlmacen extends javax.swing.JPanel {
                         if (seleccion == 1) {
                             almacenFormaBase();
                         } else {
-                            txtNombre.setText("");
-                            txtPrecio.setText("");
-                            txtExistencia.setText("");
-                            txtStock.setText("");
+                            actualizarDespuesDeModificarAgregar();
                         }
                     } catch (SQLException ex) {
                         if (ex.getMessage().contains("Cannot insert duplicate key in object 'dbo.Productos'")) {
@@ -504,24 +517,14 @@ public class GestionarAlmacen extends javax.swing.JPanel {
                                 seLogro = mUIP.modificar(Integer.parseInt(aux[0]), txtNombre.getText(), Integer.parseInt(txtExistencia.getText()),
                                         Integer.parseInt(txtStock.getText()), Float.valueOf(txtPrecio.getText()), comboBoxAlmacenUM.getSelectedItem().toString());
                                 if (!seLogro) {
-                                    if(JOptionPane.showOptionDialog(this, "Productor modificado con extio \n Desea modificar otro producto", "Producto Modificado",
-                                    JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, new Object[]{"Si", "No"}, "Si") == 1) {
+                                    JOptionPane.showMessageDialog(this, "Productor modificado con extio", "Producto Modificado", JOptionPane.INFORMATION_MESSAGE);
                                     almacenFormaBase();
-                                    } else {
-                                        txtNombre.setText("");
-                                        txtPrecio.setText("");
-                                        txtExistencia.setText("");
-                                        txtStock.setText("");
-                                    }
                                 } else {
                                     if(JOptionPane.showOptionDialog(this, "Productor no se a podido modificar \n Desea modificar otro producto", "Producto no modificado",
                                     JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, new Object[]{"Si", "No"}, "Si") == 1) {
                                     almacenFormaBase();
                                     } else {
-                                        txtNombre.setText("");
-                                        txtPrecio.setText("");
-                                        txtExistencia.setText("");
-                                        txtStock.setText("");
+                                        actualizarDespuesDeModificarAgregar();
                                     }
                                 } 
                             } catch (SQLException ex) {
@@ -692,6 +695,17 @@ public class GestionarAlmacen extends javax.swing.JPanel {
         for (int i =  modeloTablaAlmacen.getRowCount() - 1; i >= 0; i--) {
             modeloTablaAlmacen.removeRow(i);
         }
+    }
+    /**
+     * Metodo para actualizar la tabla y los txt en caso de que se quiera seguir
+     * agregando o medificando una producto
+     */
+    public void actualizarDespuesDeModificarAgregar(){
+        txtNombre.setText("");
+        txtPrecio.setText("");
+        txtExistencia.setText("");
+        txtStock.setText("");
+        consultarSQL("", 0);
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAlmacenAgregar;

@@ -290,7 +290,7 @@ public class ConsultarVenta extends javax.swing.JFrame {
     }//GEN-LAST:event_btnRadioIDMouseClicked
 
     private void confirmarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_confirmarActionPerformed
-        consultarSQL("", 4, Integer.parseInt(String.valueOf(ComboBoxDia.getSelectedItem())), Integer.parseInt(String.valueOf(ComboBoxMes.getSelectedItem())), Integer.parseInt(txtYear.getText()));
+        consultarSQL("", 2, Integer.parseInt(String.valueOf(ComboBoxDia.getSelectedItem())), Integer.parseInt(String.valueOf(ComboBoxMes.getSelectedItem())), Integer.parseInt(txtYear.getText()));
     }//GEN-LAST:event_confirmarActionPerformed
 
     private void txtBuscarKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtBuscarKeyReleased
