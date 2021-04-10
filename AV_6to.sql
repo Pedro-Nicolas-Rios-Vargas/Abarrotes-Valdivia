@@ -80,6 +80,18 @@ select * from Clientes
 create procedure deleteCliente @idcliente int
 as
 delete from Clientes where idClien = @idcliente
+--Procedures Clientes delete nombre
+create procedure deleteClienteNombre @nombre varchar(43)
+as
+delete from Clientes where nombre_C = @nombre
+--Procedures Clientes select gen
+create procedure selectClientesNombre @nombre varchar(43)
+as 
+select * from Clientes where nombre_C = @nombre
+--Procedure clientes select TOP 1
+CREATE PROCEDURE selectCliente1
+AS
+SELECT TOP 1 idClien FROM Clientes ORDER BY idClien DESC
 
 ---------------------------------------------------------------PRODUCTOS
 --Procedures Productos insert 
