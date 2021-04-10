@@ -5,11 +5,9 @@
  */
 package src;
 
-import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
-import java.util.Calendar;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import lista.ListaCola;
@@ -334,7 +332,8 @@ public class GestionarVentas extends javax.swing.JPanel {
                         int id = producto.getId();
                         int cantidad = ((Integer) modeloPrueba.getValueAt(i, 1));
                         float subTotal = (producto.getPrecio());
-                        mUIV.agregar(id, cantidad, subTotal);
+                        System.out.println(subTotal/cantidad);
+                        mUIV.agregar(id, cantidad, subTotal/cantidad);
                         //Aqui mismo puedo agregar la actualizacion de la cantidad que el producto tendra despues de que se vendio
                         mUIP.acutalizarExistencia(id, producto.getExistencia() - cantidad); //Pero claro, no se que tan facil sea esto ya que no lo puedo probar porque tengo error en otras clases que no son las mias xd
                     } catch (SQLException ex) {
