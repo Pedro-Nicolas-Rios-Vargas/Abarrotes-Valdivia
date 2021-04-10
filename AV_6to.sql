@@ -1,4 +1,4 @@
-
+drop database Abarrotes_Valdivia
 CREATE DATABASE Abarrotes_Valdivia
 use Abarrotes_Valdivia
 
