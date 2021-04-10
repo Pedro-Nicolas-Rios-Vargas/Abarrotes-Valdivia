@@ -5,7 +5,10 @@
  */
 package src;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.sql.SQLException;
+import java.text.DecimalFormat;
 import java.util.Calendar;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -355,7 +358,7 @@ public class GestionarVentas extends javax.swing.JPanel {
 
     private void txtPagoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPagoKeyTyped
         char c = evt.getKeyChar();
-        if (c >= 48 && c <= 57 || c == 8) {
+        if (c >= 48 && c <= 57 || c == 8 || c==46) {
             if( c == 8) {
                 pagoS = pagoS.substring(0, pagoS.length()-1);
             } else {
@@ -405,11 +408,16 @@ public class GestionarVentas extends javax.swing.JPanel {
     
     //-------------------Metodo para poner el total dinamicamente----------------------
     public void actualizarTotal() {
-        txtTotal.setText("$ " + total);
+        DecimalFormat df = new DecimalFormat("0.00");
+        df.setRoundingMode(RoundingMode.UP);
+        txtTotal.setText("$ " +  df.format(total));
     }
     //----------------------Cambio actualizado----------------------------
     public void actualizarCambio() {
-        txtCambio.setText("$ " + (Double.valueOf(pagoS) - total));
+        DecimalFormat df = new DecimalFormat("0.00");
+        Double result = (Double.valueOf(pagoS) - total);
+        df.setRoundingMode(RoundingMode.UP);
+        txtCambio.setText("$ " + df.format(result));
     }
 
     public void limpiarTxtYTabla() {
@@ -450,30 +458,6 @@ public class GestionarVentas extends javax.swing.JPanel {
         for (int i =  modeloTablaAlmacen.getRowCount() - 1; i >= 0; i--) {
             modeloTablaAlmacen.removeRow(i);
         }
-    }
-    /**
-     * Metodo para conseguir el dia actual
-     * @return Dia en forma de int
-     */
-    public static int dia() {
-        Calendar fechaC = Calendar.getInstance();
-        return fechaC.getTime().getDate();
-    }
-    /**
-     * Metodo para conseguir el mes actual
-     * @return El mes en forma de entero, Enero = 1
-     */
-    public static int mes() {
-        Calendar fechaC = Calendar.getInstance();
-        return (fechaC.getTime().getMonth()+1);
-    }
-    /**
-     * Metodo para conseguir el year actual
-     * @return Regresa el year actual en entero
-     */
-    public static int year() {
-        Calendar fechaC = Calendar.getInstance();
-        return (fechaC.getTime().getYear()+1900);
     }
     
     //--------------Fin Metodos----------------------------
