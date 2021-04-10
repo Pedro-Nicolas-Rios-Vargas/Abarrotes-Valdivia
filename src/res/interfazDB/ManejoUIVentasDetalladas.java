@@ -31,7 +31,7 @@ public class ManejoUIVentasDetalladas {
      */
     public int agregar(int idC, float total) throws SQLException {
         int idv = getLastID() + 1;
-        String query = "execute insert_VD " + idv + ", " + idC + ", " + ", " + 
+        String query = "execute insert_VD " + idv + ", " + idC + ", " + 
                 total;
         return conDB.send(query);
     }
@@ -88,8 +88,7 @@ public class ManejoUIVentasDetalladas {
         rs = conDB.receive(query);
         
         while (rs.next()) {
-            accion = new Detallada(rs.getInt(1), rs.getInt(2), rs.getFloat(3),
-                    rs.getDate(4));
+            accion = new Detallada(rs.getInt(1), rs.getInt(2),  rs.getDate(3), rs.getFloat(4));
             queue.push(accion);
         }
         return queue;

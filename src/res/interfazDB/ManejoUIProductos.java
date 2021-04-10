@@ -74,8 +74,8 @@ public class ManejoUIProductos {
         rs = conDB.receive(query);
             
         while (rs.next()) {
-            producto = new Producto(rs.getInt(1), rs.getString(2), rs.getInt(3),
-                    rs.getInt(4), rs.getFloat(5), rs.getString(6));
+            producto = new Producto(rs.getInt(1), rs.getString(2), rs.getInt(5),
+                    rs.getInt(4), rs.getFloat(3), rs.getString(6));
             queue.push(producto);
             
         }
@@ -120,7 +120,7 @@ public class ManejoUIProductos {
      */
     public boolean acutalizarExistencia(int idprod, int existencia) throws SQLException{
         int res = -1;
-        conDB.send("execute updateProductExistencia " + idprod + existencia);
+        conDB.send("execute updateProductExistencia " + idprod + "," + existencia);
         return (res != -1);
     }
     
