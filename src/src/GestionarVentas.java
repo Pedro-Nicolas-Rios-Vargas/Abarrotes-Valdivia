@@ -51,7 +51,7 @@ public class GestionarVentas extends javax.swing.JPanel {
             }
             
         };
-        tablaPito.setModel(modeloPrueba);
+        tabla.setModel(modeloPrueba);
         modeloTablaAlmacen = new DefaultTableModel(null,cabeceraTablaAlmacen){
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -72,10 +72,10 @@ public class GestionarVentas extends javax.swing.JPanel {
         columnModel.getColumn(3).setPreferredWidth(35);
         columnModel.getColumn(4).setPreferredWidth(10);
         columnModel.getColumn(5).setPreferredWidth(80);
-        tablaPito.setDefaultRenderer(Object.class, centerRenderer);
-        tablaPito.getTableHeader().setReorderingAllowed(false);
-        tablaPito.getTableHeader().setDefaultRenderer(centerRenderer);
-        TableColumnModel columnModel1 = tablaPito.getColumnModel();
+        tabla.setDefaultRenderer(Object.class, centerRenderer);
+        tabla.getTableHeader().setReorderingAllowed(false);
+        tabla.getTableHeader().setDefaultRenderer(centerRenderer);
+        TableColumnModel columnModel1 = tabla.getColumnModel();
         columnModel1.getColumn(0).setPreferredWidth(190);
         columnModel1.getColumn(1).setPreferredWidth(1);
         consultarSQL("", 0);
@@ -110,8 +110,8 @@ public class GestionarVentas extends javax.swing.JPanel {
         btnRadioCantidad = new javax.swing.JRadioButton();
         jLabel2 = new javax.swing.JLabel();
         txtCambio = new javax.swing.JTextField();
-        pito = new javax.swing.JScrollPane();
-        tablaPito = new javax.swing.JTable();
+        scroll = new javax.swing.JScrollPane();
+        tabla = new javax.swing.JTable();
         jLabel5 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         jList1 = new javax.swing.JList<>();
@@ -156,7 +156,7 @@ public class GestionarVentas extends javax.swing.JPanel {
 
         labelTotal.setText("Total");
         add(labelTotal);
-        labelTotal.setBounds(0, 590, 50, 13);
+        labelTotal.setBounds(0, 590, 50, 16);
 
         txtTotal.setEditable(false);
         txtTotal.setText("$");
@@ -174,7 +174,7 @@ public class GestionarVentas extends javax.swing.JPanel {
 
         jLabel1.setText("Pago");
         add(jLabel1);
-        jLabel1.setBounds(0, 620, 50, 13);
+        jLabel1.setBounds(0, 620, 50, 16);
 
         tablaAlmacen.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -211,7 +211,7 @@ public class GestionarVentas extends javax.swing.JPanel {
 
         jLabel3.setText("Filtrar por:");
         add(jLabel3);
-        jLabel3.setBounds(450, 80, 80, 13);
+        jLabel3.setBounds(450, 80, 80, 16);
 
         jLabel4.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -226,7 +226,7 @@ public class GestionarVentas extends javax.swing.JPanel {
             }
         });
         add(btnRadioID);
-        btnRadioID.setBounds(450, 100, 50, 21);
+        btnRadioID.setBounds(450, 100, 50, 28);
 
         btnRadioNombre.setText("Nombre");
         btnRadioNombre.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -235,7 +235,7 @@ public class GestionarVentas extends javax.swing.JPanel {
             }
         });
         add(btnRadioNombre);
-        btnRadioNombre.setBounds(450, 140, 90, 21);
+        btnRadioNombre.setBounds(450, 140, 90, 28);
 
         btnRadioPrecio.setText("Precio");
         btnRadioPrecio.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -244,7 +244,7 @@ public class GestionarVentas extends javax.swing.JPanel {
             }
         });
         add(btnRadioPrecio);
-        btnRadioPrecio.setBounds(540, 100, 80, 21);
+        btnRadioPrecio.setBounds(540, 100, 80, 28);
 
         btnRadioCantidad.setText("Existencia");
         btnRadioCantidad.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -253,18 +253,18 @@ public class GestionarVentas extends javax.swing.JPanel {
             }
         });
         add(btnRadioCantidad);
-        btnRadioCantidad.setBounds(540, 140, 120, 21);
+        btnRadioCantidad.setBounds(540, 140, 120, 28);
 
         jLabel2.setText("Cambio");
         add(jLabel2);
-        jLabel2.setBounds(0, 650, 50, 13);
+        jLabel2.setBounds(0, 650, 50, 16);
 
         txtCambio.setEditable(false);
         txtCambio.setText("$");
         add(txtCambio);
         txtCambio.setBounds(56, 640, 290, 30);
 
-        tablaPito.setModel(new javax.swing.table.DefaultTableModel(
+        tabla.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -275,10 +275,10 @@ public class GestionarVentas extends javax.swing.JPanel {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        pito.setViewportView(tablaPito);
+        scroll.setViewportView(tabla);
 
-        add(pito);
-        pito.setBounds(0, 40, 340, 522);
+        add(scroll);
+        scroll.setBounds(0, 40, 340, 522);
 
         jLabel5.setText("Buscar");
         add(jLabel5);
@@ -345,18 +345,18 @@ public class GestionarVentas extends javax.swing.JPanel {
     }//GEN-LAST:event_btnAgregarlist2ActionPerformed
 
     private void btnQuitarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnQuitarActionPerformed
-        if(tablaPito.getSelectedRow() != -1) {
-            int catidad = ((Integer) modeloPrueba.getValueAt(tablaPito.getSelectedRow(), 1));
-            float precioNew = (((Producto) modeloPrueba.getValueAt(tablaPito.getSelectedRow(), 0)).getPrecio());
+        if(tabla.getSelectedRow() != -1) {
+            int catidad = ((Integer) modeloPrueba.getValueAt(tabla.getSelectedRow(), 1));
+            float precioNew = (((Producto) modeloPrueba.getValueAt(tabla.getSelectedRow(), 0)).getPrecio());
             float precioVergas = precioNew - ((precioNew)/catidad);
             total -= precioNew/catidad;//Estoy tomando el dinero que se va a quitar del total
-            Producto producto = ((Producto) modeloPrueba.getValueAt(tablaPito.getSelectedRow(), 0));
+            Producto producto = ((Producto) modeloPrueba.getValueAt(tabla.getSelectedRow(), 0));
             producto = new Producto(producto.getId(), producto.getNombre(), producto.getExistencia(), producto.getStock(), precioVergas, producto.getUM());
             if ((catidad - 1) == 0) {
-                modeloPrueba.removeRow(tablaPito.getSelectedRow());
+                modeloPrueba.removeRow(tabla.getSelectedRow());
             } else {
-                modeloPrueba.setValueAt(catidad - 1, tablaPito.getSelectedRow(), 1);
-                modeloPrueba.setValueAt(producto, tablaPito.getSelectedRow(), 0);
+                modeloPrueba.setValueAt(catidad - 1, tabla.getSelectedRow(), 1);
+                modeloPrueba.setValueAt(producto, tabla.getSelectedRow(), 0);
             }
             
         } else {
@@ -534,9 +534,9 @@ public class GestionarVentas extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JLabel labelTotal;
-    private javax.swing.JScrollPane pito;
+    private javax.swing.JScrollPane scroll;
+    private javax.swing.JTable tabla;
     private javax.swing.JTable tablaAlmacen;
-    private javax.swing.JTable tablaPito;
     private javax.swing.JTextField txtCambio;
     private javax.swing.JTextField txtPago;
     private javax.swing.JTextField txtTotal;

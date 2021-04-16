@@ -17,8 +17,6 @@ public class Main extends javax.swing.JFrame {
     
     public Main() {
         initComponents();
-        //fjqnvu hruehiduvhas me duele el pito
-        //pito
         d = Toolkit.getDefaultToolkit().getScreenSize();
         this.setBounds(0,0,d.width,d.height);
         this.setResizable(false);
