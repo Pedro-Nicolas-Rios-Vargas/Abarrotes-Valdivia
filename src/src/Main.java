@@ -12,6 +12,7 @@ public class Main extends javax.swing.JFrame {
     GestionarAlmacen gestionarAlmacen = new GestionarAlmacen();
     PanelCompras panelCompras = new PanelCompras();
     GestionarVentas gestionarVentas = new GestionarVentas();
+    GestionarClientes gestionarClientes = new GestionarClientes();
     private IngresoDialog ingreso;
     private Dimension d;
     
@@ -24,7 +25,7 @@ public class Main extends javax.swing.JFrame {
         PanelCardLayout.add(gestionarAlmacen, "Gestionar Almecen");
         PanelCardLayout.add(gestionarVentas, "Gestionar Ventas");
         PanelCardLayout.add(panelCompras, "Gestionar Compras");
-   
+        PanelCardLayout.add(gestionarClientes, "Gestionar Clientes");  
         cardLayout.show(PanelCardLayout, "Gestionar Ventas");
         
         ingreso = new IngresoDialog(this, true);
@@ -42,6 +43,7 @@ public class Main extends javax.swing.JFrame {
         btnGesAlmacen = new javax.swing.JButton();
         labelGestionar = new javax.swing.JLabel();
         btnGesProveedor = new javax.swing.JButton();
+        btnGesClientes = new javax.swing.JButton();
         PanelCardLayout = new javax.swing.JPanel();
         panelProveedores = new GestionarProveedores();
 
@@ -88,13 +90,20 @@ public class Main extends javax.swing.JFrame {
             }
         });
 
+        btnGesClientes.setText("Clientes");
+        btnGesClientes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGesClientesActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout panelGestionarLayout = new javax.swing.GroupLayout(panelGestionar);
         panelGestionar.setLayout(panelGestionarLayout);
         panelGestionarLayout.setHorizontalGroup(
             panelGestionarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelGestionarLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(labelGestionar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(labelGestionar, javax.swing.GroupLayout.DEFAULT_SIZE, 171, Short.MAX_VALUE)
                 .addContainerGap())
             .addGroup(panelGestionarLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -102,7 +111,8 @@ public class Main extends javax.swing.JFrame {
                     .addComponent(btnGesVentas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnGesCompras, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnGesAlmacen, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnGesProveedor, javax.swing.GroupLayout.DEFAULT_SIZE, 171, Short.MAX_VALUE))
+                    .addComponent(btnGesProveedor, javax.swing.GroupLayout.DEFAULT_SIZE, 171, Short.MAX_VALUE)
+                    .addComponent(btnGesClientes, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 171, Short.MAX_VALUE))
                 .addGap(0, 0, Short.MAX_VALUE))
         );
         panelGestionarLayout.setVerticalGroup(
@@ -118,6 +128,8 @@ public class Main extends javax.swing.JFrame {
                 .addComponent(btnGesAlmacen)
                 .addGap(18, 18, 18)
                 .addComponent(btnGesProveedor)
+                .addGap(18, 18, 18)
+                .addComponent(btnGesClientes)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -127,7 +139,7 @@ public class Main extends javax.swing.JFrame {
         panelProveedores.setLayout(panelProveedoresLayout);
         panelProveedoresLayout.setHorizontalGroup(
             panelProveedoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1450, Short.MAX_VALUE)
+            .addGap(0, 1440, Short.MAX_VALUE)
         );
         panelProveedoresLayout.setVerticalGroup(
             panelProveedoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -183,6 +195,10 @@ public class Main extends javax.swing.JFrame {
     private void btnGesProveedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGesProveedorActionPerformed
         cardLayout.show(PanelCardLayout, "Proveedores");
     }//GEN-LAST:event_btnGesProveedorActionPerformed
+
+    private void btnGesClientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGesClientesActionPerformed
+         cardLayout.show(PanelCardLayout, "Gestionar Clientes");
+    }//GEN-LAST:event_btnGesClientesActionPerformed
     /*-----------------------METODOS-----------------------------------------*/
     public static void terminarPrograma(){
         System.exit(0);
@@ -223,6 +239,7 @@ public class Main extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel PanelCardLayout;
     private javax.swing.JButton btnGesAlmacen;
+    private javax.swing.JButton btnGesClientes;
     private javax.swing.JButton btnGesCompras;
     private javax.swing.JButton btnGesProveedor;
     private javax.swing.JButton btnGesVentas;
