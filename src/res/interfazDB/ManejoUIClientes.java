@@ -23,7 +23,7 @@ public class ManejoUIClientes {
     public int agregar(String nombre, int saldo) throws SQLException{
         int id = getLastID()+1;
         
-        String query = String.format("execute addClient %d, '%s', %d", id, nombre, (saldo != 0) ? saldo : null);
+        String query = String.format("execute addCliente %d, '%s', %d", id, nombre, (saldo != 0) ? saldo : null);
         
         return conDB.send(query);
     }

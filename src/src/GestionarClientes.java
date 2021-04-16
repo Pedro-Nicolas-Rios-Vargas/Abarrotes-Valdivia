@@ -9,24 +9,24 @@ import javax.swing.table.DefaultTableModel;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
 
-import res.interfazDB.ManejoUIProveedores;
+import res.interfazDB.ManejoUIClientes;
 import lista.ListaCola;
-import res.Proveedor;
+import res.Clientes;
 
 public class GestionarClientes extends javax.swing.JPanel {
 
-    private ManejoUIProveedores manager;
-    private Proveedor provElim;
+    private ManejoUIClientes manager;
+    private Clientes provElim;
     /**
      * Creates new form GestionarProveedores
      */
     public GestionarClientes() {
-        manager = new ManejoUIProveedores();
+        manager = new ManejoUIClientes();
         provElim = null;
         initComponents();
         
         try{
-            ListaCola<Proveedor> cola = manager.consulta(1, null);
+            ListaCola<Clientes> cola = manager.consulta(1, null);
             llenarTabla(cola);
         }catch(SQLException sqlE){}
     }
@@ -660,8 +660,8 @@ public class GestionarClientes extends javax.swing.JPanel {
     private void btnBuscarModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarModificarActionPerformed
         int in = 0;
         Object obj = null;
-        ListaCola<Proveedor> cola;
-        Proveedor proveedor;
+        ListaCola<Clientes> cola;
+        Clientes proveedor;
         
         try{
             in = Integer.parseInt(tfIdProvModificar.getText());
@@ -676,7 +676,7 @@ public class GestionarClientes extends javax.swing.JPanel {
                 if(cola.hasNext()){
                     proveedor = cola.pop();
                     tfNombreProvModificar.setText(proveedor.getNombre());
-                    tfTelProvModificar.setText(proveedor.getTelefono());
+                    tfTelProvModificar.setText(proveedor.getSaldo());
                     
                     if(errorLabelModificar.getText().length() != 0)
                         errorLabelModificar.setText("");
@@ -712,7 +712,7 @@ public class GestionarClientes extends javax.swing.JPanel {
     private void btnBuscarEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarEliminarActionPerformed
         int selectedOpc = 0;
         Object obj = null;
-        ListaCola<Proveedor> res;
+        ListaCola<Clientes> res;
         if(rbIDEliminar.isSelected()){
             int in;
             selectedOpc = 3;
@@ -775,7 +775,7 @@ public class GestionarClientes extends javax.swing.JPanel {
             }
             
             try{
-                ListaCola<Proveedor> cola = manager.consulta(1, null);
+                ListaCola<Clientes> cola = manager.consulta(1, null);
                 if(cola.hasNext())
                     llenarTabla(cola);
             }catch(SQLException sqlE){}
@@ -788,7 +788,7 @@ public class GestionarClientes extends javax.swing.JPanel {
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
         int selectedOpc = 0;
         Object obj = null;
-        ListaCola<Proveedor> cola;
+        ListaCola<Clientes> cola;
         if(jrbTodos.isSelected()){
             selectedOpc = 1;
         }else if(jrbID.isSelected()){
@@ -884,7 +884,7 @@ public class GestionarClientes extends javax.swing.JPanel {
         }
 
         try{
-            ListaCola<Proveedor> cola = manager.consulta(1, null);
+            ListaCola<Clientes> cola = manager.consulta(1, null);
             llenarTabla(cola);
         }catch(SQLException sqlE){}
         
@@ -959,7 +959,7 @@ public class GestionarClientes extends javax.swing.JPanel {
             }
             
             try{
-                ListaCola<Proveedor> cola = manager.consulta(1, null);
+                ListaCola<Clientes> cola = manager.consulta(1, null);
                 llenarTabla(cola);
             }catch(SQLException sqlE){}
             
@@ -1041,8 +1041,8 @@ public class GestionarClientes extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_tfNombreProvModificarActionPerformed
     
-    private void llenarTabla(ListaCola<Proveedor> cola){
-        Proveedor proveedor;
+    private void llenarTabla(ListaCola<Clientes> cola){
+        Clientes proveedor;
         DefaultTableModel modelo = (DefaultTableModel) tablaProveedores.getModel();
         
         while(modelo.getRowCount() != 0)
@@ -1051,7 +1051,7 @@ public class GestionarClientes extends javax.swing.JPanel {
         while(cola.hasNext()){
             proveedor = cola.pop();
             
-            modelo.addRow(new Object[]{proveedor.getId(), proveedor.getNombre(), proveedor.getTelefono()});
+            modelo.addRow(new Object[]{proveedor.getId(), proveedor.getNombre(), proveedor.getSaldo()});
         }
         tablaProveedores.setModel(modelo);
     }
