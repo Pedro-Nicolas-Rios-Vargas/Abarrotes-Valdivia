@@ -88,8 +88,7 @@ public class ManejoUIVentasDetalladas {
         rs = conDB.receive(query);
         
         while (rs.next()) {
-            accion = new Detallada(rs.getInt(1), rs.getInt(2), rs.getDate(4),
-                    rs.getFloat(3));
+            accion = new Detallada(rs.getInt(1), rs.getInt(2),  rs.getDate(3), rs.getFloat(4));
             queue.push(accion);
         }
         return queue;

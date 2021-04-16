@@ -17,11 +17,12 @@ telefono_pro int
 CREATE TABLE Productos(
 idProd int PRIMARY KEY CHECK(idProd>=1),
 nombre_Prod varchar(25) NOT NULL,
-existencia int NOT NULL CHECK(existencia>=0 AND existencia<=99),
-stock int NOT NULL CHECK(stock>=0 AND stock<=99),
 precio decimal(5,2) NOT NULL CHECK(precio>0.0),
+stock int NOT NULL CHECK(stock>=0 AND stock<=99),
+existencia int NOT NULL CHECK(existencia>=0 AND existencia<=99),
 UM varchar(30) NOT NULL
 )
+
 
 CREATE TABLE Ventas_Detalladas(
 idV int PRIMARY KEY CHECK(idV>=1),
@@ -416,7 +417,7 @@ select IDPROD from Compras, Compras_Detalladas where compras.IDCOM = Compras_Det
 
 create procedure PRODidCDsProv @idprov int
 as
-select IDPROD from Compras, Compras_Detalladas where compras.IDCOM = Compras_Detalladas.idcom and IDPROV = @idprov
+select IDPROD from Compras, Compras_Detalladas where compras.IDCOM = Compras_Detalladas.idcom and IDPROV = 2
 
 execute PRODidCDsProv 1
 -----------------------------FIN---------------------------------------------------------
@@ -437,10 +438,54 @@ update Productos set Existencia = @existencia where IDPROD = @idp
 
 create procedure ExistenciaConsul @idp int
 as
-SELECT Existencia FROM Productos WHERE IDPROD = @idp
+SELECT Existencia FROM Productos WHERE IDPROD = 2
+
+create procedure getLastProvID
+as
+SELECT TOP 1 * FROM Proveedores ORDER BY idProv DESC
 -------------------------FIN-----------------------------------------------------
+create procedure PRODnotIn
+as
+SELECT * FROM Productos WHERE NOT EXISTS (SELECT * FROM compras WHERE Compras.idProd = Productos.idProd)
 
-select * from Productos
-drop table Productos
+create procedure PRODIn @idProve int
+as
+declare @comp as table (idC int)
+insert into @comp select idCom from Compras_Detalladas where @idProve = Compras_Detalladas.idProv
+declare @prods as table (ids int)
+insert into @prods select idProd from Compras where Compras.idCom in (select * from @comp)
+declare @prodsOG as table (idProd int, nombre varchar(25), precio decimal(5,2), stock int, existencia int, UM varchar(30))
+insert into @prodsOG SELECT * FROM Productos WHERE Productos.idProd in (select * from @prods)
+select * from @prodsOG
 
-insert into Compras values (1,1,9,108.00)
+create procedure PRODInPrecio @idProve int
+as
+declare @comp as table (idC int)
+insert into @comp select idCom from Compras_Detalladas where @idProve = Compras_Detalladas.idProv
+declare @prods as table (ids int)
+insert into @prods select idProd from Compras where Compras.idCom in (select * from @comp)
+declare @prodsOG as table (idProd int, nombre varchar(25), precio decimal(5,2), stock int, existencia int, UM varchar(30))
+insert into @prodsOG SELECT * FROM Productos WHERE Productos.idProd in (select * from @prods)
+select * from @prodsOG order by precio asc
+
+create procedure PRODInExistencia @idProve int
+as
+declare @comp as table (idC int)
+insert into @comp select idCom from Compras_Detalladas where @idProve = Compras_Detalladas.idProv
+declare @prods as table (ids int)
+insert into @prods select idProd from Compras where Compras.idCom in (select * from @comp)
+declare @prodsOG as table (idProd int, nombre varchar(25), precio decimal(5,2), stock int, existencia int, UM varchar(30))
+insert into @prodsOG SELECT * FROM Productos WHERE Productos.idProd in (select * from @prods)
+select * from @prodsOG order by existencia asc
+
+create procedure PRODInNombre @idProve int, @nombre varchar(60)
+as
+declare @comp as table (idC int)
+insert into @comp select idCom from Compras_Detalladas where @idProve = Compras_Detalladas.idProv
+declare @prods as table (ids int)
+insert into @prods select idProd from Compras where Compras.idCom in (select * from @comp)
+declare @prodsOG as table (idProd int, nombre varchar(25), precio decimal(5,2), stock int, existencia int, UM varchar(30))
+insert into @prodsOG SELECT * FROM Productos WHERE Productos.idProd in (select * from @prods) and Productos.nombre_Prod like '%'+@nombre+'%'
+select * from @prodsOG
+
+
