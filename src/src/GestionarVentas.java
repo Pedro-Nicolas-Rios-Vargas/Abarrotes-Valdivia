@@ -60,8 +60,6 @@ public class GestionarVentas extends javax.swing.JPanel {
             
         };
         tablaAlmacen.setModel(modeloTablaAlmacen);
-        tablaAlmacen.getTableHeader().setReorderingAllowed(false);
-        tablaPito.getTableHeader().setReorderingAllowed(false);
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
         centerRenderer.setHorizontalAlignment(JLabel.CENTER);
         tablaAlmacen.setDefaultRenderer(Object.class, centerRenderer);
@@ -74,6 +72,12 @@ public class GestionarVentas extends javax.swing.JPanel {
         columnModel.getColumn(3).setPreferredWidth(35);
         columnModel.getColumn(4).setPreferredWidth(10);
         columnModel.getColumn(5).setPreferredWidth(80);
+        tablaPito.setDefaultRenderer(Object.class, centerRenderer);
+        tablaPito.getTableHeader().setReorderingAllowed(false);
+        tablaPito.getTableHeader().setDefaultRenderer(centerRenderer);
+        TableColumnModel columnModel1 = tablaPito.getColumnModel();
+        columnModel1.getColumn(0).setPreferredWidth(190);
+        columnModel1.getColumn(1).setPreferredWidth(1);
         consultarSQL("", 0);
     }
 
@@ -109,6 +113,10 @@ public class GestionarVentas extends javax.swing.JPanel {
         pito = new javax.swing.JScrollPane();
         tablaPito = new javax.swing.JTable();
         jLabel5 = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jList1 = new javax.swing.JList<>();
+        jTextField1 = new javax.swing.JTextField();
+        jLabel6 = new javax.swing.JLabel();
 
         setLayout(null);
 
@@ -118,7 +126,7 @@ public class GestionarVentas extends javax.swing.JPanel {
             }
         });
         add(txtPago);
-        txtPago.setBounds(55, 610, 429, 30);
+        txtPago.setBounds(55, 610, 290, 30);
 
         BarraBuscar.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
@@ -126,7 +134,7 @@ public class GestionarVentas extends javax.swing.JPanel {
             }
         });
         add(BarraBuscar);
-        BarraBuscar.setBounds(630, 40, 540, 24);
+        BarraBuscar.setBounds(440, 40, 480, 30);
 
         btnAgregarlist2.setText("Agregar");
         btnAgregarlist2.addActionListener(new java.awt.event.ActionListener() {
@@ -135,7 +143,7 @@ public class GestionarVentas extends javax.swing.JPanel {
             }
         });
         add(btnAgregarlist2);
-        btnAgregarlist2.setBounds(543, 128, 90, 32);
+        btnAgregarlist2.setBounds(350, 120, 90, 30);
 
         btnQuitar.setText("Quitar");
         btnQuitar.addActionListener(new java.awt.event.ActionListener() {
@@ -144,16 +152,16 @@ public class GestionarVentas extends javax.swing.JPanel {
             }
         });
         add(btnQuitar);
-        btnQuitar.setBounds(543, 79, 90, 32);
+        btnQuitar.setBounds(350, 80, 90, 30);
 
         labelTotal.setText("Total");
         add(labelTotal);
-        labelTotal.setBounds(0, 590, 28, 16);
+        labelTotal.setBounds(0, 590, 50, 13);
 
         txtTotal.setEditable(false);
         txtTotal.setText("$");
         add(txtTotal);
-        txtTotal.setBounds(54, 580, 430, 30);
+        txtTotal.setBounds(54, 580, 290, 30);
 
         btnNewC.setText("Finalizar compra");
         btnNewC.addActionListener(new java.awt.event.ActionListener() {
@@ -162,11 +170,11 @@ public class GestionarVentas extends javax.swing.JPanel {
             }
         });
         add(btnNewC);
-        btnNewC.setBounds(0, 670, 484, 32);
+        btnNewC.setBounds(0, 670, 340, 30);
 
         jLabel1.setText("Pago");
         add(jLabel1);
-        jLabel1.setBounds(0, 620, 29, 16);
+        jLabel1.setBounds(0, 620, 50, 13);
 
         tablaAlmacen.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -190,7 +198,7 @@ public class GestionarVentas extends javax.swing.JPanel {
         jScrollPane1.setViewportView(tablaAlmacen);
 
         add(jScrollPane1);
-        jScrollPane1.setBounds(543, 171, 630, 510);
+        jScrollPane1.setBounds(350, 170, 580, 530);
 
         ConsVenta.setText("Consultar Ventas");
         ConsVenta.addActionListener(new java.awt.event.ActionListener() {
@@ -199,17 +207,17 @@ public class GestionarVentas extends javax.swing.JPanel {
             }
         });
         add(ConsVenta);
-        ConsVenta.setBounds(1033, 99, 140, 32);
+        ConsVenta.setBounds(780, 90, 140, 30);
 
         jLabel3.setText("Filtrar por:");
         add(jLabel3);
-        jLabel3.setBounds(643, 79, 80, 16);
+        jLabel3.setBounds(450, 80, 80, 13);
 
         jLabel4.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel4.setText("Gestionar Ventas");
         add(jLabel4);
-        jLabel4.setBounds(783, 0, 200, 40);
+        jLabel4.setBounds(560, 0, 200, 40);
 
         btnRadioID.setText("ID");
         btnRadioID.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -218,7 +226,7 @@ public class GestionarVentas extends javax.swing.JPanel {
             }
         });
         add(btnRadioID);
-        btnRadioID.setBounds(643, 101, 50, 28);
+        btnRadioID.setBounds(450, 100, 50, 21);
 
         btnRadioNombre.setText("Nombre");
         btnRadioNombre.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -227,7 +235,7 @@ public class GestionarVentas extends javax.swing.JPanel {
             }
         });
         add(btnRadioNombre);
-        btnRadioNombre.setBounds(643, 136, 90, 28);
+        btnRadioNombre.setBounds(450, 140, 90, 21);
 
         btnRadioPrecio.setText("Precio");
         btnRadioPrecio.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -236,7 +244,7 @@ public class GestionarVentas extends javax.swing.JPanel {
             }
         });
         add(btnRadioPrecio);
-        btnRadioPrecio.setBounds(733, 99, 80, 28);
+        btnRadioPrecio.setBounds(540, 100, 80, 21);
 
         btnRadioCantidad.setText("Existencia");
         btnRadioCantidad.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -245,16 +253,16 @@ public class GestionarVentas extends javax.swing.JPanel {
             }
         });
         add(btnRadioCantidad);
-        btnRadioCantidad.setBounds(733, 134, 120, 28);
+        btnRadioCantidad.setBounds(540, 140, 120, 21);
 
         jLabel2.setText("Cambio");
         add(jLabel2);
-        jLabel2.setBounds(0, 650, 50, 16);
+        jLabel2.setBounds(0, 650, 50, 13);
 
         txtCambio.setEditable(false);
         txtCambio.setText("$");
         add(txtCambio);
-        txtCambio.setBounds(56, 640, 428, 30);
+        txtCambio.setBounds(56, 640, 290, 30);
 
         tablaPito.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -270,11 +278,29 @@ public class GestionarVentas extends javax.swing.JPanel {
         pito.setViewportView(tablaPito);
 
         add(pito);
-        pito.setBounds(0, 40, 531, 522);
+        pito.setBounds(0, 40, 340, 522);
 
         jLabel5.setText("Buscar");
         add(jLabel5);
-        jLabel5.setBounds(560, 40, 50, 20);
+        jLabel5.setBounds(370, 40, 50, 20);
+
+        jList1.setModel(new javax.swing.AbstractListModel<String>() {
+            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+            public int getSize() { return strings.length; }
+            public String getElementAt(int i) { return strings[i]; }
+        });
+        jScrollPane2.setViewportView(jList1);
+
+        add(jScrollPane2);
+        jScrollPane2.setBounds(940, 170, 200, 530);
+
+        jTextField1.setText("jTextField1");
+        add(jTextField1);
+        jTextField1.setBounds(940, 140, 200, 30);
+
+        jLabel6.setText("Buscar");
+        add(jLabel6);
+        jLabel6.setBounds(940, 90, 60, 40);
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAgregarlist2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarlist2ActionPerformed
@@ -285,22 +311,32 @@ public class GestionarVentas extends javax.swing.JPanel {
             }
            
            Producto producto = new Producto(Integer.parseInt(aux[0]), aux[1], Integer.parseInt(aux[3]), Integer.parseInt(aux[4]), Float.valueOf(aux[2]), aux[5]);
-           total += producto.getPrecio();
+           //total += producto.getPrecio();
            int i = 0;
            int catidad = 1;
+           boolean sobrePasaLaExistencia = false;
            while (i < modeloPrueba.getRowCount()) {
                if (modeloPrueba.getValueAt(i, 0) instanceof Producto) {
                    if (producto.getId() == ((Producto) (modeloPrueba.getValueAt(i, 0))).getId()) {
-                       catidad += (Integer)modeloPrueba.getValueAt(i, 1);
-                       producto = new Producto(producto.getId(), producto.getNombre(), producto.getExistencia(), producto.getStock(), producto.getPrecio() * catidad, producto.getUM());
-                       modeloPrueba.removeRow(i);
+                       System.out.println();
+                       if (producto.getExistencia() <= (Integer)modeloPrueba.getValueAt(i, 1)) {
+                           sobrePasaLaExistencia = true;
+                           JOptionPane.showMessageDialog(this, "Ya no queda mas producto en existencia", "Sin existencia", JOptionPane.INFORMATION_MESSAGE);
+                       } else {
+                           catidad += (Integer)modeloPrueba.getValueAt(i, 1);
+                           producto = new Producto(producto.getId(), producto.getNombre(), producto.getExistencia(), producto.getStock(), producto.getPrecio() * catidad, producto.getUM());
+                           modeloPrueba.removeRow(i);
+                       }
+                       
                    }
                    i++;
                }
             }
-           Object[] pruba321 = {producto,catidad};
-           modeloPrueba.addRow(pruba321);
-           
+            if (!sobrePasaLaExistencia) {
+                total += producto.getPrecio();
+                Object[] pruba321 = {producto,catidad};
+                modeloPrueba.addRow(pruba321);
+            }      
         } else {
             JOptionPane.showMessageDialog(this, "Favor de seleccionar un producto de la tabla", "Sin seleccion", JOptionPane.INFORMATION_MESSAGE);
         }
@@ -492,7 +528,11 @@ public class GestionarVentas extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JList<String> jList1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JTextField jTextField1;
     private javax.swing.JLabel labelTotal;
     private javax.swing.JScrollPane pito;
     private javax.swing.JTable tablaAlmacen;
