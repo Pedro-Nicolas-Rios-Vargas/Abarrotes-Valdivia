@@ -70,7 +70,7 @@ public class ManejoUIClientes {
      * Permite modificar el proveedor que encaja con el id dado.
      * @param id Id del proveedor.
      * @param nombre Nombre del proveedor.
-     * @param telefono Teléfono del proveedor.
+     * @param Saldo Teléfono del proveedor.
      * @return true si la modificación fue realizada con éxito. False nunca ocurre.
      * @throws SQLException Si la conexión a la base de datos o algún dato enviado no coincide.
      */
