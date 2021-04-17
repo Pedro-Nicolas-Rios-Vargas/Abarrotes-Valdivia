@@ -8,13 +8,17 @@ package src;
 import java.math.RoundingMode;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
+import javax.swing.DefaultListModel;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 import lista.ListaCola;
+import res.Clientes;
 import res.Producto;
+import res.interfazDB.ManejoUIClientes;
 import res.interfazDB.ManejoUIProductos;
 import res.interfazDB.ManejoUIVentas;
 import res.interfazDB.ManejoUIVentasDetalladas;
@@ -25,12 +29,14 @@ import res.interfazDB.ManejoUIVentasDetalladas;
 public class GestionarVentas extends javax.swing.JPanel {
 
     DefaultTableModel modeloTablaAlmacen, modeloPrueba;
+    DefaultListModel<String> modeloLista = new DefaultListModel<>();
     static String[] cabeceraTablaAlmacen = {"ID", "Nombre", "Precio", "Existencia", "Stock", "Unidad de Medida"};
     static float total = 0;
     static String pagoS = "0";
     static ManejoUIProductos mUIP = new ManejoUIProductos();
     static ManejoUIVentas mUIV = new ManejoUIVentas();
     static ManejoUIVentasDetalladas mIUVD = new ManejoUIVentasDetalladas();
+    static ManejoUIClientes mUIC = new ManejoUIClientes();
     static String[] pruebaC = {"Producto","Cantidad"};
     /**
      * Creates new form GestionarVentas
@@ -59,6 +65,10 @@ public class GestionarVentas extends javax.swing.JPanel {
             }
             
         };
+        
+        ListaCliente.setModel(modeloLista);
+        consultarCliente("");
+        
         tablaAlmacen.setModel(modeloTablaAlmacen);
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
         centerRenderer.setHorizontalAlignment(JLabel.CENTER);
@@ -114,9 +124,11 @@ public class GestionarVentas extends javax.swing.JPanel {
         tabla = new javax.swing.JTable();
         jLabel5 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jList1 = new javax.swing.JList<>();
-        jTextField1 = new javax.swing.JTextField();
+        ListaCliente = new javax.swing.JList<>();
+        ClienteTXT = new javax.swing.JTextField();
+        ClienteBuscarLabel = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
+        ClienteConPrecio = new javax.swing.JLabel();
 
         setLayout(null);
 
@@ -156,7 +168,7 @@ public class GestionarVentas extends javax.swing.JPanel {
 
         labelTotal.setText("Total");
         add(labelTotal);
-        labelTotal.setBounds(0, 590, 50, 16);
+        labelTotal.setBounds(0, 590, 50, 13);
 
         txtTotal.setEditable(false);
         txtTotal.setText("$");
@@ -174,7 +186,7 @@ public class GestionarVentas extends javax.swing.JPanel {
 
         jLabel1.setText("Pago");
         add(jLabel1);
-        jLabel1.setBounds(0, 620, 50, 16);
+        jLabel1.setBounds(0, 620, 50, 13);
 
         tablaAlmacen.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -211,7 +223,7 @@ public class GestionarVentas extends javax.swing.JPanel {
 
         jLabel3.setText("Filtrar por:");
         add(jLabel3);
-        jLabel3.setBounds(450, 80, 80, 16);
+        jLabel3.setBounds(450, 80, 80, 13);
 
         jLabel4.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -226,7 +238,7 @@ public class GestionarVentas extends javax.swing.JPanel {
             }
         });
         add(btnRadioID);
-        btnRadioID.setBounds(450, 100, 50, 28);
+        btnRadioID.setBounds(450, 100, 50, 21);
 
         btnRadioNombre.setText("Nombre");
         btnRadioNombre.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -235,7 +247,7 @@ public class GestionarVentas extends javax.swing.JPanel {
             }
         });
         add(btnRadioNombre);
-        btnRadioNombre.setBounds(450, 140, 90, 28);
+        btnRadioNombre.setBounds(450, 140, 90, 21);
 
         btnRadioPrecio.setText("Precio");
         btnRadioPrecio.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -244,7 +256,7 @@ public class GestionarVentas extends javax.swing.JPanel {
             }
         });
         add(btnRadioPrecio);
-        btnRadioPrecio.setBounds(540, 100, 80, 28);
+        btnRadioPrecio.setBounds(540, 100, 80, 21);
 
         btnRadioCantidad.setText("Existencia");
         btnRadioCantidad.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -253,11 +265,11 @@ public class GestionarVentas extends javax.swing.JPanel {
             }
         });
         add(btnRadioCantidad);
-        btnRadioCantidad.setBounds(540, 140, 120, 28);
+        btnRadioCantidad.setBounds(540, 140, 120, 21);
 
         jLabel2.setText("Cambio");
         add(jLabel2);
-        jLabel2.setBounds(0, 650, 50, 16);
+        jLabel2.setBounds(0, 650, 50, 13);
 
         txtCambio.setEditable(false);
         txtCambio.setText("$");
@@ -284,61 +296,84 @@ public class GestionarVentas extends javax.swing.JPanel {
         add(jLabel5);
         jLabel5.setBounds(370, 40, 50, 20);
 
-        jList1.setModel(new javax.swing.AbstractListModel<String>() {
+        ListaCliente.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
         });
-        jScrollPane2.setViewportView(jList1);
+        ListaCliente.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                ListaClienteMouseClicked(evt);
+            }
+        });
+        jScrollPane2.setViewportView(ListaCliente);
 
         add(jScrollPane2);
         jScrollPane2.setBounds(940, 170, 200, 530);
 
-        jTextField1.setText("jTextField1");
-        add(jTextField1);
-        jTextField1.setBounds(940, 140, 200, 30);
+        ClienteTXT.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                ClienteTXTKeyReleased(evt);
+            }
+        });
+        add(ClienteTXT);
+        ClienteTXT.setBounds(940, 140, 200, 30);
 
-        jLabel6.setText("Buscar");
+        ClienteBuscarLabel.setText("Buscar");
+        add(ClienteBuscarLabel);
+        ClienteBuscarLabel.setBounds(940, 110, 60, 30);
+
+        jLabel6.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
+        jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel6.setText("Lista de clientes");
         add(jLabel6);
-        jLabel6.setBounds(940, 90, 60, 40);
+        jLabel6.setBounds(950, 40, 190, 30);
+
+        ClienteConPrecio.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+        add(ClienteConPrecio);
+        ClienteConPrecio.setBounds(940, 83, 200, 20);
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAgregarlist2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarlist2ActionPerformed
-        if (tablaAlmacen.getSelectedRow() != -1 ) {
-            String[] aux = new String[modeloTablaAlmacen.getColumnCount()];
-            for (int i = 0; i < aux.length; i++) {
-                aux[i] = modeloTablaAlmacen.getValueAt(tablaAlmacen.getSelectedRow(), i).toString();
-            }
-           
-           Producto producto = new Producto(Integer.parseInt(aux[0]), aux[1], Integer.parseInt(aux[3]), Integer.parseInt(aux[4]), Float.valueOf(aux[2]), aux[5]);
-           //total += producto.getPrecio();
-           int i = 0;
-           int catidad = 1;
-           boolean sobrePasaLaExistencia = false;
-           while (i < modeloPrueba.getRowCount()) {
-               if (modeloPrueba.getValueAt(i, 0) instanceof Producto) {
-                   if (producto.getId() == ((Producto) (modeloPrueba.getValueAt(i, 0))).getId()) {
-                       System.out.println();
-                       if (producto.getExistencia() <= (Integer)modeloPrueba.getValueAt(i, 1)) {
-                           sobrePasaLaExistencia = true;
-                           JOptionPane.showMessageDialog(this, "Ya no queda mas producto en existencia", "Sin existencia", JOptionPane.INFORMATION_MESSAGE);
-                       } else {
-                           catidad += (Integer)modeloPrueba.getValueAt(i, 1);
-                           producto = new Producto(producto.getId(), producto.getNombre(), producto.getExistencia(), producto.getStock(), producto.getPrecio() * catidad, producto.getUM());
-                           modeloPrueba.removeRow(i);
+        if (ListaCliente.getSelectedIndex() != -1) {
+            if (tablaAlmacen.getSelectedRow() != -1 ) {
+                String[] aux = new String[modeloTablaAlmacen.getColumnCount()];
+                for (int i = 0; i < aux.length; i++) {
+                    aux[i] = modeloTablaAlmacen.getValueAt(tablaAlmacen.getSelectedRow(), i).toString();
+                }
+
+               Producto producto = new Producto(Integer.parseInt(aux[0]), aux[1], Integer.parseInt(aux[3]), Integer.parseInt(aux[4]), Float.valueOf(aux[2]), aux[5]);
+               //total += producto.getPrecio();
+               int i = 0;
+               int catidad = 1;
+               boolean sobrePasaLaExistencia = false;
+               while (i < modeloPrueba.getRowCount()) {
+                   if (modeloPrueba.getValueAt(i, 0) instanceof Producto) {
+                       if (producto.getId() == ((Producto) (modeloPrueba.getValueAt(i, 0))).getId()) {
+                           System.out.println();
+                           if (producto.getExistencia() <= (Integer)modeloPrueba.getValueAt(i, 1)) {
+                               sobrePasaLaExistencia = true;
+                               JOptionPane.showMessageDialog(this, "Ya no queda mas producto en existencia", "Sin existencia", JOptionPane.INFORMATION_MESSAGE);
+                           } else {
+                               catidad += (Integer)modeloPrueba.getValueAt(i, 1);
+                               producto = new Producto(producto.getId(), producto.getNombre(), producto.getExistencia(), producto.getStock(), producto.getPrecio() * catidad, producto.getUM());
+                               modeloPrueba.removeRow(i);
+                           }
+
                        }
-                       
+                       i++;
                    }
-                   i++;
-               }
+                }
+                if (!sobrePasaLaExistencia) {
+                    total += producto.getPrecio();
+                    Object[] pruba321 = {producto,catidad};
+                    modeloPrueba.addRow(pruba321);
+                }      
+            } else {
+                JOptionPane.showMessageDialog(this, "Favor de seleccionar un producto de la tabla", "Sin Producto seleccionado", JOptionPane.INFORMATION_MESSAGE);
             }
-            if (!sobrePasaLaExistencia) {
-                total += producto.getPrecio();
-                Object[] pruba321 = {producto,catidad};
-                modeloPrueba.addRow(pruba321);
-            }      
         } else {
-            JOptionPane.showMessageDialog(this, "Favor de seleccionar un producto de la tabla", "Sin seleccion", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Favor de seleccionar un Cliente de la lista de clientes", "Sin Cliente seleccionado", JOptionPane.INFORMATION_MESSAGE);
         }
         actualizarTotal();
         actualizarCambio();
@@ -454,6 +489,16 @@ public class GestionarVentas extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_BarraBuscarKeyReleased
 
+    private void ClienteTXTKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_ClienteTXTKeyReleased
+        System.out.println(ClienteTXT.getText());
+        consultarCliente(ClienteTXT.getText());
+    }//GEN-LAST:event_ClienteTXTKeyReleased
+
+    private void ListaClienteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ListaClienteMouseClicked
+        
+        ClienteConPrecio.setText(ListaCliente.getSelectedValue());
+    }//GEN-LAST:event_ListaClienteMouseClicked
+
     //-----------------Metodos-----------------------------
     
     //-------------------Metodo para poner el total dinamicamente----------------------
@@ -499,6 +544,35 @@ public class GestionarVentas extends javax.swing.JPanel {
             modeloTablaAlmacen.addRow(datos);
         }
     }
+    
+    /**
+     * Metodo para buscar un cliente o varios clientes con los caracteres introducidos
+     * @param nombreC Nombre del cliente a buscar o parte del nombre
+     */
+    public void consultarCliente(String nombreC){
+        ListaCola<Clientes> queue = new ListaCola<Clientes>();
+        
+        Clientes okyakusama;
+        String[] okyakusamaName;
+        try {
+            if (nombreC.equals("")) {
+                queue = mUIC.consulta(1, nombreC);
+            } else {
+                queue = mUIC.consulta(2, nombreC);
+            }
+            
+        } catch (SQLException e) {
+        }
+        listaBase();
+        while (true) {            
+            if (!queue.hasNext()) {
+                break;
+            }
+            okyakusama = queue.pop();
+            modeloLista.addElement(okyakusama.getNombre());
+        }
+        
+    }
     /**
      * Metodo para vaciar la tabla 
      * Si esto falla o marca error cambiar el for por 
@@ -509,13 +583,23 @@ public class GestionarVentas extends javax.swing.JPanel {
             modeloTablaAlmacen.removeRow(i);
         }
     }
+    /**
+     * Metodo para basiar la lista para agregar elemnentos nuevos sin que se dupliquen
+     */
+    public void listaBase(){
+        modeloLista.removeAllElements();
+    }    
     
     //--------------Fin Metodos----------------------------
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField BarraBuscar;
+    private javax.swing.JLabel ClienteBuscarLabel;
+    private javax.swing.JLabel ClienteConPrecio;
+    private javax.swing.JTextField ClienteTXT;
     private javax.swing.JButton ConsVenta;
     private javax.swing.ButtonGroup GrupoBtnRadio;
+    private javax.swing.JList<String> ListaCliente;
     private javax.swing.JButton btnAgregarlist2;
     private javax.swing.JButton btnNewC;
     private javax.swing.JButton btnQuitar;
@@ -529,10 +613,8 @@ public class GestionarVentas extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JList<String> jList1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JLabel labelTotal;
     private javax.swing.JScrollPane scroll;
     private javax.swing.JTable tabla;

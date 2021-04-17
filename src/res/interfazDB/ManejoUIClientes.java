@@ -51,7 +51,7 @@ public class ManejoUIClientes {
         if(queryType == 1){
             query = "execute selectClientes";
         }else if(queryType == 2){
-            query = String.format("execute selectCliente '%s'", queryData);
+            query = String.format("execute selectClientesNombre '%s'", queryData);
         }else if(queryType == 3){
             int id = (int) queryData;
             query = String.format("execute selectCliente %d", id);
