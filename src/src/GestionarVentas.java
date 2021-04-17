@@ -9,6 +9,8 @@ import java.math.RoundingMode;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -67,7 +69,7 @@ public class GestionarVentas extends javax.swing.JPanel {
         };
         
         ListaCliente.setModel(modeloLista);
-        consultarCliente("");
+        llenarLista("");
         
         tablaAlmacen.setModel(modeloTablaAlmacen);
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
@@ -301,9 +303,9 @@ public class GestionarVentas extends javax.swing.JPanel {
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
         });
-        ListaCliente.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                ListaClienteMouseClicked(evt);
+        ListaCliente.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseMoved(java.awt.event.MouseEvent evt) {
+                ListaClienteMouseMoved(evt);
             }
         });
         jScrollPane2.setViewportView(ListaCliente);
@@ -327,11 +329,11 @@ public class GestionarVentas extends javax.swing.JPanel {
         jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel6.setText("Lista de clientes");
         add(jLabel6);
-        jLabel6.setBounds(950, 40, 190, 30);
+        jLabel6.setBounds(950, 10, 190, 30);
 
         ClienteConPrecio.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
         add(ClienteConPrecio);
-        ClienteConPrecio.setBounds(940, 83, 200, 20);
+        ClienteConPrecio.setBounds(940, 50, 200, 60);
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAgregarlist2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarlist2ActionPerformed
@@ -350,7 +352,6 @@ public class GestionarVentas extends javax.swing.JPanel {
                while (i < modeloPrueba.getRowCount()) {
                    if (modeloPrueba.getValueAt(i, 0) instanceof Producto) {
                        if (producto.getId() == ((Producto) (modeloPrueba.getValueAt(i, 0))).getId()) {
-                           System.out.println();
                            if (producto.getExistencia() <= (Integer)modeloPrueba.getValueAt(i, 1)) {
                                sobrePasaLaExistencia = true;
                                JOptionPane.showMessageDialog(this, "Ya no queda mas producto en existencia", "Sin existencia", JOptionPane.INFORMATION_MESSAGE);
@@ -403,41 +404,16 @@ public class GestionarVentas extends javax.swing.JPanel {
 
     private void btnNewCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewCActionPerformed
         String pagoEnString = txtPago.getText();
-        float pagoEnFloat = Float.valueOf(txtPago.getText());
-        int paso = 2;
-        if ((!(pagoEnString.equals(""))) && pagoEnFloat >= 0 && (Double.valueOf(pagoS) - total) >= 0) {
-            try {
-                paso = mIUVD.agregar(1, total);
-            } catch (SQLException ex) {
-                JOptionPane.showMessageDialog(this, "ERROR: " + ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
-            }
-            if (paso == 1) {   
-                for (int i = 0; i < modeloPrueba.getRowCount(); i++) {
-                    try {
-                        Producto producto = ((Producto) modeloPrueba.getValueAt(i, 0));
-                        int id = producto.getId();
-                        int cantidad = ((Integer) modeloPrueba.getValueAt(i, 1));
-                        float subTotal = (producto.getPrecio());
-                        System.out.println(subTotal/cantidad);
-                        mUIV.agregar(id, cantidad, subTotal/cantidad);
-                        //Aqui mismo puedo agregar la actualizacion de la cantidad que el producto tendra despues de que se vendio
-                        mUIP.acutalizarExistencia(id, producto.getExistencia() - cantidad); //Pero claro, no se que tan facil sea esto ya que no lo puedo probar porque tengo error en otras clases que no son las mias xd
-                    } catch (SQLException ex) {
-                        JOptionPane.showMessageDialog(this, "ERROR: " + ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
-                    }
-                }
-                JOptionPane.showMessageDialog(this, "El cambio es " + txtCambio.getText(), "Venta realizada con exito", JOptionPane.INFORMATION_MESSAGE);
-            }
-            for (int i = modeloPrueba.getRowCount() - 1; i >= 0; i--) {
-                modeloPrueba.removeRow(i);
-            }
-            txtPago.setText("");
-            total = 0;
-            pagoS = "0";
-            actualizarTotal();
-            actualizarCambio();
+        float pagoEnFloat = 0;
+        if (pagoEnString.equals("")) {
+            pagoEnFloat = 0;
         } else {
-            JOptionPane.showMessageDialog(this, "Falta dinero a pagar", "Cambio negativo", JOptionPane.WARNING_MESSAGE);
+            pagoEnFloat = Float.valueOf(txtPago.getText());
+        }
+        if ((!(pagoEnString.equals(""))) && pagoEnFloat >= 0 && (Double.valueOf(pagoS) - total) >= 0) {
+            procesoDeVenta(0);
+        } else {
+            procesoDeVenta(1);
         }
     }//GEN-LAST:event_btnNewCActionPerformed
 
@@ -490,14 +466,12 @@ public class GestionarVentas extends javax.swing.JPanel {
     }//GEN-LAST:event_BarraBuscarKeyReleased
 
     private void ClienteTXTKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_ClienteTXTKeyReleased
-        System.out.println(ClienteTXT.getText());
-        consultarCliente(ClienteTXT.getText());
+        llenarLista(ClienteTXT.getText());
     }//GEN-LAST:event_ClienteTXTKeyReleased
 
-    private void ListaClienteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ListaClienteMouseClicked
-        
+    private void ListaClienteMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ListaClienteMouseMoved
         ClienteConPrecio.setText(ListaCliente.getSelectedValue());
-    }//GEN-LAST:event_ListaClienteMouseClicked
+    }//GEN-LAST:event_ListaClienteMouseMoved
 
     //-----------------Metodos-----------------------------
     
@@ -548,21 +522,37 @@ public class GestionarVentas extends javax.swing.JPanel {
     /**
      * Metodo para buscar un cliente o varios clientes con los caracteres introducidos
      * @param nombreC Nombre del cliente a buscar o parte del nombre
+     * @return Cola de los clientes con el que el nombre coincide
      */
-    public void consultarCliente(String nombreC){
+    public ListaCola<Clientes> consultarCliente(String nombreC){
         ListaCola<Clientes> queue = new ListaCola<Clientes>();
-        
-        Clientes okyakusama;
-        String[] okyakusamaName;
         try {
             if (nombreC.equals("")) {
                 queue = mUIC.consulta(1, nombreC);
             } else {
                 queue = mUIC.consulta(2, nombreC);
             }
-            
         } catch (SQLException e) {
         }
+        return queue;
+    }
+    /**
+     * Metodo para obtener el Cliente seleccionado a vender
+     * @param nombreC Nombre del cliente seleccionado en la lista de cliente
+     * @return Cliente
+     */
+    public Clientes obtenerCliente(String nombreC){
+        ListaCola<Clientes> queue = consultarCliente(nombreC);
+        Clientes okyakusama;
+        return okyakusama = queue.pop();
+    }
+    /**
+     * Metodo para llenar la lista clientes
+     * @param nombreC Nombre del cliente a buscar o parte del nombre
+     */
+    public void llenarLista(String nombreC){
+        ListaCola<Clientes> queue = consultarCliente(nombreC);
+        Clientes okyakusama;
         listaBase();
         while (true) {            
             if (!queue.hasNext()) {
@@ -571,7 +561,6 @@ public class GestionarVentas extends javax.swing.JPanel {
             okyakusama = queue.pop();
             modeloLista.addElement(okyakusama.getNombre());
         }
-        
     }
     /**
      * Metodo para vaciar la tabla 
@@ -588,7 +577,80 @@ public class GestionarVentas extends javax.swing.JPanel {
      */
     public void listaBase(){
         modeloLista.removeAllElements();
-    }    
+    }
+    /**
+     * Metodo para finalizar una venta
+     */
+    public void finalizarVenta(){
+        for (int i = modeloPrueba.getRowCount() - 1; i >= 0; i--) {
+                modeloPrueba.removeRow(i);
+            }
+            txtPago.setText("");
+            total = 0;
+            pagoS = "0";
+            actualizarTotal();
+            actualizarCambio();
+            consultarSQL("", 0);
+    }
+    /**
+     * Metodo que realiza todos los procesos necesarios para realizar una venta
+     * @param deuda 0 = No le falta dinero pero le puede sobrar <br>
+     *              1 = Le falta dinero pero puede deberlo
+     */
+    public void procesoDeVenta(int deuda){
+        int paso = 2;
+        Clientes okyakusama = obtenerCliente(ListaCliente.getSelectedValue());
+        try {
+            paso = mIUVD.agregar(okyakusama.getId(), total);
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(this, "ERROR: " + ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
+        }
+        if (paso == 1) {   
+            for (int i = 0; i < modeloPrueba.getRowCount(); i++) {
+                try {
+                    Producto producto = ((Producto) modeloPrueba.getValueAt(i, 0));
+                    int id = producto.getId();
+                    int cantidad = ((Integer) modeloPrueba.getValueAt(i, 1));
+                    float subTotal = (producto.getPrecio());
+                    mUIV.agregar(id, cantidad, subTotal/cantidad);
+                    //Aqui mismo puedo agregar la actualizacion de la cantidad que el producto tendra despues de que se vendio
+                    mUIP.acutalizarExistencia(id, producto.getExistencia() - cantidad); //Pero claro, no se que tan facil sea esto ya que no lo puedo probar porque tengo error en otras clases que no son las mias xd
+                } catch (SQLException ex) {
+                    JOptionPane.showMessageDialog(this, "ERROR: " + ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+            if(deuda == 0){
+                int seleccion = JOptionPane.showConfirmDialog(this, "El cambio es " + txtCambio.getText() + "\n Quiere guardar el cambio como saldo acredor del cliente?", "Venta realizada con exito",JOptionPane.YES_NO_OPTION,JOptionPane.INFORMATION_MESSAGE);
+                if (seleccion == 0) {
+                    try {
+                        String sinFeria = txtCambio.getText();
+                        sinFeria = sinFeria.substring(2, sinFeria.length());
+                        double cambio = Double.parseDouble(sinFeria);
+                        int cambioTrucado = (int) cambio;
+                        mUIC.modificar(okyakusama.getId(), okyakusama.getNombre(), Integer.parseInt(okyakusama.getSaldo()) + cambioTrucado);
+                    } catch (SQLException ex) {
+                        JOptionPane.showMessageDialog(this, "ERROR: " + ex.getMessage(), "ERROR en el cambio", JOptionPane.ERROR_MESSAGE);
+                    }
+                }
+                finalizarVenta();
+            } else {
+                int seleccion = JOptionPane.showConfirmDialog(this, "Falta dinero " + txtCambio.getText() + "\n Quiere guardar el dinero faltante como saldo deudor del cliente?", "Venta con falta de dinero",JOptionPane.YES_NO_OPTION,JOptionPane.INFORMATION_MESSAGE);
+                if (seleccion == 0) {
+                    try {
+                        String sinFeria = txtCambio.getText();
+                        sinFeria = sinFeria.substring(2, sinFeria.length());
+                        double cambio = Double.parseDouble(sinFeria);
+                        int cambioTrucado = (int) Math.ceil(-1*cambio);
+                        mUIC.modificar(okyakusama.getId(), okyakusama.getNombre(), Integer.parseInt(okyakusama.getSaldo()) + (-1*cambioTrucado));
+                        finalizarVenta();
+                    } catch (SQLException ex) {
+                        JOptionPane.showMessageDialog(this, "ERROR: " + ex.getMessage(), "ERROR en el cambio", JOptionPane.ERROR_MESSAGE);
+                    }
+                finalizarVenta();
+                }
+            }
+        }
+    }
     
     //--------------Fin Metodos----------------------------
 
