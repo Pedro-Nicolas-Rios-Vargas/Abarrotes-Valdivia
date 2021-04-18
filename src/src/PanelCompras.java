@@ -51,8 +51,18 @@ public class PanelCompras extends javax.swing.JPanel{
         lblBuscar.setVisible(false);
         txtComprasProdBuscar.setVisible(false);
         btnBuscarProd.setVisible(false);
-        modeloTablaAlmacen = new DefaultTableModel(null,cabeceraTablaAlmacen);
-        modeloTablaCompras = new DefaultTableModel(null,cabeceraTablaCompras);
+        modeloTablaAlmacen = new DefaultTableModel(null,cabeceraTablaAlmacen){
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                    return false;
+            }
+        };
+        modeloTablaCompras = new DefaultTableModel(null,cabeceraTablaCompras){
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                    return false;
+            }
+        };
         tablaAlmacen.setModel(modeloTablaAlmacen);
         tablaCompras.setModel(modeloTablaCompras);
         tablaAlmacen.getTableHeader().setReorderingAllowed(false);
@@ -213,7 +223,12 @@ public class PanelCompras extends javax.swing.JPanel{
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         )
-        {public boolean isCellEditable(int row, int column){return false;}}
+        {
+            public boolean isCellEditable (int row, int column){
+                return false;
+            }
+
+        }
     );
     jScrollPane2.setViewportView(tablaAlmacen);
 
