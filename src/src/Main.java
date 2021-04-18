@@ -6,7 +6,6 @@ import java.util.Calendar;
 import java.awt.*;
 
 public class Main extends javax.swing.JFrame {
-
     
     static CardLayout cardLayout;
     static boolean successLogIn = false;

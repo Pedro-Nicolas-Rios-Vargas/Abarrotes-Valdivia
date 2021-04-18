@@ -86,9 +86,9 @@ create procedure deleteClienteNombre @nombre varchar(43)
 as
 delete from Clientes where nombre_C = @nombre
 --Procedures Clientes select gen
-create procedure selectClientesNombre @nombre varchar(43)
+alter procedure selectClientesNombre @nombre varchar(43)
 as 
-select * from Clientes where nombre_C = @nombre
+select * from Clientes where nombre_C like '%'+@nombre+'%'
 --Procedure clientes select TOP 1
 CREATE PROCEDURE selectCliente1
 AS
