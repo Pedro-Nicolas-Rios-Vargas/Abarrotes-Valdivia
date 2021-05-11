@@ -14,12 +14,10 @@ public class Main extends javax.swing.JFrame {
     GestionarVentas gestionarVentas = new GestionarVentas();
     GestionarClientes gestionarClientes = new GestionarClientes();
     private IngresoDialog ingreso;
-    private Dimension d;
     
     public Main() {
         initComponents();
-        d = Toolkit.getDefaultToolkit().getScreenSize();
-        this.setBounds(0,0,d.width,d.height);
+        this.setBounds(0,0,1366,768);//1358,746
         this.setResizable(false);
         cardLayout = (CardLayout)PanelCardLayout.getLayout();
         PanelCardLayout.add(gestionarAlmacen, "Gestionar Almecen");
@@ -48,15 +46,7 @@ public class Main extends javax.swing.JFrame {
         panelProveedores = new GestionarProveedores();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Version 1.3");
-        addWindowListener(new java.awt.event.WindowAdapter() {
-            public void windowClosing(java.awt.event.WindowEvent evt) {
-                formWindowClosing(evt);
-            }
-            public void windowOpened(java.awt.event.WindowEvent evt) {
-                formWindowOpened(evt);
-            }
-        });
+        setTitle("Version 1.43");
 
         btnGesVentas.setText("Ventas");
         btnGesVentas.addActionListener(new java.awt.event.ActionListener() {
@@ -170,14 +160,6 @@ public class Main extends javax.swing.JFrame {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-
-    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
-
-    }//GEN-LAST:event_formWindowOpened
-
-    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
- 
-    }//GEN-LAST:event_formWindowClosing
 
     private void btnGesVentasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGesVentasActionPerformed
         cardLayout.show(PanelCardLayout, "Gestionar Ventas");
