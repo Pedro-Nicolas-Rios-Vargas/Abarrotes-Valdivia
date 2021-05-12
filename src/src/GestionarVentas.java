@@ -55,7 +55,7 @@ public class GestionarVentas extends javax.swing.JPanel {
         modeloPrueba = new DefaultTableModel(null, pruebaC){
             @Override
             public boolean isCellEditable(int row, int column) {
-                return column == 6;
+                return false;
             }
             
         };
@@ -63,14 +63,14 @@ public class GestionarVentas extends javax.swing.JPanel {
         modeloTablaAlmacen = new DefaultTableModel(null,cabeceraTablaAlmacen){
             @Override
             public boolean isCellEditable(int row, int column) {
-                return column == 2;
+                return false;
             }
             
         };
         
         ListaCliente.setModel(modeloLista);
         llenarLista("");
-        
+            
         tablaAlmacen.setModel(modeloTablaAlmacen);
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
         centerRenderer.setHorizontalAlignment(JLabel.CENTER);
@@ -91,6 +91,7 @@ public class GestionarVentas extends javax.swing.JPanel {
         columnModel1.getColumn(0).setPreferredWidth(190);
         columnModel1.getColumn(1).setPreferredWidth(1);
         consultarSQL("", 0);
+        productoAVender();
     }
 
     /**
@@ -380,6 +381,7 @@ public class GestionarVentas extends javax.swing.JPanel {
         }
         actualizarTotal();
         actualizarCambio();
+        productoAVender();
     }//GEN-LAST:event_btnAgregarlist2ActionPerformed
 
     private void btnQuitarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnQuitarActionPerformed
@@ -402,6 +404,7 @@ public class GestionarVentas extends javax.swing.JPanel {
         }
         actualizarTotal();
         actualizarCambio();
+        productoAVender();
     }//GEN-LAST:event_btnQuitarActionPerformed
 
     private void btnNewCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewCActionPerformed
@@ -478,6 +481,13 @@ public class GestionarVentas extends javax.swing.JPanel {
     //-----------------Metodos-----------------------------
     
     //-------------------Metodo para poner el total dinamicamente----------------------
+    public void productoAVender() {
+        if (modeloPrueba.getRowCount() > 0) {
+            btnNewC.setEnabled(true);
+        } else {
+            btnNewC.setEnabled(false);
+        }
+    }
     public void actualizarTotal() {
         DecimalFormat df = new DecimalFormat("0.00");
         df.setRoundingMode(RoundingMode.UP);
