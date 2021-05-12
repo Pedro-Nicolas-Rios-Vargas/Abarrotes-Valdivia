@@ -20,10 +20,12 @@ import javax.swing.table.TableColumnModel;
 import lista.ListaCola;
 import res.Clientes;
 import res.Producto;
+import res.VentaProductoUnitario;
 import res.interfazDB.ManejoUIClientes;
 import res.interfazDB.ManejoUIProductos;
 import res.interfazDB.ManejoUIVentas;
 import res.interfazDB.ManejoUIVentasDetalladas;
+import res.Printer;
 /**
  *
  * @author vival
@@ -32,6 +34,7 @@ public class GestionarVentas extends javax.swing.JPanel {
 
     DefaultTableModel modeloTablaAlmacen, modeloPrueba;
     DefaultListModel<String> modeloLista = new DefaultListModel<>();
+    private final Printer printer;
     static String[] cabeceraTablaAlmacen = {"ID", "Nombre", "Precio", "Existencia", "Stock", "Unidad de Medida"};
     static float total = 0;
     static String pagoS = "0";
@@ -91,6 +94,8 @@ public class GestionarVentas extends javax.swing.JPanel {
         columnModel1.getColumn(0).setPreferredWidth(190);
         columnModel1.getColumn(1).setPreferredWidth(1);
         consultarSQL("", 0);
+
+        printer = new Printer();
     }
 
     /**
@@ -605,14 +610,21 @@ public class GestionarVentas extends javax.swing.JPanel {
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(this, "ERROR: " + ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
         }
-        if (paso == 1) {   
-            for (int i = 0; i < modeloPrueba.getRowCount(); i++) {
+        if (paso == 1) {
+            //TODO: Declarar un arreglo que agregue cada producto ingresado
+            int rowCount = modeloPrueba.getRowCount();
+            VentaProductoUnitario[] productos = new VentaProductoUnitario[rowCount];
+            VentaProductoUnitario productoUnitario;
+            for (int i = 0; i < rowCount; i++) {
                 try {
                     Producto producto = ((Producto) modeloPrueba.getValueAt(i, 0));
                     int id = producto.getId();
                     int cantidad = ((Integer) modeloPrueba.getValueAt(i, 1));
                     float subTotal = (producto.getPrecio());
-                    mUIV.agregar(id, cantidad, subTotal/cantidad);
+                    float subTotalIV = subTotal/cantidad;
+                    productoUnitario = new VentaProductoUnitario(producto, cantidad, subTotalIV, total);
+                    productos[i] = productoUnitario;
+                    mUIV.agregar(id, cantidad, subTotalIV);
                     //Aqui mismo puedo agregar la actualizacion de la cantidad que el producto tendra despues de que se vendio
                     mUIP.acutalizarExistencia(id, producto.getExistencia() - cantidad); //Pero claro, no se que tan facil sea esto ya que no lo puedo probar porque tengo error en otras clases que no son las mias xd
                 } catch (SQLException ex) {
@@ -649,6 +661,9 @@ public class GestionarVentas extends javax.swing.JPanel {
                 finalizarVenta();
                 }
             }
+            //TODO: Llamar al metodo para imprimir tickets
+            // Pasarle al metodo el arreglo antes declarado
+            printer.printTicket(productos);
         }
     }
     
