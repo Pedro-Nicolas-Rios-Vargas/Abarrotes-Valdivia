@@ -95,7 +95,7 @@ public class ManejoUIProductos {
     public boolean modificar(int idprod, String nombre_Prod, int existencia, int stock, float precio, String um) throws SQLException{
         int res = -1;
         String query = "execute updateProduct " + idprod + ", '" + nombre_Prod 
-                + "', " + existencia + ", " + stock + ", " + existencia + ", '"
+                + "', " + precio + ", " + stock + ", " + existencia + ", '"
                 + um + "'";
         conDB.send(query);
         return (res != -1);

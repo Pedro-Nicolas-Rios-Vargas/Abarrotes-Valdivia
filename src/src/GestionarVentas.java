@@ -58,7 +58,7 @@ public class GestionarVentas extends javax.swing.JPanel {
         modeloPrueba = new DefaultTableModel(null, pruebaC){
             @Override
             public boolean isCellEditable(int row, int column) {
-                return column == 6;
+                return false;
             }
             
         };
@@ -66,14 +66,14 @@ public class GestionarVentas extends javax.swing.JPanel {
         modeloTablaAlmacen = new DefaultTableModel(null,cabeceraTablaAlmacen){
             @Override
             public boolean isCellEditable(int row, int column) {
-                return column == 2;
+                return false;
             }
             
         };
         
         ListaCliente.setModel(modeloLista);
         llenarLista("");
-        
+            
         tablaAlmacen.setModel(modeloTablaAlmacen);
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
         centerRenderer.setHorizontalAlignment(JLabel.CENTER);
@@ -96,6 +96,7 @@ public class GestionarVentas extends javax.swing.JPanel {
         consultarSQL("", 0);
 
         printer = new Printer();
+        productoAVender();
     }
 
     /**
@@ -342,6 +343,7 @@ public class GestionarVentas extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAgregarlist2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarlist2ActionPerformed
+        float dinero = 0;
         if (ListaCliente.getSelectedIndex() != -1) {
             if (tablaAlmacen.getSelectedRow() != -1 ) {
                 String[] aux = new String[modeloTablaAlmacen.getColumnCount()];
@@ -351,6 +353,7 @@ public class GestionarVentas extends javax.swing.JPanel {
 
                Producto producto = new Producto(Integer.parseInt(aux[0]), aux[1], Integer.parseInt(aux[3]), Integer.parseInt(aux[4]), Float.valueOf(aux[2]), aux[5]);
                //total += producto.getPrecio();
+               dinero = producto.getPrecio();
                int i = 0;
                int catidad = 1;
                boolean sobrePasaLaExistencia = false;
@@ -371,7 +374,7 @@ public class GestionarVentas extends javax.swing.JPanel {
                    }
                 }
                 if (!sobrePasaLaExistencia) {
-                    total += producto.getPrecio();
+                    total += dinero;
                     Object[] pruba321 = {producto,catidad};
                     modeloPrueba.addRow(pruba321);
                 }      
@@ -383,6 +386,7 @@ public class GestionarVentas extends javax.swing.JPanel {
         }
         actualizarTotal();
         actualizarCambio();
+        productoAVender();
     }//GEN-LAST:event_btnAgregarlist2ActionPerformed
 
     private void btnQuitarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnQuitarActionPerformed
@@ -405,6 +409,7 @@ public class GestionarVentas extends javax.swing.JPanel {
         }
         actualizarTotal();
         actualizarCambio();
+        productoAVender();
     }//GEN-LAST:event_btnQuitarActionPerformed
 
     private void btnNewCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewCActionPerformed
@@ -481,6 +486,13 @@ public class GestionarVentas extends javax.swing.JPanel {
     //-----------------Metodos-----------------------------
     
     //-------------------Metodo para poner el total dinamicamente----------------------
+    public void productoAVender() {
+        if (modeloPrueba.getRowCount() > 0) {
+            btnNewC.setEnabled(true);
+        } else {
+            btnNewC.setEnabled(false);
+        }
+    }
     public void actualizarTotal() {
         DecimalFormat df = new DecimalFormat("0.00");
         df.setRoundingMode(RoundingMode.UP);
