@@ -3,7 +3,7 @@ package res;
 import java.awt.*;
 import java.awt.print.*;
 import java.text.Format;
-import java.util.Formatter;
+import java.util.*;
 
 public class Printer {
     private PrinterJob job;
@@ -36,8 +36,9 @@ public class Printer {
                 return NO_SUCH_PAGE;
             }
 
-            Font font = new Font("Serif", Font.PLAIN, 10);
-            FontMetrics metrics = graphics.getFontMetrics(font);
+            Font fontGeneral = new Font("Serif", Font.PLAIN, 10);
+            Font fontTitulo = new Font("Serif", Font.BOLD, 15);
+            FontMetrics metrics = graphics.getFontMetrics(fontGeneral);
             int lineHeight = metrics.getHeight();
             double pageHeight = pageFormat.getImageableHeight();
 
@@ -51,46 +52,69 @@ public class Printer {
             int y = 0;
             int start = (pageIndex == 0) ? 0 : pageBreaks[pageIndex-1];
             int end = (pageIndex == pageBreaks.length) ? productos.length : pageBreaks[pageIndex];
+            y += lineHeight * 2;
+            graphics.setFont(fontTitulo);
+            graphics.drawString("ABARROTES VALDIVIA", 20,y);
 
-            VentaProductoUnitario productoUnitario = productos[0];
-            float total = productoUnitario.getTotal();
+            y += lineHeight;
+            graphics.setFont(fontGeneral);
+            // Imprime la fecha del dia
+            Calendar calendario = new GregorianCalendar(TimeZone.getDefault());
+            int dia = calendario.get(Calendar.DAY_OF_MONTH);
+            int mes = calendario.get(Calendar.MONTH) + 1;
+            int anio = calendario.get(Calendar.YEAR);
+            int hora = calendario.get(Calendar.HOUR_OF_DAY);
+            int minuto = calendario.get(Calendar.MINUTE);
+            int segundo = calendario.get(Calendar.SECOND);
+            graphics.drawString(String.format("%d/%d/%d \t %d:%d:%d",dia,mes,anio,hora,minuto,segundo),70,y);
+
+            // Impreme encabezado de la tabla de ventas
+
+            y += lineHeight;
+            graphics.drawString("CANT.",0,y);
+            graphics.drawString("ARTICULO",50,y);
+            graphics.drawString("SUBTOTAL",175,y);
+            //y += lineHeight;
+
+            //Imprime todos los productos vendidos
+            VentaProductoUnitario producto = productos[0];
+            float total = producto.getTotal();
             for(int line = start; line < end; line++) {
+                y += lineHeight;
                 //Get the n product selled
-                productoUnitario = productos[line];
-
-                //Extract the sell's characteristics
-                String prodNombre = productoUnitario.getProducto().getNombre();
-                int cantidad = productoUnitario.getCantidad();
-                float subTotal = productoUnitario.getSubTotal();
-
-                // The Max length of a product name is 25 chars,
-                // the quantity can be an infinity value but considering it with only 2 chars
-                // 1 because adding an 'x' for specify the number of products bought.
-                // The max chars that can contain an subtotal value is 9 (6 from integer numbers,
-                // 1 for float point and 2 for float number)
-                // The max chars that an line can contain without count the divisors between values is
-                // 25 + 1 + 2 = 28 chars
-                int numProdNameChars = prodNombre.length();
-                for(int prodX = 0; prodX < cantidad; prodX++) {
-                    y += lineHeight;
-                    graphics.drawString(prodNombre, 0, y);
-                    graphics.drawString(String.format("$%.2f", subTotal), 145, y);
-                }
-
+                producto = productos[line];
+                printProduct(graphics,producto, y);
             }
-            String divisor = "_".repeat(29);
+            //Imprime el divisor entre productos y total
+            String divisor = "_".repeat(41);
             graphics.drawString(divisor,0,y);
             y += lineHeight;
+            //Se imprime el total vendido
             String totalSold = String.format("$%.2f",total);
-            //Se imprime el total
-            graphics.drawString("TOTAL",0,y);
-            graphics.drawString(totalSold,140,y);
+            graphics.drawString("TOTAL",60,y);
+            graphics.drawString(totalSold,175,y);
 
             Graphics2D g2d = (Graphics2D) graphics;
 
             g2d.translate(pageFormat.getImageableX(), pageFormat.getImageableY());
 
             return PAGE_EXISTS;
+        }
+
+        private void printProducts(Graphics graphics, VentaProductoUnitario producto, int y) {
+
+        }
+
+        private void printProduct(Graphics graphics, VentaProductoUnitario producto, int y) {
+            //Extract the sell's characteristics
+            String prodNombre = producto.getProducto().getNombre();
+            int cantidad = producto.getCantidad();
+            float subTotal = producto.getSubTotal();
+
+            graphics.drawString(String.format("%d",cantidad), 0, y);
+            graphics.drawString(prodNombre, 50, y);
+            graphics.drawString(String.format("$%.2f", subTotal), 175, y);
+
         }
     }
 }

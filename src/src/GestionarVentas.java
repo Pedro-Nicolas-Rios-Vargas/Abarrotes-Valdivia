@@ -633,10 +633,10 @@ public class GestionarVentas extends javax.swing.JPanel {
                     int id = producto.getId();
                     int cantidad = ((Integer) modeloPrueba.getValueAt(i, 1));
                     float subTotal = (producto.getPrecio());
-                    float subTotalIV = subTotal/cantidad;
-                    productoUnitario = new VentaProductoUnitario(producto, cantidad, subTotalIV, total);
+                    float porUnidad = subTotal/cantidad;
+                    productoUnitario = new VentaProductoUnitario(producto, cantidad, porUnidad, total);
                     productos[i] = productoUnitario;
-                    mUIV.agregar(id, cantidad, subTotalIV);
+                    mUIV.agregar(id, cantidad, porUnidad);
                     //Aqui mismo puedo agregar la actualizacion de la cantidad que el producto tendra despues de que se vendio
                     mUIP.acutalizarExistencia(id, producto.getExistencia() - cantidad); //Pero claro, no se que tan facil sea esto ya que no lo puedo probar porque tengo error en otras clases que no son las mias xd
                 } catch (SQLException ex) {
